@@ -1,6 +1,4 @@
-#![plugin(rocket_codegen)]
-
-extern crate rocket;
+use rocket;
 
 mod apiv1;
 
@@ -18,7 +16,7 @@ impl apiServer {
 	}
 }
 
-pub fn NewApiServer(&addr: String) -> apiServer {
+pub fn NewApiServer() -> apiServer {
 	apiServer {
 		r: rocket::ignite(),
 	}
