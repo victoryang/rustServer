@@ -1,4 +1,4 @@
-extern crate rocket;
+use rocket::{self, routes};
 
 #[get("/")]
 fn hello() -> String {
