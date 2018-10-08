@@ -1,3 +1,7 @@
+mod api;
+
 fn main() {
-    println!("Hello, world!");
+    let apiserver = api::NewApiServer();
+    apiserver.configServerHandler();
+    apiserver.run();
 }
