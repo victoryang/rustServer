@@ -6,5 +6,5 @@ fn hello() -> String {
 }
 
 pub fn registerAPIv1(r: &mut rocket::Rocket) {
-	r.mount("/", routes![hello]);
+	r.mount("/", routes![hello])
 }
