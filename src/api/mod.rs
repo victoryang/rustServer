@@ -7,11 +7,11 @@ pub struct apiServer {
 }
 
 impl apiServer {
-	pub fn run(self) {
+	pub fn run(&self) {
 		self.r.launch();
 	}
 
-	pub fn configServerHandler(self) {
+	pub fn configServerHandler(mut &self) {
 		apiv1::registerAPIv1(&self.r);
 	}
 }
