@@ -11,7 +11,7 @@ impl apiServer {
 		self.r.launch();
 	}
 
-	pub fn configServerHandler(mut &self) {
+	pub fn configServerHandler(&mut self) {
 		apiv1::registerAPIv1(&self.r);
 	}
 }
