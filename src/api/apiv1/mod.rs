@@ -5,7 +5,6 @@ fn hello() -> String {
 	format!("hello world!")
 }
 
-pub fn registerAPIv1(r: mut rocket::Rocket) -> rocket::Rocket {
-	r.mount("/", routes![hello]);
-	r
+pub fn register_apiv1(r: rocket::Rocket) -> rocket::Rocket {
+	r.mount("/", routes![hello])
 }

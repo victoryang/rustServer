@@ -7,7 +7,6 @@ extern crate rocket;
 mod api;
 
 fn main() {
-    let mut apiserver = api::NewApiServer();
-    apiserver.configServerHandler();
-    apiserver.run();
+    let apiserver = api::new_api_server();
+    apiserver.config_server_handler().run();
 }

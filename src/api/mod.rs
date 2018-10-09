@@ -2,23 +2,23 @@ use rocket;
 
 mod apiv1;
 
-pub struct apiServer {
+pub struct Apiserver {
 	r:	rocket::Rocket
 }
 
-impl apiServer {
-	pub fn run(&mut self) {
+impl Apiserver {
+	pub fn run(self) {
 		self.r.launch();
 	}
 
-	pub fn configServerHandler(mut self) -> Self {
-		apiv1::registerAPIv1(mut self.r);
+	pub fn config_server_handler(mut self) -> Self {
+		self.r = apiv1::register_apiv1(self.r);
 		self
 	}
 }
 
-pub fn NewApiServer() -> apiServer {
-	apiServer {
+pub fn new_api_server() -> Apiserver {
+	Apiserver {
 		r: rocket::ignite(),
 	}
 }
