@@ -56,10 +56,10 @@ impl Fairing for Logger {
         }
 
 		let mut values = HashMap::new();
-		values.insert("StartTime", start_time);
-		values.insert("Status", response.status());
-		values.insert("Duration", ms);
-		values.insert("Hostname", "192.168.1.253:9000");
+		values.insert("StartTime", format!("{:?}", start_time));
+		values.insert("Status", format!("{:?}", response.status()));
+		//values.insert("Duration", ms);
+		values.insert("Hostname", "192.168.1.253:9000".to_string());
 		values.insert("Method", request.method().as_str());
 		values.insert("Path", request.uri().path());
 
@@ -106,6 +106,6 @@ fn check_file_size_exceeded_max(filename: &String) -> bool {
 				false
 			}
 		}
-		Err() => false
+		Err(_) => false
 	}
 }
