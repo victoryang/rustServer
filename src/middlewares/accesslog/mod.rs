@@ -8,9 +8,9 @@ use std::time::{Duration, SystemTime};
 use log;
 use fern;
 
-let LoggerDefaultName = "api-server ";
+static LoggerDefaultName: &'static str = "api-server ";
 
-let LoggerDefaultFormat = text_template::Template::from("${StartTime} | ${Status} | \t ${Duration} | ${Hostname} | ${Method} ${Path} \n");
+static LoggerDefaultFormat: 'static text_template::Template = text_template::Template::from("${StartTime} | ${Status} | \t ${Duration} | ${Hostname} | ${Method} ${Path} \n");
 
 #[derive(Copy, Clone)]
 struct TimerStart(Option<SystemTime>);

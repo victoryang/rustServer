@@ -17,7 +17,7 @@ impl Apiserver {
 	}
 }
 
-fn get_middlewares(mut r) -> rocket::Rocket {
+fn get_middlewares(mut r: rocket::Rocket) -> rocket::Rocket {
 	r.attach(super::middlewares::accesslog.new())
 }
 
