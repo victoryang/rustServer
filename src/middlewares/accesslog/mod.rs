@@ -25,8 +25,8 @@ impl<'a, 'r> FromRequest<'a, 'r> for StartTime {
 
 	fn from_request(request: &'a Request<'r>) -> request::Outcome<StartTime, ()> {
 		match *request.local_cache(|| TimerStart(None)) {
-			TimerStart(Some(time)) => Outcome::Success(StartTime(time)),
-			TimerStart(None) => Outcome::Failure((Status::InternalServerError, ())),
+			TimerStart(Some(time)) => request::Outcome::Success(StartTime(time)),
+			TimerStart(None) => request::Outcome::Failure((Status::InternalServerError, ())),
 		}
 	}
 }
@@ -56,10 +56,10 @@ impl Fairing for Logger {
         }
 
 		let mut values = HashMap::new();
-		values.insert("StartTime", format!("{:?}", start_time));
-		values.insert("Status", format!("{:?}", response.status()));
+		values.insert("StartTime", format!("{:?}", start_time).as_str());
+		values.insert("Status", format!("{:?}", response.status()).as_str());
 		//values.insert("Duration", ms);
-		values.insert("Hostname", "192.168.1.253:9000".to_string());
+		values.insert("Hostname", "192.168.1.253:9000");
 		values.insert("Method", request.method().as_str());
 		values.insert("Path", request.uri().path());
 
