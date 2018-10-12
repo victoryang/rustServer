@@ -1,7 +1,10 @@
 use std::fs;
 use std::path::Path;
-use rocket::fairing::info_kind::Info;
+use rocket::{Request, Data, Response};
+use rocket::fairing::{Fairing, Info, Kind};
 use rocket::http::Status;
+use rocket::handler::Outcome;
+use rocket::request::{self, FromRequest};
 use text_template;
 use std::collections::HashMap;
 use std::time::{Duration, SystemTime};
@@ -10,7 +13,7 @@ use fern;
 
 static LoggerDefaultName: &'static str = "api-server ";
 
-static LoggerDefaultFormat: 'static text_template::Template = text_template::Template::from("${StartTime} | ${Status} | \t ${Duration} | ${Hostname} | ${Method} ${Path} \n");
+static LoggerDefaultFormat: text_template::Template = text_template::Template::from("${StartTime} | ${Status} | \t ${Duration} | ${Hostname} | ${Method} ${Path} \n");
 
 #[derive(Copy, Clone)]
 struct TimerStart(Option<SystemTime>);
@@ -64,7 +67,7 @@ impl Fairing for Logger {
 
 		let text = self.Template.fill_in(&values);
 
-		self.info!(text.to_string());
+		info!("{}",text.to_string());
 	}
 }
 

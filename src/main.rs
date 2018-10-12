@@ -3,11 +3,11 @@
 #![plugin(rocket_codegen)]
 
 extern crate rocket;
+extern crate text_template
 
 #[macro_use]
 extern crate log;
 extern crate fern;
-extern crate chrono;
 
 mod api;
 mod middlewares;
