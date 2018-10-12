@@ -1,9 +1,6 @@
 use std::fs;
 use rocket::{Request, Data, Response};
 use rocket::fairing::{Fairing, Info, Kind};
-use rocket::http::Status;
-use rocket::handler::Outcome;
-use rocket::request::{self, FromRequest};
 use text_template;
 use std::collections::HashMap;
 use std::time::SystemTime;
@@ -16,20 +13,6 @@ static LoggerDefaultFormat: text_template::Template<'_> = text_template::Templat
 
 #[derive(Copy, Clone)]
 struct TimerStart(Option<SystemTime>);
-
-#[derive(Copy, Clone)]
-pub struct StartTime(pub SystemTime);
-
-impl<'a, 'r> FromRequest<'a, 'r> for StartTime {
-	type Error = ();
-
-	fn from_request(request: &'a Request<'r>) -> request::Outcome<StartTime, ()> {
-		match *request.local_cache(|| TimerStart(None)) {
-			TimerStart(Some(time)) => request::Outcome::Success(StartTime(time)),
-			TimerStart(None) => request::Outcome::Failure((Status::InternalServerError, ())),
-		}
-	}
-}
 
 pub struct Logger {
 	Filename: String,
