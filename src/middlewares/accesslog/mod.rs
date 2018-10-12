@@ -33,7 +33,6 @@ impl<'a, 'r> FromRequest<'a, 'r> for StartTime {
 
 pub struct Logger {
 	Filename: String,
-	Template: &'static text_template::Template,
 }
 
 impl Fairing for Logger {
@@ -64,7 +63,7 @@ impl Fairing for Logger {
 		values.insert("Method", request.method().as_str());
 		values.insert("Path", request.uri().path());
 
-		let text = self.Template.fill_in(&values);
+		let text = LoggerDefaultFormat.fill_in(&values);
 
 		info!("{}",text.to_string());
 	}
@@ -80,7 +79,6 @@ pub fn new(filename: String) -> Logger {
 
 	Logger {
 		Filename: filename,
-		Template: LoggerDefaultFormat,
 	}
 }
 
