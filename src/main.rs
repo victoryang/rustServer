@@ -4,7 +4,13 @@
 
 extern crate rocket;
 
+#[macro_use]
+extern crate log;
+extern crate fern;
+extern crate chrono;
+
 mod api;
+mod middlewares;
 
 fn main() {
     let apiserver = api::new_api_server();

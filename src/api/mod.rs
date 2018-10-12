@@ -17,8 +17,13 @@ impl Apiserver {
 	}
 }
 
+fn get_middlewares(mut r) -> rocket::Rocket {
+	r.attach(super::middlewares::accesslog.new())
+}
+
 pub fn new_api_server() -> Apiserver {
+	let r = rocket::ignite();
 	Apiserver {
-		r: rocket::ignite(),
+		r: get_middlewares(r),
 	}
 }
