@@ -33,7 +33,7 @@ impl<'a, 'r> FromRequest<'a, 'r> for StartTime {
 
 pub struct Logger {
 	Filename: String,
-	Template: text_template::Template,
+	Template: &'static text_template::Template,
 }
 
 impl Fairing for Logger {
@@ -72,8 +72,8 @@ impl Fairing for Logger {
 
 pub fn new(filename: String) -> Logger {
 	if check_file_size_exceeded_max(&filename) {
-		let backupfilename = filename.push_str(".bak")
-		fs::rename(&filename, backupfilename)
+		let backupfilename = filename.push_str(".bak");
+		fs::rename(&filename, backupfilename);
 	}
 
 	setup_logger(&filename);
