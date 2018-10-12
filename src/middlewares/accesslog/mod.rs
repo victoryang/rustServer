@@ -12,7 +12,7 @@ use fern;
 
 static LoggerDefaultName: &'static str = "api-server ";
 
-static LoggerDefaultFormat: &'static text_template::Template = text_template::Template::from("${StartTime} | ${Status} | \t ${Duration} | ${Hostname} | ${Method} ${Path} \n");
+static LoggerDefaultFormat: text_template::Template<'_> = text_template::Template::from("${StartTime} | ${Status} | \t ${Duration} | ${Hostname} | ${Method} ${Path} \n");
 
 #[derive(Copy, Clone)]
 struct TimerStart(Option<SystemTime>);
