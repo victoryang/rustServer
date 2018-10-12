@@ -3,7 +3,7 @@
 #![plugin(rocket_codegen)]
 
 extern crate rocket;
-extern crate text_template
+extern crate text_template;
 
 #[macro_use]
 extern crate log;

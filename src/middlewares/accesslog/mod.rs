@@ -1,5 +1,4 @@
 use std::fs;
-use std::path::Path;
 use rocket::{Request, Data, Response};
 use rocket::fairing::{Fairing, Info, Kind};
 use rocket::http::Status;
@@ -7,13 +6,13 @@ use rocket::handler::Outcome;
 use rocket::request::{self, FromRequest};
 use text_template;
 use std::collections::HashMap;
-use std::time::{Duration, SystemTime};
+use std::time::SystemTime;
 use log;
 use fern;
 
 static LoggerDefaultName: &'static str = "api-server ";
 
-static LoggerDefaultFormat: text_template::Template = text_template::Template::from("${StartTime} | ${Status} | \t ${Duration} | ${Hostname} | ${Method} ${Path} \n");
+static LoggerDefaultFormat: &'static text_template::Template = text_template::Template::from("${StartTime} | ${Status} | \t ${Duration} | ${Hostname} | ${Method} ${Path} \n");
 
 #[derive(Copy, Clone)]
 struct TimerStart(Option<SystemTime>);
@@ -97,18 +96,18 @@ fn setup_logger(filename: &String) -> Result<(), fern::InitError> {
 	    .level(log::LevelFilter::Info)
 	    .chain(fern::log_file(filename)?)
 	    .apply()?;
-	ok(())
+	Ok(())
 }
 
 fn check_file_size_exceeded_max(filename: &String) -> bool {
 	match fs::metadata(filename) {
-		ok(metadata) => {
+		Ok(metadata) => {
 			if metadata.len() > 32<<20 {
 				true
 			} else {
 				false
 			}
 		}
-		err() => false
+		Err() => false
 	}
 }
