@@ -1,18 +1,34 @@
-#![feature(custom_attribute)]
-#![feature(plugin, decl_macro)]
-#![plugin(rocket_codegen)]
+extern crate futures;
+extern crate tokio_core;
+extern crate websocket;
 
-extern crate rocket;
-extern crate text_template;
-
+extern crate chrono;
+extern crate fern;
 #[macro_use]
 extern crate log;
-extern crate fern;
 
-mod api;
-mod middlewares;
+mod daemon;
+mod shm;
+mod ws;
+mod rlog;
+
+fn setup_log() {
+	/*if rlog::check_file_size_exceeded_max(&filename) {
+		let backupfilename = filename.push_str(".bak");
+		fs::rename(&filename, backupfilename);
+	}*/
+
+	rlog::setup_logging(1, "/rbctrl/apiserver/log/rust.log").expect("Failed to initialize logging.");
+}
+
+fn setup_shm_environment() {
+	shm::new_shm_server();
+}
 
 fn main() {
-    let apiserver = api::new_api_server();
-    apiserver.config_server_handler().run();
+	setup_log();
+	setup_shm_environment();
+	let wss = ws::new_websocket_server();
+	wss.start();
+    daemon::Run();
 }
