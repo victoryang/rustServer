@@ -1,5 +1,5 @@
 extern crate futures;
-extern crate tokio_core;
+extern crate tokio;
 extern crate websocket;
 
 extern crate chrono;
@@ -21,14 +21,15 @@ fn setup_log() {
 	rlog::setup_logging(1, "/rbctrl/apiserver/log/rust.log").expect("Failed to initialize logging.");
 }
 
-fn setup_shm_environment() {
+/*fn setup_shm_environment() {
+	info!("setup_shm_environment");
 	shm::new_shm_server();
-}
+}*/
 
 fn main() {
 	setup_log();
-	setup_shm_environment();
-	let wss = ws::new_websocket_server();
-	wss.start();
-    daemon::Run();
+	//setup_shm_environment();
+	let wss = ws::new_websocket_server("0.0.0.0:9050");
+	wss.run();
+    //daemon::Run();
 }

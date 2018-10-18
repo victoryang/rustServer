@@ -4,9 +4,11 @@ version = "0.1.0"
 authors = ["elite"]
 
 [dependencies]
+futures = "0.1.21"
 log = "0.4"
 chrono = "0.4.6"
 text-template = "*"
+tokio = "0.1"
 
 grpc = "0.5.0"
 
