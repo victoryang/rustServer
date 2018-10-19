@@ -12,13 +12,19 @@ pub struct Hub {
 
 impl Hub {
 	pub fn run(&self) {
-		loop {
+		let register = self.register.1;
+		let unregister = self.unregister.1;
+		let broadcast = self.broadcast.1;
+		thread::spawn(move || {for m in register.recv().unmap() {println!("{}", m);};});
+		thread::spawn(move || {for m in unregister.recv().unmap() {println!("{}", m);};});
+		thread::spawn(move || {for m in broadcast.recv().unmap() {println!("{}", m);};});
+		/*loop {
 			select! {
 				c = self.register.1.recv().unwrap() => {self.clients.push(c);},
 				c = self.unregister.1.recv().unwrap() => {self.clients.remove_item(c);},
 				m = self.broadcast.1.recv().unwrap() => {for c in &self.clients {c.send.0.send(m).unwrap();}},
 			}
-		}
+		}*/
 	}
 
 	pub fn broadcast(&self, msg: Vec<u8>) {

@@ -14,12 +14,13 @@ pub struct WsServer {
 
 impl WsServer {
 	pub fn run(&self) {
+		hub.run();
 		let r = Rc::new(self.hub);
 
-		let rc_hub = Rc::Clone(&r);
+		/*let rc_hub = Rc::Clone(&r);
 		thread::spawn(move || {
 			rc_hub.run();
-		});
+		});*/
 
 		for request in self.server.filter_map(Result::ok) {
 			let hub = Rc::Clone(&r);

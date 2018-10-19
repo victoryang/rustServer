@@ -1,6 +1,6 @@
 use std::sync::mpsc;
 
-use ::ws
+use ::ws;
 
 mod worker;
 mod shared;
