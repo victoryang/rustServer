@@ -28,7 +28,7 @@ impl WsClient {
 			match message {
 				OwnedMessage::Close(_) => {
 					println!("Client disconnected");
-					self.hub.unregister.0.send(self).unwrap();
+					self.hub.unregister.0.send(*self).unwrap();
 					return;
 				}
 				OwnedMessage::Ping(ping) => {
