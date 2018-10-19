@@ -36,7 +36,7 @@ impl WsServer {
 				let mut conn = request.use_protocol("websocket").accept().unwrap();
 
 				let c = client::WsClient {send: mpsc::channel(), conn: conn, hub: hub};
-				hub.register.0.send(&c).unwrap();
+				hub.register.0.send(c).unwrap();
 
 				let ip = conn.peer_addr().unwrap();
 

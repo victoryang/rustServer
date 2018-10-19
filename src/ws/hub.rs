@@ -5,9 +5,9 @@ use super::client::WsClient;
 
 pub struct Hub {
 	clients: 		Vec<WsClient>,
-	register: 		(mpsc::Sender<WsClient>, mpsc::Receiver<WsClient>),
-	unregister:		(mpsc::Sender<WsClient>, mpsc::Receiver<WsClient>),
-	broadcast:		(mpsc::Sender<Vec<u8>>, mpsc::Receiver<Vec<u8>>),
+	pub register: 		(mpsc::Sender<WsClient>, mpsc::Receiver<WsClient>),
+	pub unregister:		(mpsc::Sender<WsClient>, mpsc::Receiver<WsClient>),
+	pub broadcast:		(mpsc::Sender<Vec<u8>>, mpsc::Receiver<Vec<u8>>),
 }
 
 impl Hub {
