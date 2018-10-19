@@ -9,3 +9,6 @@
 
 ## cargo update
 ### To update crates
+
+## openssl
+### apt install -y libssl-dev

@@ -1,3 +1,6 @@
+/* To enable macro select!*/
+#![feature(mpsc_select)]
+
 extern crate websocket;
 
 extern crate chrono;

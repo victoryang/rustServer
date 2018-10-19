@@ -1,0 +1,6 @@
+[package]
+name = "mrj-sys"
+version = "1.0"
+author = ["victoryang"]
+links = "mrj"
+build = "build.rs"

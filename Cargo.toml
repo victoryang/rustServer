@@ -6,12 +6,11 @@ authors = ["elite"]
 [dependencies]
 log = "0.4"
 chrono = "0.4.6"
+grpc = "0.6"
+mrj = {path = "mrj-sys", version = "1.0"}
 
 [dependencies.websocket]
 git = "https://github.com/websockets-rs/rust-websocket.git"
 
 [dependencies.fern]
 git = "https://github.com/daboross/fern.git"
-
-[dependencies.grpc]
-git = "https://github.com/pingcap/grpc-rs.git"
