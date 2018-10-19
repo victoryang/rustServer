@@ -2,13 +2,14 @@ use std::thread;
 use std::rc::Rc;
 use std::sync::mpsc;
 use websocket::sync::Server;
+use websocket::server::NoTlsAcceptor;
 
 mod hub;
 mod client;
 
 pub struct WsServer {
-	addr: 	str,
-	server: Server,
+	addr: 	String,
+	server: Server<NoTlsAcceptor>,
 	hub: 	hub::Hub,
 }
 
@@ -50,14 +51,14 @@ impl WsServer {
 		}
 	}
 
-	pub fn broadcast(&self, msg: [u8]) {
+	pub fn broadcast(&self, msg: Vec<u8>) {
 		self.hub.broadcast(msg);
 	}
 }
 
 pub fn new_websocket_server(addr: &str) -> WsServer {
 	WsServer {
-		addr: 	addr,
+		addr: 	addr.to_string(),
 		server: Server::bind(addr).unwrap(),
 		hub:	hub::new_hub(),
 	}

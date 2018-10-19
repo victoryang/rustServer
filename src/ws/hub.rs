@@ -15,9 +15,9 @@ impl Hub {
 		let register = self.register.1;
 		let unregister = self.unregister.1;
 		let broadcast = self.broadcast.1;
-		thread::spawn(move || {for m in register.recv().unmap() {println!("{}", m);};});
-		thread::spawn(move || {for m in unregister.recv().unmap() {println!("{}", m);};});
-		thread::spawn(move || {for m in broadcast.recv().unmap() {println!("{}", m);};});
+		thread::spawn(move || {for m in register.recv().unwrap() {println!("{}", m);};});
+		thread::spawn(move || {for m in unregister.recv().unwrap() {println!("{}", m);};});
+		thread::spawn(move || {for m in broadcast.recv().unwrap() {println!("{}", m);};});
 		/*loop {
 			select! {
 				c = self.register.1.recv().unwrap() => {self.clients.push(c);},
@@ -38,5 +38,5 @@ pub fn new_hub() -> Hub {
 		register: 	mpsc::channel(),
 		unregister: mpsc::channel(),
 		broadcast:	mpsc::channel(),
-	};
+	}
 }
