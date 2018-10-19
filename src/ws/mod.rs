@@ -14,7 +14,7 @@ pub struct WsServer {
 
 impl WsServer {
 	pub fn run(&self) {
-		hub.run();
+		self.hub.run();
 		let r = Rc::new(self.hub);
 
 		/*let rc_hub = Rc::Clone(&r);
@@ -59,6 +59,6 @@ pub fn new_websocket_server(addr: &str) -> WsServer {
 	WsServer {
 		addr: 	addr,
 		server: Server::bind(addr).unwrap(),
-		hub:	new_hub(),
+		hub:	hub::new_hub(),
 	}
 }

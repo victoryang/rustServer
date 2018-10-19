@@ -5,6 +5,7 @@ extern crate websocket;
 
 extern crate chrono;
 extern crate fern;
+
 #[macro_use]
 extern crate log;
 
