@@ -1,4 +1,5 @@
 use std::thread;
+use std::sync::mpsc;
 use websocket::sync::Server;
 
 mod hub;
@@ -13,17 +14,19 @@ pub struct WsServer {
 impl WsServer {
 	pub fn run(&self) {
 		for request in self.server.filter_map(Result::ok) {
+			let mut hub = self.hub.clone();
+
 			// Spawn a new thread for each connection.
 			thread::spawn(move || {
-				if !request.protocols().contains(&"rust-websocket".to_string()) {
+				if !request.protocols().contains(&"websocket".to_string()) {
 					request.reject().unwrap();
 					return;
 				}
 
-				let mut conn = request.use_protocol("rust-websocket").accept().unwrap();
+				let mut conn = request.use_protocol("websocket").accept().unwrap();
 
-				let cli = client::WsClient {send: mpsc::channel(), conn: conn, hub: self.hub};
-				self.hub.register.0.send(&cli).unwrap();
+				let c = client::WsClient {send: mpsc::channel(), conn: conn, hub: hub};
+				hub.register.0.send(&c).unwrap();
 
 				let ip = conn.peer_addr().unwrap();
 
@@ -31,9 +34,9 @@ impl WsServer {
 
 				//let (mut receiver, mut sender) = conn.split().unwrap();
 
-				thread::spawn(move || cli.write_pump());
+				thread::spawn(move || c.write_pump());
 
-				cli.read_pump();
+				c.read_pump();
 			});
 		}
 	}

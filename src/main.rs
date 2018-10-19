@@ -1,5 +1,3 @@
-extern crate futures;
-extern crate tokio;
 extern crate websocket;
 
 extern crate chrono;

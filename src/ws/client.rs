@@ -26,8 +26,6 @@ impl WsClient {
 
 			match message {
 				OwnedMessage::Close(_) => {
-					let message = OwnedMessage::Close(None);
-					sender.send_message(&message).unwrap();
 					println!("Client {} disconnected", ip);
 					self.hub.unregister.0.send(self).unwrap();
 					return;

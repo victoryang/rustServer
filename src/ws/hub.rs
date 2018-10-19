@@ -16,7 +16,7 @@ impl Hub {
 			loop {
 				select! {
 					c = self.register.1.recv().unwrap() => {self.clients.push(c);},
-					c = self.unregister.1.recv().unwrap() => {self.clients.remove_item(&c);},
+					c = self.unregister.1.recv().unwrap() => {self.clients.remove_item(c);},
 					m = self.broadcast.1.recv().unwrap() => {for c in &self.clients {c.send.0.send(m).unwrap();}},
 				}
 			}
