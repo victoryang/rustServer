@@ -12,15 +12,13 @@ pub struct Hub {
 
 impl Hub {
 	pub fn run(&self) {
-		thread::spawn(move || {
-			loop {
-				select! {
-					c = self.register.1.recv().unwrap() => {self.clients.push(c);},
-					c = self.unregister.1.recv().unwrap() => {self.clients.remove_item(c);},
-					m = self.broadcast.1.recv().unwrap() => {for c in &self.clients {c.send.0.send(m).unwrap();}},
-				}
+		loop {
+			select! {
+				c = self.register.1.recv().unwrap() => {self.clients.push(c);},
+				c = self.unregister.1.recv().unwrap() => {self.clients.remove_item(c);},
+				m = self.broadcast.1.recv().unwrap() => {for c in &self.clients {c.send.0.send(m).unwrap();}},
 			}
-		})
+		}
 	}
 
 	pub fn broadcast(&self, msg: Vec<u8>) {
@@ -34,5 +32,5 @@ pub fn new_hub() -> Hub {
 		register: 	mpsc::channel(),
 		unregister: mpsc::channel(),
 		broadcast:	mpsc::channel(),
-	}
+	};
 }

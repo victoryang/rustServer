@@ -1,4 +1,5 @@
 use std::thread;
+use std::rc::Rc;
 use std::sync::mpsc;
 use websocket::sync::Server;
 
@@ -13,8 +14,15 @@ pub struct WsServer {
 
 impl WsServer {
 	pub fn run(&self) {
+		let r = Rc::new(self.hub);
+
+		let rc_hub = Rc::Clone(&r);
+		thread::spawn(move || {
+			rc_hub.run();
+		});
+
 		for request in self.server.filter_map(Result::ok) {
-			let mut hub = self.hub.clone();
+			let hub = Rc::Clone(&r);
 
 			// Spawn a new thread for each connection.
 			thread::spawn(move || {
