@@ -2,7 +2,7 @@ use websocket::async::Client;
 use std::sync::mpsc;
 use websocket::message::OwnedMessage;
 
-use hub::Hub;
+use super::hub::Hub;
 
 struct WsClient {
 	send: 	(mpsc::Sender<Vec<u8>>, mpsc::Receiver<Vec<u8>>),

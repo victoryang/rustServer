@@ -1,7 +1,7 @@
 use std::thread;
 use std::sync::mpsc;
 
-use client::WsClient;
+use super::client::WsClient;
 
 pub struct Hub {
 	clients: 		Vec<WsClient>,
