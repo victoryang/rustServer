@@ -13,7 +13,7 @@ pub struct WsServer {
 }
 
 impl WsServer {
-	pub fn run(&self) {
+	pub fn run(self) {
 		self.hub.run();
 
 		for request in self.server.filter_map(Result::ok) {
@@ -31,7 +31,7 @@ impl WsServer {
 				let c = client::WsClient {send: mpsc::channel(), conn: conn, unregister: unregister};
 				register.send(c).unwrap();
 
-				let ip = conn.peer_addr().unwrap();
+				let ip = c.conn.peer_addr().unwrap();
 
 				println!("Connection from {}", ip);
 
@@ -45,7 +45,7 @@ impl WsServer {
 	}
 
 	pub fn broadcast(&self, msg: Vec<u8>) {
-		ws_hub.broadcast(msg);
+		self.hub.broadcast(msg);
 	}
 }
 
