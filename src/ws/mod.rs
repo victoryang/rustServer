@@ -15,10 +15,10 @@ pub struct WsServer {
 impl WsServer {
 	pub fn run(&self) {
 		self.hub.run();
-		let register = self.hub.register.0.clone();
-		let unregister = self.hub.unregister.0.clone();
 
 		for request in self.server.filter_map(Result::ok) {
+			let register = self.hub.register.0.clone();
+			let unregister = self.hub.unregister.0.clone();
 			// Spawn a new thread for each connection.
 			thread::spawn(move || {
 				if !request.protocols().contains(&"websocket".to_string()) {
