@@ -14,9 +14,14 @@ pub struct WsClient {
 impl WsClient {
 	pub fn write_pump(&self) {
 		let (_, mut sender) = self.conn.split().unwrap();
-		for m in self.send.1.recv().unwrap() {
-			let message = OwnedMessage::Binary(m);
-			sender.send_message(&message).unwrap();
+		let iter = self.send.1.iter();
+		for m in iter.next() {
+			match m {
+				_ => {
+					let message = OwnedMessage::Binary(m);
+					sender.send_message(&message).unwrap();
+				},
+			}
 		}
 	}
 

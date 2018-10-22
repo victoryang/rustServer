@@ -15,9 +15,30 @@ impl Hub {
 		let register = self.register.1;
 		let unregister = self.unregister.1;
 		let broadcast = self.broadcast.1;
-		thread::spawn(move || {for m in register.recv().unwrap() {println!("{}", m);};});
-		thread::spawn(move || {for m in unregister.recv().unwrap() {println!("{}", m);};});
-		thread::spawn(move || {for m in broadcast.recv().unwrap() {println!("{}", m);};});
+		thread::spawn(move || {
+			let iter = register.iter();
+			for m in iter.next() {
+				match m {
+					_ => print!("add new client to hub")
+				}
+			};
+		});
+		thread::spawn(move || {
+			let iter = unregister.iter();
+			for m in iter.next() {
+				match m {
+					_ => print!("add new client to hub")
+				}
+			};
+		});
+		thread::spawn(move || {
+			let iter = broadcast.iter();
+			for m in iter.next() {
+				match m {
+					_ => print!("add new client to hub")
+				}
+			};
+		});
 		/*loop {
 			select! {
 				c = self.register.1.recv().unwrap() => {self.clients.push(c);},
