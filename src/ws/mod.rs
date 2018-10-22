@@ -16,7 +16,7 @@ pub struct WsServer {
 impl WsServer {
 	pub fn run(&self) {
 		self.hub.run();
-		let r = Rc::new(self.hub);
+		//let r = Rc::new(self.hub);
 
 		/*let rc_hub = Rc::Clone(&r);
 		thread::spawn(move || {
@@ -24,10 +24,27 @@ impl WsServer {
 		});*/
 
 		for request in self.server.filter_map(Result::ok) {
-			let hub = Rc::Clone(&r);
+			/*let hub = Rc::Clone(&r);*/
+			if !request.protocols().contains(&"websocket".to_string()) {
+				request.reject().unwrap();
+				continue;
+			}
+
+			let mut conn = request.use_protocol("websocket").accept().unwrap();
+
+			let c = client::WsClient {send: mpsc::channel(), conn: conn, hub: hub};
+			hub.register.0.send(c).unwrap();
+
+			let ip = conn.peer_addr().unwrap();
+
+			println!("Connection from {}", ip);
+
+			thread::spawn(move || c.write_pump());
+
+			thread::spawn(move || c.read_pump());
 
 			// Spawn a new thread for each connection.
-			thread::spawn(move || {
+			/*thread::spawn(move || {
 				if !request.protocols().contains(&"websocket".to_string()) {
 					request.reject().unwrap();
 					return;
@@ -47,7 +64,7 @@ impl WsServer {
 				thread::spawn(move || c.write_pump());
 
 				c.read_pump();
-			});
+			});*/
 		}
 	}
 
