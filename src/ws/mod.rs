@@ -18,6 +18,7 @@ impl WsServer {
 		let register = self.hub.register.0.clone();
 		let unregister = self.hub.unregister.0.clone();
 
+		for request in server.filter_map(Result::ok) {
 			// Spawn a new thread for each connection.
 			thread::spawn(move || {
 				if !request.protocols().contains(&"websocket".to_string()) {
@@ -40,6 +41,7 @@ impl WsServer {
 
 				c.read_pump();
 			});
+		}
 	}
 
 	pub fn broadcast(&self, msg: Vec<u8>) {
