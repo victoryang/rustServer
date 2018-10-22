@@ -39,9 +39,9 @@ impl WsServer {
 				let cli_mux = Mutex::new(c);
 				register.send(cli_mux).unwrap();
 
-				*cli_mux.write_pump(broadcast_receiver);
+				*cli_mux.lock().unwrap().write_pump(broadcast_receiver);
 
-				*cli_mux.read_pump();
+				*cli_mux.lock().unwrap().read_pump();
 
 				unregister.send(cli_mux).unwrap();
 			});

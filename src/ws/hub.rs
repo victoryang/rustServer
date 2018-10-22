@@ -1,5 +1,6 @@
 use std::thread;
 use std::sync::mpsc;
+use std::sync::Mutex;
 
 use super::client::WsClient;
 
