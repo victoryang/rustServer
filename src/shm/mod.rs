@@ -12,6 +12,5 @@ pub struct ShmServer {
 }
 
 pub fn new_shm_server() {
-	worker::init_worker_resource()
-		.init_watch_funcs();
+	worker::init_worker_resource();
 }

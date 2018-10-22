@@ -6,21 +6,19 @@ use websocket::server::NoTlsAcceptor;
 mod hub;
 mod client;
 
-let ws_hub = hub::new_hub();
-
 pub struct WsServer {
 	addr: 	String,
 	server: Server<NoTlsAcceptor>,
+	hub:	hub::Hub,
 }
 
 impl WsServer {
 	pub fn run(&self) {
-		ws_hub.run();
-		let server = self.server;
+		self.hub.run();
 
-		for request in server.filter_map(Result::ok) {
-			let register = ws_hub.register.0.clone();
-			let unregister = ws_hub.unregister.0.clone();
+		for request in self.server.filter_map(Result::ok) {
+			let register = self.hub.register.0.clone();
+			let unregister = self.hub.unregister.0.clone();
 			// Spawn a new thread for each connection.
 			thread::spawn(move || {
 				if !request.protocols().contains(&"websocket".to_string()) {
@@ -55,5 +53,6 @@ pub fn new_websocket_server(addr: &str) -> WsServer {
 	WsServer {
 		addr: 	addr.to_string(),
 		server: Server::bind(addr).unwrap(),
+		hub:	hub::new_hub(),
 	}
 }
