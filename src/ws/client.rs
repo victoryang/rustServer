@@ -1,4 +1,4 @@
-use websocket::async::Client;
+use websocket::sync::Client;
 use std::net::TcpStream;
 use std::sync::mpsc;
 use websocket::message::OwnedMessage;
