@@ -1,5 +1,4 @@
 use std::thread;
-use std::rc::Rc;
 use std::sync::mpsc;
 use websocket::sync::Server;
 use websocket::server::NoTlsAcceptor;
@@ -16,35 +15,11 @@ pub struct WsServer {
 impl WsServer {
 	pub fn run(&self) {
 		self.hub.run();
-		//let r = Rc::new(self.hub);
-
-		/*let rc_hub = Rc::Clone(&r);
-		thread::spawn(move || {
-			rc_hub.run();
-		});*/
-
-		for request in self.server.filter_map(Result::ok) {
-			/*let hub = Rc::Clone(&r);*/
-			if !request.protocols().contains(&"websocket".to_string()) {
-				request.reject().unwrap();
-				continue;
-			}
-
-			let mut conn = request.use_protocol("websocket").accept().unwrap();
-
-			let c = client::WsClient {send: mpsc::channel(), conn: conn, hub: hub};
-			hub.register.0.send(c).unwrap();
-
-			let ip = conn.peer_addr().unwrap();
-
-			println!("Connection from {}", ip);
-
-			thread::spawn(move || c.write_pump());
-
-			thread::spawn(move || c.read_pump());
+		let register = self.hub.register.0.clone();
+		let unregister = self.hub.unregister.0.clone();
 
 			// Spawn a new thread for each connection.
-			/*thread::spawn(move || {
+			thread::spawn(move || {
 				if !request.protocols().contains(&"websocket".to_string()) {
 					request.reject().unwrap();
 					return;
@@ -52,8 +27,8 @@ impl WsServer {
 
 				let mut conn = request.use_protocol("websocket").accept().unwrap();
 
-				let c = client::WsClient {send: mpsc::channel(), conn: conn, hub: hub};
-				hub.register.0.send(c).unwrap();
+				let c = client::WsClient {send: mpsc::channel(), conn: conn, unregister: unregister};
+				register.send(c).unwrap();
 
 				let ip = conn.peer_addr().unwrap();
 
@@ -64,8 +39,7 @@ impl WsServer {
 				thread::spawn(move || c.write_pump());
 
 				c.read_pump();
-			});*/
-		}
+			});
 	}
 
 	pub fn broadcast(&self, msg: Vec<u8>) {

@@ -3,12 +3,10 @@ use std::net::TcpStream;
 use std::sync::mpsc;
 use websocket::message::OwnedMessage;
 
-use super::hub::Hub;
-
 pub struct WsClient {
-	send: 	(mpsc::Sender<Vec<u8>>, mpsc::Receiver<Vec<u8>>),
-	conn:	Client<TcpStream>,
-	hub: 	Hub,
+	send: 			(mpsc::Sender<Vec<u8>>, mpsc::Receiver<Vec<u8>>),
+	conn:			Client<TcpStream>,
+	unregister: 	mpsc::Sender<WsClient>,
 }
 
 impl WsClient {
@@ -33,7 +31,7 @@ impl WsClient {
 			match message {
 				OwnedMessage::Close(_) => {
 					println!("Client disconnected");
-					self.hub.unregister.0.send(*self).unwrap();
+					self.unregister.send(*self).unwrap();
 					return;
 				}
 				OwnedMessage::Ping(ping) => {
