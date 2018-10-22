@@ -1,4 +1,5 @@
 use std::thread;
+use std::sync::Mutex;
 use std::sync::mpsc;
 use websocket::sync::Server;
 use websocket::server::NoTlsAcceptor;
@@ -19,6 +20,7 @@ impl WsServer {
 		for request in self.server.filter_map(Result::ok) {
 			let register = self.hub.register.0.clone();
 			let unregister = self.hub.unregister.0.clone();
+
 			// Spawn a new thread for each connection.
 			thread::spawn(move || {
 				if !request.protocols().contains(&"websocket".to_string()) {
@@ -28,18 +30,20 @@ impl WsServer {
 
 				let conn = request.use_protocol("websocket").accept().unwrap();
 
-				let c = client::WsClient {send: mpsc::channel(), conn: conn, unregister: unregister};
-				register.send(c).unwrap();
-
-				let ip = c.conn.peer_addr().unwrap();
-
+				let ip = conn.peer_addr().unwrap();
 				println!("Connection from {}", ip);
 
-				//let (mut receiver, mut sender) = conn.split().unwrap();
+				let (broadcast_sender, broadcast_receiver)  = mpsc::channel();
+				let c = client::WsClient {conn: conn, broadcast: broadcast_sender};
 
-				thread::spawn(move || c.write_pump());
+				let cli_mux = Mutex::new(c);
+				register.send(cli_mux).unwrap();
 
-				c.read_pump();
+				*cli_mux.write_pump(broadcast_receiver);
+
+				*cli_mux.read_pump();
+
+				unregister.send(cli_mux).unwrap();
 			});
 		}
 	}

@@ -1,26 +1,28 @@
 use websocket::sync::Client;
 use std::net::TcpStream;
+use std::thread;
 use std::sync::mpsc;
 use websocket::message::OwnedMessage;
 
 pub struct WsClient {
-	pub send: 			(mpsc::Sender<Vec<u8>>, mpsc::Receiver<Vec<u8>>),
 	pub conn:			Client<TcpStream>,
-	pub unregister: 	mpsc::Sender<WsClient>,
+	pub broadcast:		mpsc::Sender<Vec<u8>>,
 }
 
 impl WsClient {
-	pub fn write_pump(&self) {
+	pub fn write_pump(&self, receiver: mpsc::Receiver<Vec<u8>>) {
 		let (_, mut sender) = self.conn.split().unwrap();
-		let iter = self.send.1.iter();
-		for m in iter.next() {
-			match m {
-				_ => {
-					let message = OwnedMessage::Binary(m);
-					sender.send_message(&message).unwrap();
-				},
+		thread::spawn(move || {
+			let iter = receiver.iter();
+			for m in iter.next() {
+				match m {
+					_ => {
+						let message = OwnedMessage::Binary(m);
+						sender.send_message(&message).unwrap();
+					},
+				}
 			}
-		}
+		});
 	}
 
 	pub fn read_pump(&self) {
@@ -31,7 +33,6 @@ impl WsClient {
 			match message {
 				OwnedMessage::Close(_) => {
 					println!("Client disconnected");
-					self.unregister.send(*self).unwrap();
 					return;
 				}
 				OwnedMessage::Ping(ping) => {
