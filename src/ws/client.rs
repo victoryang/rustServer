@@ -4,9 +4,9 @@ use std::sync::mpsc;
 use websocket::message::OwnedMessage;
 
 pub struct WsClient {
-	send: 			(mpsc::Sender<Vec<u8>>, mpsc::Receiver<Vec<u8>>),
-	conn:			Client<TcpStream>,
-	unregister: 	mpsc::Sender<WsClient>,
+	pub send: 			(mpsc::Sender<Vec<u8>>, mpsc::Receiver<Vec<u8>>),
+	pub conn:			Client<TcpStream>,
+	pub unregister: 	mpsc::Sender<WsClient>,
 }
 
 impl WsClient {
