@@ -5,9 +5,9 @@ use std::sync::{Arc, Mutex};
 use super::client::WsClient;
 
 pub struct Hub {
-	clients: 			Vec<&WsClient>,
-	pub register: 		mpsc::Receiver<&WsClient>,
-	pub unregister:		mpsc::Receiver<&WsClient>,
+	clients: 			Vec<Arc<Mutex<WsClient>>>,
+	pub register: 		mpsc::Receiver<Arc<Mutex<WsClient>>>,
+	pub unregister:		mpsc::Receiver<Arc<Mutex<WsClient>>>,
 	pub broadcast:		mpsc::Receiver<Vec<u8>>,
 }
 
