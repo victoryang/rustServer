@@ -1,5 +1,5 @@
 use std::thread;
-use std::sync::Mutex;
+use std::sync::{Arc, Mutex};
 use std::sync::mpsc;
 use websocket::sync::Server;
 use websocket::server::NoTlsAcceptor;
@@ -8,9 +8,12 @@ mod hub;
 mod client;
 
 pub struct WsServer {
-	addr: 	String,
-	server: Server<NoTlsAcceptor>,
-	hub:	hub::Hub,
+	addr: 		String,
+	server: 	Server<NoTlsAcceptor>,
+	register:	mpsc::Sender<Mutex<WsClient>>,
+	unregister:	mpsc::Sender<Mutex<WsClient>>,
+	broadcast: 	mpsc::Sender<Vec<u8>>,
+	hub:		hub::Hub,
 }
 
 impl WsServer {
@@ -18,8 +21,8 @@ impl WsServer {
 		self.hub.run();
 
 		for request in self.server.filter_map(Result::ok) {
-			let register = self.hub.register.0.clone();
-			let unregister = self.hub.unregister.0.clone();
+			let register = self.register.clone();
+			let unregister = self.unregister.clone();
 
 			// Spawn a new thread for each connection.
 			thread::spawn(move || {
@@ -36,12 +39,12 @@ impl WsServer {
 				let (broadcast_sender, broadcast_receiver)  = mpsc::channel();
 				let c = client::WsClient {conn: conn, broadcast: broadcast_sender};
 
-				let cli_mux = Mutex::new(c);
+				let cli_mux = Arc::new(Mutex::new(c));
 				register.send(cli_mux).unwrap();
 
-				*cli_mux.lock().unwrap().write_pump(broadcast_receiver);
+				cli_mux.lock().unwrap().write_pump(broadcast_receiver);
 
-				*cli_mux.lock().unwrap().read_pump();
+				cli_mux.lock().unwrap().read_pump();
 
 				unregister.send(cli_mux).unwrap();
 			});
@@ -49,14 +52,21 @@ impl WsServer {
 	}
 
 	pub fn broadcast(&self, msg: Vec<u8>) {
-		self.hub.broadcast(msg);
+		self.broadcast.send(msg);
 	}
 }
 
 pub fn new_websocket_server(addr: &str) -> WsServer {
+	let (register_sender, register_receiver) = mpsc::channel();
+	let (unregister_sender, unregister_receiver) = mpsc::channel();
+	let (broadcast_sender, broadcast_receiver) = mpsc::channel();
+
 	WsServer {
-		addr: 	addr.to_string(),
-		server: Server::bind(addr).unwrap(),
-		hub:	hub::new_hub(),
+		addr: 		addr.to_string(),
+		server: 	Server::bind(addr).unwrap(),
+		register: 	register_sender,
+		unregister: unregister_sender,
+		broadcast: 	broadcast_sender,
+		hub:		hub::new_hub(register_receiver, unregister_receiver, broadcast_receiver),
 	}
 }

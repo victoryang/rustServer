@@ -6,27 +6,25 @@ use super::client::WsClient;
 
 pub struct Hub {
 	clients: 			Vec<WsClient>,
-	pub register: 		(mpsc::Sender<Mutex<WsClient>>, mpsc::Receiver<Mutex<WsClient>>),
-	pub unregister:		(mpsc::Sender<Mutex<WsClient>>, mpsc::Receiver<Mutex<WsClient>>),
-	pub broadcast:		(mpsc::Sender<Vec<u8>>, mpsc::Receiver<Vec<u8>>),
+	pub register: 		mpsc::Receiver<WsClient>,
+	pub unregister:		mpsc::Receiver<WsClient>,
+	pub broadcast:		mpsc::Receiver<Vec<u8>>,
 }
 
 impl Hub {
 	pub fn run(self) {
-		let register = self.register.1;
-		let unregister = self.unregister.1;
-		let broadcast = self.broadcast.1;
-		let clients = self.clients;
+		let register = mutex::new(self.register);
+		let unregister = mutex::new(self.unregister);
+		let broadcast = mutex::new(self.broadcast);
+		let clients = mutex::new(self.clients);
 		thread::spawn(move || {
-			let iter = register.iter();
+			let iter = register.lock().unwrap().iter();
 			for m in iter.next() {
-				match m.lock().unwrap() {
-					c => clients.push_back(c),
-				}
+				clients.lock().unwrap().push(m);
 			};
 		});
 		thread::spawn(move || {
-			let iter = unregister.iter();
+			let iter = unregister.lock().unwrap().iter();
 			for m in iter.next() {
 				match m {
 					_ => print!("remove client from hub")
@@ -34,7 +32,7 @@ impl Hub {
 			};
 		});
 		thread::spawn(move || {
-			let iter = broadcast.iter();
+			let iter = broadcast.lock().unwrap().iter();
 			for m in iter.next() {
 				match m {
 					_ => {for c in &clients {c.broadcast.send(m).unwrap();}},
@@ -42,17 +40,15 @@ impl Hub {
 			};
 		});
 	}
-
-	pub fn broadcast(&self, msg: Vec<u8>) {
-		self.broadcast.0.send(msg);
-	}
 }
 
-pub fn new_hub() -> Hub {
+pub fn new_hub(register: mpsc::Receiver<WsClient>, 
+			unregister: mpsc::Receiver<WsClient>,
+			broadcast: mpsc::Receiver<Vec<u8>>) -> Hub {
 	Hub {
 		clients: 	Vec::new(),
-		register: 	mpsc::channel(),
-		unregister: mpsc::channel(),
-		broadcast:	mpsc::channel(),
+		register,
+		unregister,
+		broadcast,
 	}
 }
