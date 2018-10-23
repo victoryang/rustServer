@@ -11,8 +11,9 @@ pub struct WsClient {
 
 impl WsClient {
 	pub fn run(self) {
-		let (receiver, sender) = self.conn.split().unwrap();
+		let (mut receiver, mut sender) = self.conn.split().unwrap();
 		let(tx, rx) = mpsc::channel::<OwnedMessage>();
+		let tx_receiver = tx.clone();
 
 		let _ = thread::spawn(move || {
 			for message in rx.try_recv() {
@@ -40,13 +41,13 @@ impl WsClient {
 
 				match message {
 					OwnedMessage::Close(_) => {
-						tx.send(&message).unwrap();
+						tx_receiver.send(message).unwrap();
 						println!("Client disconnected");
 						return;
 					}
 					OwnedMessage::Ping(ping) => {
 						let message = OwnedMessage::Pong(ping);
-						tx.send(&message).unwrap();
+						tx_receiver.send(message).unwrap();
 					}
 					_ => println!("Receive new message from client, drop it."),
 				}
@@ -55,7 +56,7 @@ impl WsClient {
 
 		for message in self.dispatcher.try_recv() {
 			let message = OwnedMessage::Binary(message);
-			tx.send(&message);
+			tx.send(message);
 		}
 	}
 }

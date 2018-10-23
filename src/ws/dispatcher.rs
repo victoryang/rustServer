@@ -3,7 +3,7 @@ use std::thread;
 use std::sync::{Arc, Mutex};
 
 pub struct Dispatcher{
-	receiver: mpsc::Receiver<Vec<u8>>
+	pub receiver: mpsc::Receiver<Vec<u8>>
 }
 
 impl Dispatcher {
