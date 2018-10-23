@@ -10,13 +10,13 @@ mod client;
 pub struct WsServer<'a> {
 	addr: 		String,
 	server: 	Server<NoTlsAcceptor>,
-	register:	mpsc::Sender<&'a WsClient>,
-	unregister:	mpsc::Sender<&'a WsClient>,
+	register:	mpsc::Sender<&'a client::WsClient>,
+	unregister:	mpsc::Sender<&'a  client::WsClient>,
 	broadcast: 	mpsc::Sender<Vec<u8>>,
 	hub:		hub::Hub,
 }
 
-impl WsServer {
+impl WsServer<'a> {
 	pub fn run(self) {
 		self.hub.run();
 
@@ -54,12 +54,12 @@ impl WsServer {
 	}
 }
 
-pub fn new_websocket_server(addr: &str) -> WsServer {
+pub fn new_websocket_server(addr: &str) -> WsServer<'a> {
 	let (register_sender, register_receiver) = mpsc::channel();
 	let (unregister_sender, unregister_receiver) = mpsc::channel();
 	let (broadcast_sender, broadcast_receiver) = mpsc::channel();
 
-	WsServer {
+	WsServer<'a> {
 		addr: 		addr.to_string(),
 		server: 	Server::bind(addr).unwrap(),
 		register: 	register_sender,

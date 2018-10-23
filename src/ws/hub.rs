@@ -11,7 +11,7 @@ pub struct Hub<'a> {
 	pub broadcast:		mpsc::Receiver<Vec<u8>>,
 }
 
-impl Hub {
+impl Hub<'a> {
 	pub fn run(self) {
 		let register = self.register;
 		let unregister = self.unregister;
@@ -46,7 +46,7 @@ impl Hub {
 
 pub fn new_hub(register: mpsc::Receiver<Arc<Mutex<WsClient>>>, 
 			unregister: mpsc::Receiver<Arc<Mutex<WsClient>>>,
-			broadcast: mpsc::Receiver<Vec<u8>>) -> Hub {
+			broadcast: mpsc::Receiver<Vec<u8>>) -> Hub<'a> {
 	Hub {
 		clients: 	Vec::new(),
 		register,
