@@ -1,5 +1,6 @@
 use std::sync::mpsc;
 use std::thread;
+use std::sync::{Arc, Mutex};
 
 pub struct Dispatcher{
 	receiver: mpsc::Receiver<Vec<u8>>

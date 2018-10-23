@@ -29,7 +29,7 @@ impl WsServer {
 		}
 
 		for request in self.server.filter_map(Result::ok) {
-			let (client_tx, client_rx) = mpsc::channel<Vec<u8>>();
+			let (client_tx, client_rx) = mpsc::channel::<Vec<u8>>();
 			client_senders.lock().unwrap().push(client_tx);
 
 			// Spawn a new thread for each connection.
@@ -44,7 +44,7 @@ impl WsServer {
 				let ip = conn.peer_addr().unwrap();
 				println!("Connection from {}", ip);
 
-				let c = client::WsClient {conn: conn, dispatch: client_rx};
+				let c = client::WsClient {conn: conn, dispatcher: client_rx};
 				c.run();
 			});
 		}
@@ -56,7 +56,7 @@ impl WsServer {
 }
 
 pub fn new_websocket_server(addr: &str) -> WsServer {
-	let (dispatcher, _) = mpsc::channel<Vec<u8>>();
+	let (dispatcher, _) = mpsc::channel::<Vec<u8>>();
 	WsServer {
 		addr: 		addr.to_string(),
 		server: 	Server::bind(addr).unwrap(),

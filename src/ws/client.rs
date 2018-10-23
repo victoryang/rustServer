@@ -3,7 +3,6 @@ use std::net::TcpStream;
 use std::thread;
 use std::sync::mpsc;
 use websocket::message::OwnedMessage;
-use websocket::message::Message;
 
 pub struct WsClient {
 	pub conn:			Client<TcpStream>,
@@ -11,9 +10,9 @@ pub struct WsClient {
 }
 
 impl WsClient {
-	pub fn run(self, client_rx: mpsc::Sender<Vec<u8>>) {
+	pub fn run(self) {
 		let (receiver, sender) = self.conn.split().unwrap();
-		let(tx, rx) = mpsc::channel::<Message>();
+		let(tx, rx) = mpsc::channel::<OwnedMessage>();
 
 		let _ = thread::spawn(move || {
 			for message in rx.try_recv() {
@@ -54,7 +53,7 @@ impl WsClient {
 			}
 		});
 
-		for m in dispatcher.try_recv() {
+		for message in self.dispatcher.try_recv() {
 			let message = OwnedMessage::Binary(message);
 			tx.send(&message);
 		}
