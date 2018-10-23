@@ -4,25 +4,33 @@ use std::sync::mpsc;
 use websocket::sync::Server;
 use websocket::server::NoTlsAcceptor;
 
-mod hub;
 mod client;
+mod dispatcher;
 
 pub struct WsServer {
 	addr: 		String,
 	server: 	Server<NoTlsAcceptor>,
-	register:	mpsc::Sender<Arc<Mutex<client::WsClient>>>,
-	unregister:	mpsc::Sender<Arc<Mutex<client::WsClient>>>,
-	broadcast: 	mpsc::Sender<Vec<u8>>,
-	hub:		hub::Hub,
+	broadcast:	mpsc::Sender<Vec<u8>>,
 }
 
-impl WsServer{
-	pub fn run(self) {
-		self.hub.run();
+impl WsServer {
+	pub fn run(&self) {
+		let (dispatcher_tx, dispatcher_rx) = mpsc::channel::<Vec<u8>>();
+		self.broadcast = dispatcher_tx;
+
+		let client_senders: Arc<Mutex<Vec<mpsc::Sender<Vec<u8>>>>> = Arc::new(Mutex::new(vec![]));
+
+		{
+			let client_senders = client_senders.clone();
+			let dp = dispatcher::Dispatcher {
+				receiver:	dispatcher_rx,
+			};
+			dp.dispatch(client_senders);
+		}
 
 		for request in self.server.filter_map(Result::ok) {
-			let register = self.register.clone();
-			let unregister = self.unregister.clone();
+			let (client_tx, client_rx) = mpsc::channel<Vec<u8>>();
+			client_senders.lock().unwrap().push(client_tx);
 
 			// Spawn a new thread for each connection.
 			thread::spawn(move || {
@@ -36,15 +44,8 @@ impl WsServer{
 				let ip = conn.peer_addr().unwrap();
 				println!("Connection from {}", ip);
 
-				let (broadcast_sender, broadcast_receiver) = mpsc::channel();
-				let c = client::WsClient {conn: conn, broadcast: broadcast_sender};
-
-				let ref_cli = Arc::new(Mutex::new(c));
-				register.send(Arc::clone(&ref_cli)).unwrap();
-
-				ref_cli.lock().unwrap().run(broadcast_receiver);
-
-				unregister.send(Arc::clone(&ref_cli)).unwrap();
+				let c = client::WsClient {conn: conn, dispatch: client_rx};
+				c.run();
 			});
 		}
 	}
@@ -55,16 +56,10 @@ impl WsServer{
 }
 
 pub fn new_websocket_server(addr: &str) -> WsServer {
-	let (register_sender, register_receiver) = mpsc::channel();
-	let (unregister_sender, unregister_receiver) = mpsc::channel();
-	let (broadcast_sender, broadcast_receiver) = mpsc::channel();
-
+	let (dispatcher, _) = mpsc::channel<Vec<u8>>();
 	WsServer {
 		addr: 		addr.to_string(),
 		server: 	Server::bind(addr).unwrap(),
-		register: 	register_sender,
-		unregister: unregister_sender,
-		broadcast: 	broadcast_sender,
-		hub:		hub::new_hub(register_receiver, unregister_receiver, broadcast_receiver),
+		broadcast:	dispatcher,
 	}
 }
