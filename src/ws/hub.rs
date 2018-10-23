@@ -45,8 +45,8 @@ impl Hub {
 	}
 }
 
-pub fn new_hub(register: mpsc::Receiver<WsClient>, 
-			unregister: mpsc::Receiver<WsClient>,
+pub fn new_hub(register: mpsc::Receiver<Arc<Mutex<client::WsClient>>>, 
+			unregister: mpsc::Receiver<Arc<Mutex<client::WsClient>>>,
 			broadcast: mpsc::Receiver<Vec<u8>>) -> Hub {
 	Hub {
 		clients: 	Vec::new(),

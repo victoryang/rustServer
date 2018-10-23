@@ -10,8 +10,8 @@ mod client;
 pub struct WsServer {
 	addr: 		String,
 	server: 	Server<NoTlsAcceptor>,
-	register:	mpsc::Sender<Mutex<client::WsClient>>,
-	unregister:	mpsc::Sender<Mutex<client::WsClient>>,
+	register:	mpsc::Sender<Arc<Mutex<client::WsClient>>>,
+	unregister:	mpsc::Sender<Arc<Mutex<client::WsClient>>>,
 	broadcast: 	mpsc::Sender<Vec<u8>>,
 	hub:		hub::Hub,
 }
