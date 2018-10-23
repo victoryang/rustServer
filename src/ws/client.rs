@@ -41,7 +41,6 @@ impl WsClient {
 
 				match message {
 					OwnedMessage::Close(_) => {
-						let message = OwnedMessage::Close(_);
 						tx.send(&message).unwrap();
 						println!("Client disconnected");
 						return;
