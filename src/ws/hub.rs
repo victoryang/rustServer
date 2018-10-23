@@ -20,7 +20,8 @@ impl Hub {
 		thread::spawn(move || {
 			/*let iter = register.lock().unwrap().iter();*/
 			for m in register.iter().next() {
-				clients.lock().unwrap().push(m);
+				let c = m.lock().unwrap();
+				clients.lock().unwrap().push(c);
 			};
 		});
 		thread::spawn(move || {
