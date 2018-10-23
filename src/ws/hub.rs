@@ -1,6 +1,6 @@
 use std::thread;
 use std::sync::mpsc;
-use std::sync::Mutex;
+use std::sync::{Arc, Mutex};
 
 use super::client::WsClient;
 
@@ -13,30 +13,34 @@ pub struct Hub {
 
 impl Hub {
 	pub fn run(self) {
-		let register = mutex::new(self.register);
-		let unregister = mutex::new(self.unregister);
-		let broadcast = mutex::new(self.broadcast);
-		let clients = mutex::new(self.clients);
+		let register = /*Arc::new(Mutex::new(self.register));*/self.register;
+		let unregister = /*Arc::new(Mutex::new(self.unregister));*/self.unregister;
+		let broadcast = /*Arc::new(Mutex::new(self.broadcast));*/self.broadcast;
+		let clients = Arc::new(Mutex::new(self.clients));
 		thread::spawn(move || {
-			let iter = register.lock().unwrap().iter();
-			for m in iter.next() {
-				clients.lock().unwrap().push(m);
+			/*let iter = register.lock().unwrap().iter();*/
+			for m in register.iter().next() {
+				let c = m.lock().unwrap();
+				clients.lock().unwrap().push(c);
 			};
 		});
 		thread::spawn(move || {
-			let iter = unregister.lock().unwrap().iter();
-			for m in iter.next() {
+			/*let iter = unregister.lock().unwrap().iter();*/
+			for m in unregister.iter().next() {
 				match m {
 					_ => print!("remove client from hub")
 				}
 			};
 		});
 		thread::spawn(move || {
-			let iter = broadcast.lock().unwrap().iter();
-			for m in iter.next() {
-				match m {
-					_ => {for c in &clients {c.broadcast.send(m).unwrap();}},
+			/*let iter = broadcast.lock().unwrap().iter();*/
+			for m in broadcast.iter().next() {
+				for c in &clients.lock().unwrap() {
+					c.broadcast.send(m).unwrap();
 				}
+				/*match m {
+					_ => {for c in &clients {c.broadcast.send(m).unwrap();}},
+				}*/
 			};
 		});
 	}

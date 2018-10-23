@@ -36,7 +36,7 @@ impl WsServer {
 				let ip = conn.peer_addr().unwrap();
 				println!("Connection from {}", ip);
 
-				let (broadcast_sender, broadcast_receiver)  = mpsc::channel();
+				let (broadcast_sender, broadcast_receiver)
 				let c = client::WsClient {conn: conn, broadcast: broadcast_sender};
 
 				let cli_mux = Arc::new(Mutex::new(c));

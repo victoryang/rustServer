@@ -12,6 +12,7 @@ pub struct WsClient {
 impl WsClient {
 	pub fn write_pump(&self, receiver: mpsc::Receiver<Vec<u8>>) {
 		let (_, mut sender) = self.conn.split().unwrap();
+
 		thread::spawn(move || {
 			let iter = receiver.iter();
 			for m in iter.next() {
@@ -27,6 +28,7 @@ impl WsClient {
 
 	pub fn read_pump(&self) {
 		let (mut receiver, mut sender) = self.conn.split().unwrap();
+
 		for message in receiver.incoming_messages() {
 			let message = message.unwrap();
 
