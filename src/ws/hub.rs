@@ -23,8 +23,7 @@ impl Hub {
 
 		thread::spawn(move || {
 			for m in register.iter().next() {
-				let c = *m.lock().unwrap();
-				cli_register.lock().unwrap().push(c);
+				cli_register.lock().unwrap().push(*m.lock().unwrap());
 			};
 		});
 
