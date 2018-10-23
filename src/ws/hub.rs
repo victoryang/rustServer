@@ -5,7 +5,7 @@ use std::sync::{Arc, Mutex};
 use super::client::WsClient;
 
 pub struct Hub {
-	clients: 			Vec<Arc<Mutex<WsClient>>>,
+	clients: 			Vec<WsClient>,
 	pub register: 		mpsc::Receiver<Arc<Mutex<WsClient>>>,
 	pub unregister:		mpsc::Receiver<Arc<Mutex<WsClient>>>,
 	pub broadcast:		mpsc::Receiver<Vec<u8>>,
@@ -19,7 +19,8 @@ impl Hub {
 		let clients = Arc::new(Mutex::new(self.clients));
 
 		thread::spawn(move || {
-			for c in register.iter().next() {
+			for m in register.iter().next() {
+				let c = *m.lock().unwrap();
 				clients.lock().unwrap().push(c);
 			};
 		});

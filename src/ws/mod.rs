@@ -10,8 +10,8 @@ mod client;
 pub struct WsServer {
 	addr: 		String,
 	server: 	Server<NoTlsAcceptor>,
-	register:	mpsc::Sender<client::WsClient>,
-	unregister:	mpsc::Sender<client::WsClient>,
+	register:	mpsc::Sender<Arc<Mutex<WsClient>>>,
+	unregister:	mpsc::Sender<Arc<Mutex<WsClient>>>,
 	broadcast: 	mpsc::Sender<Vec<u8>>,
 	hub:		hub::Hub,
 }
@@ -38,13 +38,13 @@ impl WsServer{
 
 				let (broadcast_sender, broadcast_receiver) = mpsc::channel();
 				let c = client::WsClient {conn: conn, broadcast: broadcast_sender};
-				let arc_c = &c;
 
-				register.send(arc_c).unwrap();
+				let ref_cli = Arc::new(Mutex::new(c));
+				register.send(Arc::clone(ref_cli)).unwrap();
 
-				arc_c.run(broadcast_receiver);
+				ref_cli.lock().unwrap().run(broadcast_receiver);
 
-				unregister.send(arc_c).unwrap();
+				unregister.send(Arc::clone(ref_cli)).unwrap();
 			});
 		}
 	}
