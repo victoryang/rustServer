@@ -17,11 +17,14 @@ impl Hub {
 		let unregister = self.unregister;
 		let broadcast = self.broadcast;
 		let clients = Arc::new(Mutex::new(self.clients));
+		let cli_register = Arc::clone(clients);
+		let cli_unregister = Arc::clone(clients);
+		let cli_broadcast = Arc::clone(clients);
 
 		thread::spawn(move || {
 			for m in register.iter().next() {
 				let c = *m.lock().unwrap();
-				clients.lock().unwrap().push(c);
+				cli_register.lock().unwrap().push(c);
 			};
 		});
 
@@ -34,10 +37,10 @@ impl Hub {
 
 		thread::spawn(move || {
 			for m in broadcast.iter().next() {
-				for c in clients.lock().unwrap() {
-					match c.send(m) {
-						Ok() => print!("sending successfully"),
-						Err() => print!("sending error"),
+				for c in *cli_broadcast.lock().unwrap() {
+					match c.broadcast.send(m) {
+						Ok(()) => print!("sending successfully"),
+						Err(_) => print!("sending error"),
 					};
 				}
 			};
