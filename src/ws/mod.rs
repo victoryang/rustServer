@@ -14,7 +14,7 @@ pub struct WsServer {
 }
 
 impl WsServer {
-	pub fn run(&mut self) {
+	pub fn run(mut self) {
 		let (dispatcher_tx, dispatcher_rx) = mpsc::channel::<Vec<u8>>();
 		self.broadcast = dispatcher_tx;
 
