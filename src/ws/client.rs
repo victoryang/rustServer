@@ -11,7 +11,7 @@ pub struct WsClient {
 }
 
 impl WsClient {
-	pub fn run(&self, broadcast_receiver: mpsc::Receiver<Vec<u8>>) {
+	pub fn run(self, broadcast_receiver: mpsc::Receiver<Vec<u8>>) {
 		let (receiver, sender) = self.conn.split().unwrap();
 		let sstream = Arc::new(Mutex::new(sender));
 		let rstream = Arc::new(Mutex::new(receiver));

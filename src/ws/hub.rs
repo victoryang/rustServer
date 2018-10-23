@@ -5,7 +5,7 @@ use std::sync::{Arc, Mutex};
 use super::client::WsClient;
 
 pub struct Hub {
-	clients: 			Vec<WsClient>,
+	clients: 			Vec<Arc<Mutex<WsClient>>>,
 	pub register: 		mpsc::Receiver<Arc<Mutex<WsClient>>>,
 	pub unregister:		mpsc::Receiver<Arc<Mutex<WsClient>>>,
 	pub broadcast:		mpsc::Receiver<Vec<u8>>,
@@ -23,7 +23,7 @@ impl Hub {
 
 		thread::spawn(move || {
 			for m in register.iter().next() {
-				cli_register.lock().unwrap().push(*m.lock().unwrap());
+				cli_register.lock().unwrap().push(m);
 			};
 		});
 
@@ -37,7 +37,7 @@ impl Hub {
 		thread::spawn(move || {
 			for m in broadcast.iter().next() {
 				for c in *cli_broadcast.lock().unwrap() {
-					match c.broadcast.send(m) {
+					match c.lock().unwrap().broadcast.send(m) {
 						Ok(()) => print!("sending successfully"),
 						Err(_) => print!("sending error"),
 					};
