@@ -4,43 +4,41 @@ use std::sync::{Arc, Mutex};
 
 use super::client::WsClient;
 
-pub struct Hub {
-	clients: 			Vec<&WsClient>,
-	pub register: 		mpsc::Receiver<Arc<Mutex<WsClient>>>,
-	pub unregister:		mpsc::Receiver<Arc<Mutex<WsClient>>>,
+pub struct Hub<'a> {
+	clients: 			Vec<&'a WsClient>,
+	pub register: 		mpsc::Receiver<&'a WsClient>,
+	pub unregister:		mpsc::Receiver<&'a WsClient>,
 	pub broadcast:		mpsc::Receiver<Vec<u8>>,
 }
 
 impl Hub {
 	pub fn run(self) {
-		let register = /*Arc::new(Mutex::new(self.register));*/self.register;
-		let unregister = /*Arc::new(Mutex::new(self.unregister));*/self.unregister;
-		let broadcast = /*Arc::new(Mutex::new(self.broadcast));*/self.broadcast;
+		let register = self.register;
+		let unregister = self.unregister;
+		let broadcast = self.broadcast;
 		let clients = Arc::new(Mutex::new(self.clients));
+
 		thread::spawn(move || {
-			/*let iter = register.lock().unwrap().iter();*/
-			for m in register.iter().next() {
-				let c = &*m.lock().unwrap();
+			for c in register.iter().next() {
 				clients.lock().unwrap().push(c);
 			};
 		});
+
 		thread::spawn(move || {
-			/*let iter = unregister.lock().unwrap().iter();*/
-			for m in unregister.iter().next() {
-				match m {
-					_ => print!("remove client from hub")
-				}
+			for c in unregister.iter().next() {
+				print!("remove client from hub");
+				//clients.lock().unwrap().remove(c);
 			};
 		});
+
 		thread::spawn(move || {
-			/*let iter = broadcast.lock().unwrap().iter();*/
 			for m in broadcast.iter().next() {
 				for c in clients.lock().unwrap() {
-					c.broadcast.send(m).unwrap();
+					match c.send(m) {
+						Ok() => print!("sending successfully"),
+						Err() => print!("sending error"),
+					};
 				}
-				/*match m {
-					_ => {for c in &clients {c.broadcast.send(m).unwrap();}},
-				}*/
 			};
 		});
 	}

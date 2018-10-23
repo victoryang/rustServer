@@ -7,11 +7,11 @@ use websocket::server::NoTlsAcceptor;
 mod hub;
 mod client;
 
-pub struct WsServer {
+pub struct WsServer<'a> {
 	addr: 		String,
 	server: 	Server<NoTlsAcceptor>,
-	register:	mpsc::Sender<Arc<Mutex<client::WsClient>>>,
-	unregister:	mpsc::Sender<Arc<Mutex<client::WsClient>>>,
+	register:	mpsc::Sender<&'a WsClient>,
+	unregister:	mpsc::Sender<&'a WsClient>,
 	broadcast: 	mpsc::Sender<Vec<u8>>,
 	hub:		hub::Hub,
 }
@@ -36,17 +36,15 @@ impl WsServer {
 				let ip = conn.peer_addr().unwrap();
 				println!("Connection from {}", ip);
 
-				let (broadcast_sender, broadcast_receiver);
+				let (broadcast_sender, broadcast_receiver) = mpsc::channel();
 				let c = client::WsClient {conn: conn, broadcast: broadcast_sender};
+				let arc_c = &c;
 
-				let cli_mux = Arc::new(Mutex::new(c));
-				register.send(cli_mux).unwrap();
+				register.send(arc_c).unwrap();
 
-				cli_mux.lock().unwrap().write_pump(broadcast_receiver);
+				arc_c.run(broadcast_receiver);
 
-				cli_mux.lock().unwrap().read_pump();
-
-				unregister.send(cli_mux).unwrap();
+				unregister.send(arc_c).unwrap();
 			});
 		}
 	}
