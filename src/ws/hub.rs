@@ -6,8 +6,8 @@ use super::client::WsClient;
 
 pub struct Hub {
 	clients: 			Vec<WsClient>,
-	pub register: 		mpsc::Receiver<WsClient>,
-	pub unregister:		mpsc::Receiver<WsClient>,
+	pub register: 		mpsc::Receiver<Arc<Mutex<WsClient>>>,
+	pub unregister:		mpsc::Receiver<Arc<Mutex<WsClient>>>,
 	pub broadcast:		mpsc::Receiver<Vec<u8>>,
 }
 
@@ -45,8 +45,8 @@ impl Hub {
 	}
 }
 
-pub fn new_hub(register: mpsc::Receiver<Arc<Mutex<client::WsClient>>>, 
-			unregister: mpsc::Receiver<Arc<Mutex<client::WsClient>>>,
+pub fn new_hub(register: mpsc::Receiver<Arc<Mutex<WsClient>>>, 
+			unregister: mpsc::Receiver<Arc<Mutex<WsClient>>>,
 			broadcast: mpsc::Receiver<Vec<u8>>) -> Hub {
 	Hub {
 		clients: 	Vec::new(),
