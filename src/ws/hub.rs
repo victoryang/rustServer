@@ -4,14 +4,14 @@ use std::sync::{Arc, Mutex};
 
 use super::client::WsClient;
 
-pub struct Hub<'a> {
-	clients: 			Vec<&'a WsClient>,
-	pub register: 		mpsc::Receiver<&'a WsClient>,
-	pub unregister:		mpsc::Receiver<&'a WsClient>,
+pub struct Hub {
+	clients: 			Vec<&WsClient>,
+	pub register: 		mpsc::Receiver<&WsClient>,
+	pub unregister:		mpsc::Receiver<&WsClient>,
 	pub broadcast:		mpsc::Receiver<Vec<u8>>,
 }
 
-impl Hub<'a> {
+impl<'a> Hub<'a> {
 	pub fn run(self) {
 		let register = self.register;
 		let unregister = self.unregister;
@@ -46,7 +46,7 @@ impl Hub<'a> {
 
 pub fn new_hub(register: mpsc::Receiver<Arc<Mutex<WsClient>>>, 
 			unregister: mpsc::Receiver<Arc<Mutex<WsClient>>>,
-			broadcast: mpsc::Receiver<Vec<u8>>) -> Hub<'a> {
+			broadcast: mpsc::Receiver<Vec<u8>>) -> Hub {
 	Hub {
 		clients: 	Vec::new(),
 		register,
