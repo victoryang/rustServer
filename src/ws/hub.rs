@@ -17,9 +17,9 @@ impl Hub {
 		let unregister = self.unregister;
 		let broadcast = self.broadcast;
 		let clients = Arc::new(Mutex::new(self.clients));
-		let cli_register = Arc::clone(clients);
-		let cli_unregister = Arc::clone(clients);
-		let cli_broadcast = Arc::clone(clients);
+		let cli_register = Arc::clone(&clients);
+		let cli_unregister = Arc::clone(&clients);
+		let cli_broadcast = Arc::clone(&clients);
 
 		thread::spawn(move || {
 			for m in register.iter().next() {
