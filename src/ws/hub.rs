@@ -11,7 +11,7 @@ pub struct Hub {
 	pub broadcast:		mpsc::Receiver<Vec<u8>>,
 }
 
-impl<'a> Hub<'a> {
+impl Hub {
 	pub fn run(self) {
 		let register = self.register;
 		let unregister = self.unregister;

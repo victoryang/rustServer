@@ -16,7 +16,7 @@ pub struct WsServer {
 	hub:		hub::Hub,
 }
 
-impl WsServer<'a> {
+impl WsServer{
 	pub fn run(self) {
 		self.hub.run();
 
