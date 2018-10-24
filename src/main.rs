@@ -31,7 +31,7 @@ fn setup_log() {
 fn main() {
 	setup_log();
 	//setup_shm_environment();
-	let mut wss = ws::new_websocket_server("0.0.0.0:9050");
+	let wss = ws::new_websocket_server("0.0.0.0:9050");
 	wss.run();
     //daemon::Run();
 }

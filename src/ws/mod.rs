@@ -8,7 +8,6 @@ mod client;
 mod dispatcher;
 
 pub struct WsServer {
-	addr: 		String,
 	server: 	Server<NoTlsAcceptor>,
 	broadcast:	mpsc::Sender<Vec<u8>>,
 }
@@ -51,14 +50,13 @@ impl WsServer {
 	}
 
 	pub fn broadcast(&self, msg: Vec<u8>) {
-		self.broadcast.send(msg);
+		self.broadcast.send(msg).unwrap();
 	}
 }
 
 pub fn new_websocket_server(addr: &str) -> WsServer {
 	let (dispatcher, _) = mpsc::channel::<Vec<u8>>();
 	WsServer {
-		addr: 		addr.to_string(),
 		server: 	Server::bind(addr).unwrap(),
 		broadcast:	dispatcher,
 	}

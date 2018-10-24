@@ -56,7 +56,7 @@ impl WsClient {
 
 		for message in self.dispatcher.try_recv() {
 			let message = OwnedMessage::Binary(message);
-			tx.send(message);
+			tx.send(message).unwrap();
 		}
 	}
 }
