@@ -34,6 +34,6 @@ fn main() {
 	wss.run(websocket_rx);
 
 	let shmserver = shm::new_shm_server(websocket_tx.clone());
-	shmserver.run();
+	shmserver.init().run();
     //daemon::Run();
 }
