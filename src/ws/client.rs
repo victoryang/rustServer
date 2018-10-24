@@ -6,7 +6,7 @@ use websocket::message::OwnedMessage;
 
 pub struct WsClient {
 	pub conn:			Client<TcpStream>,
-	pub dispatcher:		mpsc::Receiver<Vec<u8>>,
+	pub receiver:		mpsc::Receiver<Vec<u8>>,
 }
 
 impl WsClient {
@@ -54,7 +54,7 @@ impl WsClient {
 			}
 		});
 
-		for message in self.dispatcher.try_recv() {
+		for message in self.receiver.try_recv() {
 			let message = OwnedMessage::Binary(message);
 			tx.send(message).unwrap();
 		}

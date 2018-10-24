@@ -9,23 +9,18 @@ mod dispatcher;
 
 pub struct WsServer {
 	server: 	Server<NoTlsAcceptor>,
-	broadcast:	mpsc::Sender<Vec<u8>>,
+	dispatcher:	mpsc::Sender<Vec<u8>>,
 }
 
 impl WsServer {
-	pub fn run(mut self) {
-		let (dispatcher_tx, dispatcher_rx) = mpsc::channel::<Vec<u8>>();
-		self.broadcast = dispatcher_tx;
-
+	pub fn run(mut self, dispatcher_rx: mpsc::Receiver<Vec<u8>>) {
 		let client_senders: Arc<Mutex<Vec<mpsc::Sender<Vec<u8>>>>> = Arc::new(Mutex::new(vec![]));
 
-		{
-			let client_senders = client_senders.clone();
-			let dp = dispatcher::Dispatcher {
-				receiver:	dispatcher_rx,
-			};
-			dp.dispatch(client_senders);
-		}
+		let client_senders = client_senders.clone();
+		let dp = dispatcher::Dispatcher {
+			receiver:	dispatcher_rx,
+		};
+		dp.dispatch(client_senders);
 
 		for request in self.server.filter_map(Result::ok) {
 			let (client_tx, client_rx) = mpsc::channel::<Vec<u8>>();
@@ -43,21 +38,16 @@ impl WsServer {
 				let ip = conn.peer_addr().unwrap();
 				println!("Connection from {}", ip);
 
-				let c = client::WsClient {conn: conn, dispatcher: client_rx};
+				let c = client::WsClient {conn: conn, receiver: client_rx};
 				c.run();
 			});
 		}
 	}
-
-	pub fn broadcast(&self, msg: Vec<u8>) {
-		self.broadcast.send(msg).unwrap();
-	}
 }
 
-pub fn new_websocket_server(addr: &str) -> WsServer {
-	let (dispatcher, _) = mpsc::channel::<Vec<u8>>();
+pub fn new_websocket_server(addr: &str, dispatcher_tx: mpsc::Sender<Vec<u8>>) -> WsServer {
 	WsServer {
 		server: 	Server::bind(addr).unwrap(),
-		broadcast:	dispatcher,
+		dispatcher:	dispatcher_tx,
 	}
 }

@@ -3,6 +3,7 @@
 
 extern crate websocket;
 
+extern crate timer;
 extern crate chrono;
 extern crate fern;
 
@@ -23,15 +24,14 @@ fn setup_log() {
 	rlog::setup_logging(1, "/rbctrl/apiserver/log/rust.log".to_string()).expect("Failed to initialize logging.");
 }
 
-/*fn setup_shm_environment() {
-	info!("setup_shm_environment");
-	shm::new_shm_server();
-}*/
-
 fn main() {
 	setup_log();
-	//setup_shm_environment();
-	let wss = ws::new_websocket_server("0.0.0.0:9050");
-	wss.run();
+
+	let (websocket_tx, websocket_rx) = mpsc::channel::<Vec<u8>>();
+	let wss = ws::new_websocket_server("0.0.0.0:9050", websocket_tx.clone());
+	wss.run(websocket_rx);
+
+	let shmserver = shm::new_shm_server(websocket_tx.clone());
+	shmserver.run();
     //daemon::Run();
 }
