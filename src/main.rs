@@ -23,7 +23,7 @@ fn setup_log() {
 		fs::rename(&filename, backupfilename);
 	}*/
 
-	rlog::setup_logging(1, "/rbctrl/apiserver/log/rust.log".to_string()).expect("Failed to initialize logging.");
+	rlog::setup_logging(0, "/rbctrl/apiserver/log/rust.log".to_string()).expect("Failed to initialize logging.");
 }
 
 fn main() {
