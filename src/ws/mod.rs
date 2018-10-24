@@ -9,11 +9,10 @@ mod dispatcher;
 
 pub struct WsServer {
 	server: 	Server<NoTlsAcceptor>,
-	dispatcher:	mpsc::Sender<Vec<u8>>,
 }
 
 impl WsServer {
-	pub fn run(mut self, dispatcher_rx: mpsc::Receiver<Vec<u8>>) {
+	pub fn run(self, dispatcher_rx: mpsc::Receiver<Vec<u8>>) {
 		let client_senders: Arc<Mutex<Vec<mpsc::Sender<Vec<u8>>>>> = Arc::new(Mutex::new(vec![]));
 
 		let client_senders = client_senders.clone();
@@ -47,9 +46,8 @@ impl WsServer {
 	}
 }
 
-pub fn new_websocket_server(addr: &str, dispatcher_tx: mpsc::Sender<Vec<u8>>) -> WsServer {
+pub fn new_websocket_server(addr: &str) -> WsServer {
 	WsServer {
 		server: 	Server::bind(addr).unwrap(),
-		dispatcher:	dispatcher_tx,
 	}
 }

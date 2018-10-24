@@ -7,7 +7,7 @@ mod worker;
 mod shared;
 mod nv;
 
-static duration: i64 = 100;
+static DURATION: i64 = 100;
 
 pub struct ShmServer {
 	websocket_tx:	mpsc::Sender<Vec<u8>>,
@@ -30,7 +30,7 @@ impl ShmServer {
 			let (tx, rx) = mpsc::channel::<Vec<u8>>();
 			thread::spawn(move || {
 				let timer = timer::Timer::new();
-				timer.schedule_repeating(Duration::milliseconds(duration), move || {
+				timer.schedule_repeating(Duration::milliseconds(DURATION), move || {
 					shared::get_shared(tx.clone());
 					shared::get_plc(tx.clone());
 					nv::get_nv(tx.clone());

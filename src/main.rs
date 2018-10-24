@@ -30,7 +30,7 @@ fn main() {
 	setup_log();
 
 	let (websocket_tx, websocket_rx) = mpsc::channel::<Vec<u8>>();
-	let wss = ws::new_websocket_server("0.0.0.0:9050", websocket_tx.clone());
+	let wss = ws::new_websocket_server("0.0.0.0:9050");
 	wss.run(websocket_rx);
 
 	let shmserver = shm::new_shm_server(websocket_tx.clone());
