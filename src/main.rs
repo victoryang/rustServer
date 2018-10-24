@@ -10,6 +10,8 @@ extern crate fern;
 //#[macro_use]
 extern crate log;
 
+use std::sync::mpsc;
+
 mod daemon;
 mod shm;
 mod ws;

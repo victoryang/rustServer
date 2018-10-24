@@ -7,7 +7,7 @@ mod worker;
 mod shared;
 mod nv;
 
-static duration: u64 = 100;
+static duration: i64 = 100;
 
 pub struct ShmServer {
 	websocket_tx:	mpsc::Sender<Vec<u8>>,
@@ -37,7 +37,7 @@ impl ShmServer {
 				})
 			});
 
-			for m in rx.try_recv().unwrap() {
+			for m in rx.try_recv() {
 				websocket_tx.send(m).unwrap();
 			}
 		});	
