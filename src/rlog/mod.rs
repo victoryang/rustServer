@@ -1,11 +1,8 @@
+use fern;
 use std::fs;
 use std::io;
 use log;
 use chrono;
-
-pub fn Println(args: &str) {
-	println!(args);
-}
 
 pub fn setup_logging(verbosity: u64, filename: String) -> Result<(), fern::InitError> {
 	let mut gobal_config = fern::Dispatch::new();
@@ -32,7 +29,7 @@ pub fn setup_logging(verbosity: u64, filename: String) -> Result<(), fern::InitE
 	    .level(log::LevelFilter::Info)
 	    .chain(fern::log_file(filename)?);
 
-	let stdout_config = fern::Dispatch::new()
+	/*let stdout_config = fern::Dispatch::new()
 		.format(|out, message, record| {
 			if record.level() > log::LevelFilter::Info {
 				out.finish(format_args!(
@@ -42,9 +39,9 @@ pub fn setup_logging(verbosity: u64, filename: String) -> Result<(), fern::InitE
                 ))
 			}
 		})
-		.chain(io::stdout());
+		.chain(io::stdout());*/
 
-	gobal_config.chain(file_config).chain(stdout_config).apply()?;
+	gobal_config.chain(file_config)./*chain(stdout_config).*/apply()?;
 
 	Ok(())
 }

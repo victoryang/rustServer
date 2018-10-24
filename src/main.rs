@@ -29,6 +29,7 @@ fn setup_log() {
 fn main() {
 	setup_log();
 
+	info!("starting websocket server...");
 	let (websocket_tx, websocket_rx) = mpsc::channel::<Vec<u8>>();
 	let wss = ws::new_websocket_server("0.0.0.0:9050");
 	wss.run(websocket_rx);
