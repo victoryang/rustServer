@@ -1,16 +1,13 @@
 use std::sync::mpsc;
 use std::thread;
-use std::sync::{Arc, Mutex};
 use timer;
-use std::time::Duration;
-
-use super::ws;
+use chrono::Duration;
 
 mod worker;
 mod shared;
 mod nv;
 
-static intervals: u32 = 100;
+static duration: u64 = 100;
 
 pub struct ShmServer {
 	websocket_tx:	mpsc::Sender<Vec<u8>>,
@@ -26,14 +23,14 @@ impl ShmServer {
 		self
 	}
 
-	pub fn run(&self, websocket_tx: mpsc::Sender<Vec<u8>>) {
+	pub fn run(&self) {
 		let websocket_tx = self.websocket_tx.clone();
 
 		thread::spawn(move || {
-			let (tx, rx) = mpsc::channerl::<Vec<u8>>();
+			let (tx, rx) = mpsc::channel::<Vec<u8>>();
 			thread::spawn(move || {
 				let timer = timer::Timer::new();
-				timer.schedule_repeating(Duration::from_millis(intervals), move || {
+				timer.schedule_repeating(Duration::milliseconds(duration), move || {
 					shared::get_shared(tx.clone());
 					shared::get_plc(tx.clone());
 					nv::get_nv(tx.clone());
