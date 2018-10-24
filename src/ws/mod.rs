@@ -17,10 +17,12 @@ impl WsServer {
 		let client_senders: Arc<Mutex<Vec<mpsc::Sender<Vec<u8>>>>> = Arc::new(Mutex::new(vec![]));
 
 		let client_senders = client_senders.clone();
-		let dp = dispatcher::Dispatcher {
-			receiver:	dispatcher_rx,
-		};
-		dp.dispatch(client_senders);
+
+		let dp = dispatcher::Dispatcher{receiver: dispatcher_rx};
+		{
+			let client_senders = client_senders.clone();
+			dp.dispatch(client_senders);
+		}
 
 		for request in self.server.filter_map(Result::ok) {
 			let (client_tx, client_rx) = mpsc::channel::<Vec<u8>>();
