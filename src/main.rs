@@ -7,7 +7,7 @@ extern crate timer;
 extern crate chrono;
 extern crate fern;
 
-//#[macro_use]
+#[macro_use]
 extern crate log;
 
 use std::sync::mpsc;
