@@ -3,6 +3,10 @@ use std::io;
 use log;
 use chrono;
 
+pub fn Println(args: &str) {
+	println!(args);
+}
+
 pub fn setup_logging(verbosity: u64, filename: String) -> Result<(), fern::InitError> {
 	let mut gobal_config = fern::Dispatch::new();
 

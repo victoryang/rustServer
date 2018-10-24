@@ -3,7 +3,6 @@ use std::thread;
 use timer;
 use chrono::Duration;
 
-mod worker;
 mod shared;
 mod nv;
 
