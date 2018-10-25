@@ -2,6 +2,7 @@ use std::sync::mpsc;
 use std::thread;
 use timer;
 use chrono::Duration;
+use mrj_sys;
 
 mod shared;
 mod nv;
@@ -12,13 +13,9 @@ pub struct ShmServer {
 	websocket_tx:	mpsc::Sender<Vec<u8>>,
 }
 
-fn init_worker_resource() {
-	println!("init");
-}
-
 impl ShmServer {
 	pub fn init(self) -> Self {
-		init_worker_resource();
+		mrj_sys::init_worker_resource();
 		self
 	}
 
