@@ -26,7 +26,6 @@ pub fn setup_logging(verbosity: u64, filename: String) -> Result<(), fern::InitE
 	            message
 	        ))
 	    })
-	    .level(log::LevelFilter::Info)
 	    .chain(fern::log_file(filename)?);
 
 	/*let stdout_config = fern::Dispatch::new()

@@ -23,7 +23,7 @@ fn setup_log() {
 		fs::rename(&filename, backupfilename);
 	}*/
 
-	rlog::setup_logging(1, "/rbctrl/apiserver/log/rust.log".to_string()).expect("Failed to initialize logging.");
+	rlog::setup_logging(0, "/rbctrl/apiserver/log/rust.log".to_string()).expect("Failed to initialize logging.");
 }
 
 fn main() {
@@ -34,6 +34,7 @@ fn main() {
 	let wss = ws::new_websocket_server("0.0.0.0:9050");
 	wss.run(websocket_rx);
 
+	info!("starting shm server...");
 	let shmserver = shm::new_shm_server(websocket_tx.clone());
 	shmserver.init().run();
     //daemon::Run();
