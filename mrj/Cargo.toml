@@ -1,5 +1,5 @@
 [package]
-name = "mrj-sys"
+name = "mrj"
 version = "0.1.0"
 authors = ["victoryang <yangtao3601@126.com>"]
 edition = "2018"

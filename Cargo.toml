@@ -8,7 +8,7 @@ log = "0.4"
 chrono = "0.4.6"
 grpc = "0.6"
 timer = "0.2"
-mrj-sys = {path = "mrj-sys", version = "0.1.0"}
+mrj = {path = "mrj", version = "0.1.0"}
 
 [dependencies.websocket]
 git = "https://github.com/websockets-rs/rust-websocket.git"
