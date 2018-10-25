@@ -23,6 +23,8 @@ fn main() {
     fs::copy("mrj/mcnv.h", include.join("mcnv.h")).unwrap();
 
     fs::create_dir_all(&libdir).unwrap();
+    fs::copy("build/lib/libz.so.1.2.8", libdir.join("libz.so.1.2.8")).unwrap();
+    fs::copy("build/lib/libshare.a", libdir.join("libshare.a")).unwrap();
     fs::copy("mrj/libmrj.a", libdir.join("libmrj.a")).unwrap();
 
     println!("cargo:rustc-link-lib=static=mrj");
