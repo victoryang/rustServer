@@ -6,7 +6,7 @@ links = "mrj"
 build = "build.rs"
 
 [lib]
-name = "mrj"
+name = "mrj_sys"
 path = "lib.rs"
 
 [dependencies]

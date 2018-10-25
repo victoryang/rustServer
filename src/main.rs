@@ -14,7 +14,6 @@ extern crate mrj_sys;
 
 use std::sync::mpsc;
 
-mod daemon;
 mod shm;
 mod ws;
 mod rlog;

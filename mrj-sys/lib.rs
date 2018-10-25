@@ -1,9 +1,10 @@
+#![feature(libc)]
 extern crate libc;
 
 extern {fn init_nv_ram();}
 extern {fn mrj_init();}
 
-use libc::{c_int}
+use libc::{c_int};
 
 pub fn init_worker_resource() {
 	unsafe {
