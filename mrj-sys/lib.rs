@@ -3,7 +3,6 @@ extern crate libc;
 extern crate crc;
 
 use libc::c_char;
-use std::ffi::CStr;
 use std::ffi::CString;
 use crc::crc32;
 
@@ -17,11 +16,13 @@ pub fn get_shared() -> Option<CString> {
 	let c_string = unsafe { CString::from_raw(get_resource_data()) };
 	let crc = crc32::checksum_ieee(c_string.to_bytes());
 
-	if crc != CRC_SHARED {
-		CRC_SHARED = crc;
-		return Option::Some(c_string);
+	unsafe {
+		if crc != CRC_SHARED {
+			CRC_SHARED = crc;
+			return Option::Some(c_string);
+		}
 	}
-	
+
 	Option::None
 }
 
