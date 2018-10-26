@@ -60,8 +60,8 @@ pub fn get_nv() -> Option<CString> {
 
 pub fn init_worker_resource() {
 	unsafe {
-		init_nv_ram();
 		mrj_init();
+		init_nv_ram();
 	}
 }
 

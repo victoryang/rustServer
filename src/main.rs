@@ -13,6 +13,7 @@ extern crate log;
 extern crate mrj_sys;
 
 use std::sync::mpsc;
+use std::thread;
 
 mod shm;
 mod ws;
@@ -33,7 +34,9 @@ fn main() {
 	info!("starting websocket server...");
 	let (websocket_tx, websocket_rx) = mpsc::channel::<Vec<u8>>();
 	let wss = ws::new_websocket_server("0.0.0.0:9050");
-	wss.run(websocket_rx);
+	thread::spawn(move || {
+		wss.run(websocket_rx);
+	});
 
 	info!("starting shm server...");
 	let shmserver = shm::new_shm_server(websocket_tx.clone());
