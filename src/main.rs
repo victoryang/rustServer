@@ -10,7 +10,6 @@ extern crate fern;
 #[macro_use]
 extern crate log;
 
-extern crate crc;
 extern crate mrj_sys;
 
 use std::sync::mpsc;

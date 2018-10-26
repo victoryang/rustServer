@@ -1,5 +1,6 @@
 #![feature(libc)]
 extern crate libc;
+extern crate crc;
 
 use libc::c_char;
 use std::ffi::CStr;
@@ -19,10 +20,10 @@ pub fn get_shared() -> Option<CString> {
 
 	if crc != CRC_SHARED {
 		CRC_SHARED = crc;
-		return Option(c_string);
+		return Option::Some(c_string);
 	}
 	
-	None
+	Option::None
 }
 
 pub fn init_worker_resource() {
