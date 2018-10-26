@@ -52,8 +52,3 @@ int init_nv_ram() {
 int mrj_init() {
 	return resource_init("/rbctrl/mcserver");
 }
-
-void free_pointer(void *ptr) {
-	free(ptr);
-	ptr = 0;
-}

@@ -14,6 +14,5 @@ char* get_nv_data();
 
 int init_nv_ram();
 int mrj_init();
-void free_pointer(void *ptr)
 
 #endif //MRJ_H
