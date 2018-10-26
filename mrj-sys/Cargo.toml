@@ -10,3 +10,7 @@ name = "mrj_sys"
 path = "lib.rs"
 
 [dependencies]
+
+[build-dependencies]
+tar = "0.4"
+flate2 = "1.0"
