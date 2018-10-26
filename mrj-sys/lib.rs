@@ -14,9 +14,8 @@ extern {fn get_resource_data() -> *mut c_char;}
 static mut CRC_SHARED: u32 = 0;
 
 pub fn get_shared() -> Option<CString> {
-	let c_buf: *mut c_char = unsafe{ get_resource_data() };
-	let crc = crc32::checksum_ieee(c_buf);
-	let c_string = unsafe { CStr::from_ptr(c_buf).to_string_lossy().into_owned() };
+	let c_string = unsafe { CString::from_raw(get_resource_data()) };
+	let crc = crc32::checksum_ieee(c_string.to_bytes());
 
 	if crc != CRC_SHARED {
 		CRC_SHARED = crc;

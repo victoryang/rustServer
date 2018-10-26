@@ -10,6 +10,7 @@ name = "mrj_sys"
 path = "lib.rs"
 
 [dependencies]
+crc = "^1.0.0"
 
 [build-dependencies]
 tar = "0.4"
