@@ -64,5 +64,5 @@ fn main() {
 	info!("starting shm server...");
 	let shmserver = shm::new_shm_server(websocket_tx.clone());
 	shmserver.init().run();
-    //daemon::Run();
+    handle_signals();
 }
