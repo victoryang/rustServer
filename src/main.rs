@@ -7,6 +7,10 @@ extern crate timer;
 extern crate chrono;
 extern crate fern;
 
+#[cfg(unix)]
+extern crate signal;
+extern crate nix;
+
 #[macro_use]
 extern crate log;
 
@@ -15,9 +19,28 @@ extern crate mrj_sys;
 use std::sync::mpsc;
 use std::thread;
 
+use signal::trap::Trap;
+use nix::sys::signal::{SIGUSR1, SIGHUP, SIGINT, SIGTERM};
+
 mod shm;
 mod ws;
 mod rlog;
+
+fn handle_signals() {
+    let trap = Trap::trap(&[SIGTERM, SIGINT, SIGHUP, SIGUSR1]);
+    for sig in trap {
+        match sig {
+            SIGTERM | SIGINT | SIGHUP => {
+                info!("receive signal {}, stopping server...", sig);
+                break;
+            }
+            SIGUSR1 => {
+                // Use SIGUSR1 to log metrics.
+                
+            }
+        }
+    }
+}
 
 fn setup_log() {
 	/*if rlog::check_file_size_exceeded_max(&filename) {

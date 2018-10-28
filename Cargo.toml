@@ -7,6 +7,7 @@ authors = ["elite"]
 log = "0.4"
 chrono = "0.4.6"
 grpc = "0.6"
+nix = "0.6.0"
 timer = "0.2"
 mrj-sys = {path = "mrj-sys", version = "0.1.0"}
 
@@ -15,3 +16,6 @@ git = "https://github.com/websockets-rs/rust-websocket.git"
 
 [dependencies.fern]
 git = "https://github.com/daboross/fern.git"
+
+[target.'cfg(unix)'.dependencies]
+signal = "0.2"
