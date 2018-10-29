@@ -22,8 +22,8 @@ impl ShmServer {
 	pub fn run(&self) {
 		let websocket_tx = self.websocket_tx.clone();
 
-		let (tx, rx) = mpsc::channel::<Vec<u8>>();
 		thread::spawn(move || {
+			let (tx, rx) = mpsc::channel::<Vec<u8>>();
 			let timer = timer::Timer::new();
 			timer.schedule_repeating(Duration::milliseconds(DURATION), move || {
 				shared::get_shared(tx.clone());
