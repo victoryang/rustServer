@@ -1,0 +1,14 @@
+[package]
+name = "mcsql-sys"
+version = "0.1.0"
+authors = ["victoryang <yangtao3601@126.com>"]
+links = "mcsql"
+build = "build.rs"
+
+[lib]
+name = "mcsql_sys"
+path = "lib.rs"
+
+[build-dependencies]
+tar = "0.4"
+flate2 = "1.0"
