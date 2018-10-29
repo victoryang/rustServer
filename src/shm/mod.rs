@@ -22,7 +22,7 @@ impl ShmServer {
 		thread::spawn(move || {
 			let (tx, rx) = mpsc::channel::<Vec<u8>>();
 			let timer = timer::Timer::new();
-			timer.schedule_repeating(Duration::milliseconds(DURATION), move || {
+			let guard = timer.schedule_repeating(Duration::milliseconds(DURATION), move || {
 				let tx_shared = tx.clone();
 				shared::get_shared(tx_shared);
 
@@ -40,6 +40,7 @@ impl ShmServer {
 					None => break,
 				}
 			}
+			drop(guard);
 		});
 	}
 }
