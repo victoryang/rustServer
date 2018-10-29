@@ -33,8 +33,10 @@ impl ShmServer {
 				})
 			});
 
-			for m in rx.try_recv() {
-				websocket_tx.send(m).unwrap();
+			let mut iter = rx.iter();
+			for m in iter.next() {
+				Some(m) => {websocket_tx.send(m).unwrap();},
+				_ => {},
 			}
 		});	
 	}
