@@ -22,25 +22,22 @@ impl ShmServer {
 	pub fn run(&self) {
 		let websocket_tx = self.websocket_tx.clone();
 
+		let (tx, rx) = mpsc::channel::<Vec<u8>>();
 		thread::spawn(move || {
-			let (tx, rx) = mpsc::channel::<Vec<u8>>();
-			thread::spawn(move || {
-				let timer = timer::Timer::new();
-				timer.schedule_repeating(Duration::milliseconds(DURATION), move || {
-					shared::get_shared(tx.clone());
-					shared::get_plc(tx.clone());
-					nv::get_nv(tx.clone());
-				})
+			let timer = timer::Timer::new();
+			timer.schedule_repeating(Duration::milliseconds(DURATION), move || {
+				shared::get_shared(tx.clone());
+				shared::get_plc(tx.clone());
+				nv::get_nv(tx.clone());
 			});
 
 			let mut iter = rx.iter();
 			for m in iter.next() {
 				match m {
-					Some(m) => {websocket_tx.send(m).unwrap();},
-					_ => {},
+					m => {websocket_tx.send(m).unwrap();},
 				}
 			}
-		});	
+		});
 	}
 }
 
