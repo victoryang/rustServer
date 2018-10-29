@@ -12,7 +12,7 @@ impl WsClient {
 	pub fn run(self, receiver: mpsc::Receiver<Vec<u8>>) {
 		let (mut rstream, mut sstream) = self.conn.split().unwrap();
 		let(tx, rx) = mpsc::channel::<OwnedMessage>();
-		let tx_receiver = tx.clone();
+		let tx1 = tx.clone();
 
 		let _ = thread::spawn(move || {
 			loop {
@@ -61,13 +61,13 @@ impl WsClient {
 
 				match message {
 					OwnedMessage::Close(_) => {
-						tx_receiver.send(message).unwrap();
+						tx1.send(message).unwrap();
 						println!("Client disconnected");
 						return;
 					}
 					OwnedMessage::Ping(ping) => {
 						let message = OwnedMessage::Pong(ping);
-						tx_receiver.send(message).unwrap();
+						tx1.send(message).unwrap();
 					}
 					_ => println!("Receive new message from client, drop it."),
 				}
