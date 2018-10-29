@@ -27,7 +27,6 @@ fn main() {
     println!("cargo:root={}", root.display());
     println!("cargo:include={}", include.display());
     println!("cargo:libdir={}", libdir.display());
-    println!("cargo:static=1");
 
     match decompress("build/include/include.tar.gz", format!("{}", root.display()).as_str()) {
     	Ok(()) => {
