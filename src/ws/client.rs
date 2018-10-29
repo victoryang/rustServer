@@ -32,7 +32,14 @@ impl WsClient {
 
 					OwnedMessage::Pong(ping) => {
 						let message = OwnedMessage::Pong(ping);
-						sstream.send_message(&message).unwrap();
+						match sstream.send_message(&message) {
+							Ok(()) => (),
+							Err(e) => {
+								warn!("sending Pong messages to channel error: {:?}", e);
+								let _ = sstream.send_message(&Message::close());
+								return;
+							}
+						}
 					},
 
 					_ => {
