@@ -21,19 +21,17 @@ fn decompress(src: &str, des: &str) -> Result<(), std::io::Error> {
 
 fn main() {
 	let root = PathBuf::from(env::var_os("OUT_DIR").unwrap());
-
-    let mcsql = root.join("mcsql");
-    let include = mcsql.join("include");
-    let libdir = mcsql.join("lib");
+    let include = root.join("include");
+    let libdir = root.join("lib");
 
     println!("cargo:root={}", root.display());
     println!("cargo:include={}", include.display());
     println!("cargo:libdir={}", libdir.display());
     //println!("cargo:static=1");
 
-    match decompress("build/include/include.tar.gz", format!("{}", mcsql.display()).as_str()) {
+    match decompress("build/include/include.tar.gz", format!("{}", root.display()).as_str()) {
     	Ok(()) => {
-    		fs::copy("build/include/config.h", mcsql.join("config.h")).unwrap();
+    		fs::copy("build/include/config.h", root.join("config.h")).unwrap();
     		fs::copy("mcsql/define.h", include.join("define.h")).unwrap();
 		    fs::copy("mcsql/mcmanager.h", include.join("mcmanager.h")).unwrap();
 		    fs::copy("mcsql/mcquery.h", include.join("mcquery.h")).unwrap();
