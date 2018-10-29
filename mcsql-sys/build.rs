@@ -22,7 +22,7 @@ fn decompress(src: &str, des: &str) -> Result<(), std::io::Error> {
 fn main() {
 	let root = PathBuf::from(env::var_os("OUT_DIR").unwrap());
 
-    let mcsql = dst.join("mcsql");
+    let mcsql = root.join("mcsql");
     let include = mcsql.join("include");
     let libdir = mcsql.join("lib");
 
@@ -48,7 +48,7 @@ fn main() {
     fs::copy("build/lib/libsqlitedb.so", libdir.join("libsqlitedb.so")).unwrap();
 
     Command::new("make").args(&["-C", "mcsql/"]).status().unwrap();
-    fs::copy("mrj/libmcsql.so", libdir.join("libmcsql.so")).unwrap();
+    fs::copy("mcsql/libmcsql.so", libdir.join("libmcsql.so")).unwrap();
 
     println!("cargo:rustc-link-lib=z");
     println!("cargo:rustc-link-lib=sqlitedb");
