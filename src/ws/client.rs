@@ -79,7 +79,13 @@ impl WsClient {
 			match iter.next() {
 				Some(message) => {
 					let message = OwnedMessage::Binary(message);
-					tx.send(message).unwrap();
+					match tx.send(message) {
+						Ok(()) => (),
+						Err(e) => {
+							warn!("Sending to sstream error: {:?}", e);
+							return;
+						}
+					}
 				},
 				None => break,
 			}
