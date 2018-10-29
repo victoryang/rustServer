@@ -35,8 +35,10 @@ impl ShmServer {
 
 			let mut iter = rx.iter();
 			for m in iter.next() {
-				Some(m) => {websocket_tx.send(m).unwrap();},
-				_ => {},
+				match m {
+					Some(m) => {websocket_tx.send(m).unwrap();},
+					_ => {},
+				}
 			}
 		});	
 	}
