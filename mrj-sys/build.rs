@@ -48,6 +48,5 @@ fn main() {
     fs::copy("mrj/libmrj.a", libdir.join("libmrj.a")).unwrap();
 
     println!("cargo:rustc-link-lib=static=share");
-    println!("cargo:rustc-link-lib=static=mrj");
     println!("cargo:rustc-link-search=native={}", libdir.display());
 }
