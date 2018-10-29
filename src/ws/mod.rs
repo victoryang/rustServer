@@ -15,8 +15,6 @@ impl WsServer {
 	pub fn run(self, dispatcher_rx: mpsc::Receiver<Vec<u8>>) {
 		let client_senders: Arc<Mutex<Vec<mpsc::Sender<Vec<u8>>>>> = Arc::new(Mutex::new(vec![]));
 
-		let client_senders = client_senders.clone();
-
 		let dp = dispatcher::Dispatcher{receiver: dispatcher_rx};
 		{
 			let client_senders = client_senders.clone();
@@ -39,8 +37,8 @@ impl WsServer {
 				let ip = conn.peer_addr().unwrap();
 				println!("Connection from {}", ip);
 
-				let c = client::WsClient {conn: conn, receiver: client_rx};
-				c.run();
+				let c = client::WsClient {conn: conn};
+				c.run(client_rx);
 			});
 		}
 	}
