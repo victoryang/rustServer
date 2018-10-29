@@ -2,7 +2,7 @@ use websocket::sync::Client;
 use std::net::TcpStream;
 use std::thread;
 use std::sync::mpsc;
-use websocket::message::OwnedMessage;
+use websocket::{Message, OwnedMessage};
 
 pub struct WsClient {
 	pub conn:			Client<TcpStream>,
@@ -40,7 +40,7 @@ impl WsClient {
 							Ok(()) => (),
 							Err(e) => {
 								warn!("sending messages to channel error: {:?}", e);
-								let _ = sstream.send_message(OwnedMessage::Close(_));
+								let _ = sstream.send_message(&Message::close());
 								return;
 							}
 						}
@@ -57,7 +57,7 @@ impl WsClient {
 						warn!("read error from channel: {:?}", e);
 						return;
 					}
-				}
+				};
 
 				match message {
 					OwnedMessage::Close(_) => {
