@@ -35,8 +35,10 @@ fn handle_signals() {
                 break;
             }
             SIGUSR1 => {
-                // Use SIGUSR1 to log metrics.
-                
+                // Use SIGUSR1 to log metrics.  
+            }
+            _ => {
+            	// Omit others
             }
         }
     }
