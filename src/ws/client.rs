@@ -16,7 +16,7 @@ impl WsClient {
 
 		let _ = thread::spawn(move || {
 			loop {
-				let message = match rx.try_recv() {
+				let message = match rx.recv() {
 					Ok(m) => m,
 					Err(e) => {
 						println!("Send Loop: {:?}", e);
