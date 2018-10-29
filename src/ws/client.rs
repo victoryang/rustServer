@@ -36,7 +36,14 @@ impl WsClient {
 					},
 
 					_ => {
-						sstream.send_message(&message).unwrap();
+						match sstream.send_message(&message) {
+							Ok(()) => (),
+							Err(e) => {
+								warn!("sending messages to channel error: {:?}", e);
+								let _ = sstream.send_message(OwnedMessage::Close(_));
+								return;
+							}
+						}
 					},
 				}
 			}
@@ -44,7 +51,13 @@ impl WsClient {
 
 		let _ = thread::spawn(move || {
 			for message in rstream.incoming_messages() {
-				let message = message.unwrap();
+				let message = match message {
+					Ok(m) => m,
+					Err(e) => {
+						warn!("read error from channel: {:?}", e);
+						return;
+					}
+				}
 
 				match message {
 					OwnedMessage::Close(_) => {
