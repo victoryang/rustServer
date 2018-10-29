@@ -22,7 +22,7 @@ impl WsClient {
 						println!("Send Loop: {:?}", e);
 						return;
 					}
-				}
+				};
 
 				match message {
 					OwnedMessage::Close(_) => {
