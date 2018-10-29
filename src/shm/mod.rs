@@ -10,7 +10,6 @@ mod nv;
 static DURATION: i64 = 100;
 
 pub struct ShmServer {
-	websocket_tx:	mpsc::Sender<Vec<u8>>,
 }
 
 impl ShmServer {
@@ -19,16 +18,19 @@ impl ShmServer {
 		self
 	}
 
-	pub fn run(&self) {
-		let websocket_tx = self.websocket_tx.clone();
-
+	pub fn run(&self, websocket_tx: mpsc::Sender<Vec<u8>>) {
 		thread::spawn(move || {
 			let (tx, rx) = mpsc::channel::<Vec<u8>>();
 			let timer = timer::Timer::new();
 			timer.schedule_repeating(Duration::milliseconds(DURATION), move || {
-				shared::get_shared(tx.clone());
-				shared::get_plc(tx.clone());
-				nv::get_nv(tx.clone());
+				let tx_shared = tx.clone();
+				shared::get_shared(tx_shared);
+
+				let tx_plc = tx.clone();
+				shared::get_plc(tx_plc);
+
+				let tx_nv = tx.clone();
+				nv::get_nv(tx_nv);
 			});
 
 			let mut iter = rx.iter();
@@ -42,8 +44,7 @@ impl ShmServer {
 	}
 }
 
-pub fn new_shm_server(websocket_tx: mpsc::Sender<Vec<u8>>) -> ShmServer {
+pub fn new_shm_server() -> ShmServer {
 	ShmServer {
-		websocket_tx,
 	}
 }
