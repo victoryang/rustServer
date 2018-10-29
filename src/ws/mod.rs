@@ -39,6 +39,8 @@ impl WsServer {
 
 				let c = client::WsClient {conn: conn};
 				c.run(client_rx);
+
+				println!("Connection {} disconnected", ip)
 			});
 		}
 	}
