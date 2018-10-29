@@ -61,14 +61,28 @@ impl WsClient {
 
 				match message {
 					OwnedMessage::Close(_) => {
-						tx1.send(message).unwrap();
+						match tx1.send(message) {
+							Ok(()) => (),
+							Err(e) => {
+								warn!("Sending to sstream error: {:?}", e);
+								return;
+							}
+						}
 						println!("Client disconnected");
 						return;
 					}
+
 					OwnedMessage::Ping(ping) => {
 						let message = OwnedMessage::Pong(ping);
-						tx1.send(message).unwrap();
+						match tx1.send(message) {
+							Ok(()) => (),
+							Err(e) => {
+								warn!("Sending to sstream error: {:?}", e);
+								return;
+							}
+						}
 					}
+
 					_ => println!("Receive new message from client, drop it."),
 				}
 			}
