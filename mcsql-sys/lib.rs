@@ -8,7 +8,7 @@ extern {fn register_all_sql_mappers();}
 extern {fn mcsql_set_db_file(dbname: *const c_char);}
 
 pub fn init() {
-	let conn = CString::new(conn).unwrap();
+	let conn = CString::new("/rbctrl/db/elibotDB.db").unwrap();
 	unsafe {
 		register_all_sql_mappers();
 		mcsql_set_db_file(conn.as_ptr());
