@@ -1,6 +1,6 @@
 #include "mcquery.h"
 
-static char* mcsql_db_query(mcsql_db_query_req* req) {
+static char* mcsql_db_query(db_query_req* req) {
     cJSON* root = db_query(req);
 
     return cJSON_PrintUnformatted(root);
@@ -9,11 +9,11 @@ static char* mcsql_db_query(mcsql_db_query_req* req) {
 char* mcsql_arc_get_all() {
     const char *q_id = ELIBOT_ARC_GET_ALL_PARAMS;
 
-    mcsql_db_query_req_option opt = {
+    db_query_req_option opt = {
             type_handle_mode:DB_QUERY_MODE_STANDARD
     };
 
-    mcsql_db_query_req req = {
+    db_query_req req = {
             query_id:(char *)q_id,
             conn_str:db_conn,
             option:&opt,
@@ -32,16 +32,16 @@ char* mcsql_arc_get_params(int32_t file_no, char* group) {
             {name:"group", value:{ string_value: group}, type:DB_TYPE_TEXT},
     };
 
-    mcsql_db_query_req_parameter q_params = {
+    db_query_req_parameter q_params = {
             params: sql_params,
             param_size: 2
     };
 
-    mcsql_db_query_req_option opt = {
+    db_query_req_option opt = {
             type_handle_mode:DB_QUERY_MODE_CUSTOM_OBJECT
     };
 
-    mcsql_db_query_req req = {
+    db_query_req req = {
             query_id:(char *)q_id,
             conn_str:db_conn,
             option:&opt,
@@ -91,11 +91,11 @@ char* mcsql_enum_get_all() {
 char* mcsql_extaxis_get_all() {
     const char *q_id = ELIBOT_EXTAXIS_GET_ALL;
 
-    mcsql_db_query_req_option opt = {
+    db_query_req_option opt = {
             type_handle_mode:DB_QUERY_MODE_CUSTOM_OBJECT
     };
 
-    mcsql_db_query_req req = {
+    db_query_req req = {
             query_id:(char *)q_id,
             conn_str:db_conn,
             option:&opt,
@@ -109,11 +109,11 @@ char* mcsql_extaxis_get_all() {
 char* mcsql_interference_get_all() {
     const char *q_id = ELIBOT_INTERFERENCE_GET_ALL;
 
-    mcsql_db_query_req_option opt = {
+    db_query_req_option opt = {
             type_handle_mode:DB_QUERY_MODE_STANDARD
     };
 
-    mcsql_db_query_req req = {
+    db_query_req req = {
             query_id:(char *)q_id,
             conn_str:db_conn,
             option:&opt,
@@ -161,16 +161,16 @@ char* mcsql_metadata_get_all(char* lang) {
             {name:"lang", value:{ string_value: lang}, type:DB_TYPE_TEXT},
     };
 
-    mcsql_db_query_req_parameter q_params = {
+    db_query_req_parameter q_params = {
             params: sql_params,
             param_size: 1
     };
 
-    mcsql_db_query_req_option opt = {
+    db_query_req_option opt = {
             type_handle_mode:DB_QUERY_MODE_CUSTOM_OBJECT
     };
 
-    mcsql_db_query_req req = {
+    db_query_req req = {
             query_id:(char *)q_id,
             conn_str:db_conn,
             option:&opt,
@@ -184,11 +184,11 @@ char* mcsql_metadata_get_all(char* lang) {
 char* mcsql_params_get_params() {
     const char *q_id = ELIBOT_PARAMS_GET_PARAMS;
 
-    mcsql_db_query_req_option opt = {
+    db_query_req_option opt = {
             type_handle_mode:DB_QUERY_MODE_STANDARD
     };
 
-    mcsql_db_query_req req = {
+    db_query_req req = {
             query_id:(char *)q_id,
             conn_str:db_conn,
             option:&opt,
@@ -206,16 +206,16 @@ char* mcsql_params_get_valid_param_by_id(char* md_id) {
             {name:"md_id", value:{ string_value: md_id}, type:DB_TYPE_TEXT},
     };
 
-    mcsql_db_query_req_parameter q_params = {
+    db_query_req_parameter q_params = {
             params: sql_params,
             param_size: 1
     };
 
-    mcsql_db_query_req_option opt = {
+    db_query_req_option opt = {
             type_handle_mode:DB_QUERY_MODE_CUSTOM_OBJECT
     };
 
-    mcsql_db_query_req req = {
+    db_query_req req = {
             query_id:(char *)q_id,
             conn_str:db_conn,
             option:&opt,
@@ -233,16 +233,16 @@ char* mcsql_params_get_valid_param_by_group(char* group) {
             {name:"group", value:{ string_value: group}, type:DB_TYPE_TEXT},
     };
 
-    mcsql_db_query_req_parameter q_params = {
+    db_query_req_parameter q_params = {
             params: sql_params,
             param_size: 1
     };
 
-    mcsql_db_query_req_option opt = {
+    db_query_req_option opt = {
             type_handle_mode:DB_QUERY_MODE_CUSTOM_OBJECT
     };
 
-    mcsql_db_query_req req = {
+    db_query_req req = {
             query_id:(char *)q_id,
             conn_str:db_conn,
             option:&opt,
@@ -296,16 +296,16 @@ char* mcsql_toolframe_get_by_toolno(int32_t tool_no) {
             {name:"tool_no", value:{ string_value: tool_no}, type:DB_TYPE_INT32},
     };
 
-    mcsql_db_query_req_parameter q_params = {
+    db_query_req_parameter q_params = {
             params: sql_params,
             param_size: 1
     };
 
-    mcsql_db_query_req_option opt = {
+    db_query_req_option opt = {
             type_handle_mode:DB_QUERY_MODE_CUSTOM_OBJECT
     };
 
-    mcsql_db_query_req req = {
+    db_query_req req = {
             query_id:(char *)q_id,
             conn_str:db_conn,
             option:&opt,
@@ -341,16 +341,16 @@ char* mcsql_userframe_get_by_userno(int32_t user_no) {
             {name:"user_no", value:{ string_value: user_no}, type:DB_TYPE_INT32},
     };
 
-    mcsql_db_query_req_parameter q_params = {
+    db_query_req_parameter q_params = {
             params: sql_params,
             param_size: 1
     };
 
-    mcsql_db_query_req_option opt = {
+    db_query_req_option opt = {
             type_handle_mode:DB_QUERY_MODE_CUSTOM_OBJECT
     };
 
-    mcsql_db_query_req req = {
+    db_query_req req = {
             query_id:(char *)q_id,
             conn_str:db_conn,
             option:&opt,
