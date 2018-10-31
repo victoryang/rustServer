@@ -32,7 +32,7 @@ mod shm;
 mod ws;
 mod rlog;
 mod rpc;
-mod sqlitedb;
+//mod sqlitedb;
 
 fn handle_signals() {
     let trap = Trap::trap(&[SIGTERM, SIGINT, SIGHUP, SIGUSR1]);
@@ -76,6 +76,5 @@ fn main() {
 	shmserver.init().run(websocket_tx.clone());
 
     info!("starting grpc server...");
-    let grpcserver = grpcs::
     handle_signals();
 }
