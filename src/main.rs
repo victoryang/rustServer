@@ -3,6 +3,11 @@
 
 extern crate websocket;
 
+extern crate protobuf;
+extern crate grpc;
+extern crate futures;
+extern crate futures_cpupool;
+
 extern crate timer;
 extern crate chrono;
 extern crate fern;
@@ -15,6 +20,7 @@ extern crate nix;
 extern crate log;
 
 extern crate mrj_sys;
+extern crate mcsql_sys;
 
 use std::sync::mpsc;
 use std::thread;
@@ -25,6 +31,8 @@ use nix::sys::signal::{SIGUSR1, SIGHUP, SIGINT, SIGTERM};
 mod shm;
 mod ws;
 mod rlog;
+mod grpcs;
+mod sqlitedb;
 
 fn handle_signals() {
     let trap = Trap::trap(&[SIGTERM, SIGINT, SIGHUP, SIGUSR1]);
@@ -66,5 +74,8 @@ fn main() {
 	info!("starting shm server...");
 	let shmserver = shm::new_shm_server();
 	shmserver.init().run(websocket_tx.clone());
+
+    info!("starting grpc server...");
+    let grpcserver = grpcs::
     handle_signals();
 }

@@ -1,49 +1,380 @@
 #include "mcquery.h"
 
-db_query_req_option* new_db_query_req_option(int32_t type_handle_mode) {
-    db_query_req_option* option = (db_query_req_option*)malloc(sizeof(db_query_req_option));
-    if (NULL==option) {
-        return NULL;
-    }
-    option->type_handle_mode = type_handle_mode;
-    return option;
+static char* mcsql_db_query(mcsql_db_query_req* req) {
+    cJSON* root = db_query(req);
+
+    return cJSON_PrintUnformatted(root);
 }
 
-sql_parameter* get_sqlparam_index(db_query_req_parameter* req_params, int16_t i) {
-    if(i >= req_params->param_size) {
-        return NULL;
-    }
-    return &req_params->params[i];
+char* mcsql_arc_get_all() {
+    const char *q_id = ELIBOT_ARC_GET_ALL_PARAMS;
+
+    mcsql_db_query_req_option opt = {
+            type_handle_mode:DB_QUERY_MODE_STANDARD
+    };
+
+    mcsql_db_query_req req = {
+            query_id:(char *)q_id,
+            conn_str:db_conn,
+            option:&opt,
+            parameter:NULL,
+            page:NULL,
+    };
+
+    return mcsql_db_query(&req);
 }
 
-void free_db_query_req_parameter(db_query_req_parameter* p) {
-	free(p->params);
-	p->param_size = 0;
+char* mcsql_arc_get_params(int32_t file_no, char* group) {
+    const char *q_id = ELIBOT_ARC_GET_PARAMS;
 
-	free(p);
-	p = NULL;
+    sql_parameter sql_params[] = {
+            {name:"file_no", value:{ int_value: file_no}, type:DB_TYPE_INT32},
+            {name:"group", value:{ string_value: group}, type:DB_TYPE_TEXT},
+    };
+
+    mcsql_db_query_req_parameter q_params = {
+            params: sql_params,
+            param_size: 2
+    };
+
+    mcsql_db_query_req_option opt = {
+            type_handle_mode:DB_QUERY_MODE_CUSTOM_OBJECT
+    };
+
+    mcsql_db_query_req req = {
+            query_id:(char *)q_id,
+            conn_str:db_conn,
+            option:&opt,
+            parameter:&q_params,
+            page:NULL,
+    };
+
+    return mcsql_db_query(&req);
 }
 
-db_query_req_parameter* new_db_query_req_parameter(int16_t size) {
-    db_query_req_parameter* param = (db_query_req_parameter*)malloc(sizeof(db_query_req_parameter));
-    if (NULL==param) {
-        return NULL;
-    }
+char* mcsql_bookprogram_get_all() {
+    const char *q_id = ELIBOT_BOOKPROGRAM_GET_ALL;
 
-    param->params = (sql_parameter*) malloc(sizeof(sql_parameter)*size);
-    if (NULL == param->params) {
-    	return NULL;
-    }
-    param->param_size = size;
-    return param;
+    db_query_req_option opt = {
+            type_handle_mode:DB_QUERY_MODE_STANDARD
+    };
+
+    db_query_req req = {
+            query_id:(char *)q_id,
+            conn_str:db_conn,
+            option:&opt,
+            parameter:NULL,
+            page:NULL,
+    };
+
+    return mcsql_db_query(&req);
 }
 
-db_query_req_page* new_db_query_req_page(int16_t page_start, int16_t page_size) {
-    db_query_req_page* page = (db_query_req_page*)malloc(sizeof(db_query_req_page));
-    if (NULL==page) {
-        return NULL;
-    }
-    page->page_start = page_start;
-    page->page_size = page_size;
-    return page;
+char* mcsql_enum_get_all() {
+    const char *q_id = ELIBOT_ENUM_GET_ALL;
+
+    db_query_req_option opt = {
+            type_handle_mode:DB_QUERY_MODE_STANDARD
+    };
+
+    db_query_req req = {
+            query_id:(char *)q_id,
+            conn_str:db_conn,
+            option:&opt,
+            parameter:NULL,
+            page:NULL,
+    };
+
+    return mcsql_db_query(&req);
+}
+
+char* mcsql_extaxis_get_all() {
+    const char *q_id = ELIBOT_EXTAXIS_GET_ALL;
+
+    mcsql_db_query_req_option opt = {
+            type_handle_mode:DB_QUERY_MODE_CUSTOM_OBJECT
+    };
+
+    mcsql_db_query_req req = {
+            query_id:(char *)q_id,
+            conn_str:db_conn,
+            option:&opt,
+            parameter:NULL,
+            page:NULL,
+    };
+
+    return mcsql_db_query(&req);
+}
+
+char* mcsql_interference_get_all() {
+    const char *q_id = ELIBOT_INTERFERENCE_GET_ALL;
+
+    mcsql_db_query_req_option opt = {
+            type_handle_mode:DB_QUERY_MODE_STANDARD
+    };
+
+    mcsql_db_query_req req = {
+            query_id:(char *)q_id,
+            conn_str:db_conn,
+            option:&opt,
+            parameter:NULL,
+            page:NULL,
+    };
+
+    return mcsql_db_query(&req);
+}
+
+char* mcsql_ios_get_all(char* group, char* lang, int32_t auth, int32_t tech) {
+    const char *q_id = ELIBOT_IO_GET_VALID_IOS_BY_GROUP;
+
+    sql_parameter sql_params[] = {
+            {name:"group", value:{ string_value: group}, type:DB_TYPE_TEXT},
+            {name:"lang", value:{ string_value: lang}, type:DB_TYPE_TEXT},
+            {name:"auth", value:{ int_value: auth}, type:DB_TYPE_INT32},
+            {name:"tech", value:{ int_value: tech}, type:DB_TYPE_INT32},
+    };
+
+    db_query_req_parameter q_params = {
+            params: sql_params,
+            param_size: 4
+    };
+
+    db_query_req_option opt = {
+            type_handle_mode:DB_QUERY_MODE_STANDARD
+    };
+
+    db_query_req req = {
+            query_id:(char *)q_id,
+            conn_str:db_conn,
+            option:&opt,
+            parameter:&q_params,
+            page:NULL,
+    };
+
+    return mcsql_db_query(&req);
+}
+
+char* mcsql_metadata_get_all(char* lang) {
+    const char *q_id = ELIBOT_METADATA_GET_ALL;
+
+    sql_parameter sql_params[] = {
+            {name:"lang", value:{ string_value: lang}, type:DB_TYPE_TEXT},
+    };
+
+    mcsql_db_query_req_parameter q_params = {
+            params: sql_params,
+            param_size: 1
+    };
+
+    mcsql_db_query_req_option opt = {
+            type_handle_mode:DB_QUERY_MODE_CUSTOM_OBJECT
+    };
+
+    mcsql_db_query_req req = {
+            query_id:(char *)q_id,
+            conn_str:db_conn,
+            option:&opt,
+            parameter:&q_params,
+            page:NULL,
+    };
+
+    return mcsql_db_query(&req);
+}
+
+char* mcsql_params_get_params() {
+    const char *q_id = ELIBOT_PARAMS_GET_PARAMS;
+
+    mcsql_db_query_req_option opt = {
+            type_handle_mode:DB_QUERY_MODE_STANDARD
+    };
+
+    mcsql_db_query_req req = {
+            query_id:(char *)q_id,
+            conn_str:db_conn,
+            option:&opt,
+            parameter:NULL,
+            page:NULL,
+    };
+
+    return mcsql_db_query(&req);
+}
+
+char* mcsql_params_get_valid_param_by_id(char* md_id) {
+    const char *q_id = ELIBOT_PARAMS_GET_VALID_PARAM_BY_ID;
+
+    sql_parameter sql_params[] = {
+            {name:"md_id", value:{ string_value: md_id}, type:DB_TYPE_TEXT},
+    };
+
+    mcsql_db_query_req_parameter q_params = {
+            params: sql_params,
+            param_size: 1
+    };
+
+    mcsql_db_query_req_option opt = {
+            type_handle_mode:DB_QUERY_MODE_CUSTOM_OBJECT
+    };
+
+    mcsql_db_query_req req = {
+            query_id:(char *)q_id,
+            conn_str:db_conn,
+            option:&opt,
+            parameter:&q_params,
+            page:NULL,
+    };
+
+    return mcsql_db_query(&req);
+}
+
+char* mcsql_params_get_valid_param_by_group(char* group) {
+    const char *q_id = ELIBOT_PARAMS_GET_VALID_PARAMS_BY_GROUP;
+
+    sql_parameter sql_params[] = {
+            {name:"group", value:{ string_value: group}, type:DB_TYPE_TEXT},
+    };
+
+    mcsql_db_query_req_parameter q_params = {
+            params: sql_params,
+            param_size: 1
+    };
+
+    mcsql_db_query_req_option opt = {
+            type_handle_mode:DB_QUERY_MODE_CUSTOM_OBJECT
+    };
+
+    mcsql_db_query_req req = {
+            query_id:(char *)q_id,
+            conn_str:db_conn,
+            option:&opt,
+            parameter:&q_params,
+            page:NULL,
+    };
+
+    return mcsql_db_query(&req);
+}
+
+char* mcsql_ref_get_all() {
+    const char *q_id = ELIBOT_REF_GET_ALL;
+
+    db_query_req_option opt = {
+            type_handle_mode:DB_QUERY_MODE_CUSTOM_QUERY
+    };
+
+    db_query_req req = {
+            query_id:(char *)q_id,
+            conn_str:db_conn,
+            option:&opt,
+            parameter:NULL,
+            page:NULL,
+    };
+
+    return mcsql_db_query(&req);
+}
+
+char* mcsql_toolframe_get_all() {
+    const char *q_id = ELIBOT_COMMON_GET_ALL_TOOLFRAMES;
+
+    db_query_req_option opt = {
+            type_handle_mode:DB_QUERY_MODE_STANDARD
+    };
+
+    db_query_req req = {
+            query_id:(char *)q_id,
+            conn_str:db_conn,
+            option:&opt,
+            parameter:NULL,
+            page:NULL,
+    };
+
+    return mcsql_db_query(&req);
+}
+
+char* mcsql_toolframe_get_by_toolno(int32_t tool_no) {
+    const char *q_id = ELIBOT_COMMON_GET_TOOLFRAMES;
+
+    sql_parameter sql_params[] = {
+            {name:"tool_no", value:{ string_value: tool_no}, type:DB_TYPE_INT32},
+    };
+
+    mcsql_db_query_req_parameter q_params = {
+            params: sql_params,
+            param_size: 1
+    };
+
+    mcsql_db_query_req_option opt = {
+            type_handle_mode:DB_QUERY_MODE_CUSTOM_OBJECT
+    };
+
+    mcsql_db_query_req req = {
+            query_id:(char *)q_id,
+            conn_str:db_conn,
+            option:&opt,
+            parameter:&q_params,
+            page:NULL,
+    };
+
+    return mcsql_db_query(&req);
+}
+
+char* mcsql_userframe_get_all() {
+    const char *q_id = ELIBOT_USER_FRAME_GET_ALL;
+
+    db_query_req_option opt = {
+            type_handle_mode:DB_QUERY_MODE_STANDARD
+    };
+
+    db_query_req req = {
+            query_id:(char *)q_id,
+            conn_str:db_conn,
+            option:&opt,
+            parameter:NULL,
+            page:NULL,
+    };
+
+    return mcsql_db_query(&req);
+}
+
+char* mcsql_userframe_get_by_userno(int32_t user_no) {
+    const char *q_id = ELIBOT_USER_FRAME_GET_BY_USER_NO;
+
+    sql_parameter sql_params[] = {
+            {name:"user_no", value:{ string_value: user_no}, type:DB_TYPE_INT32},
+    };
+
+    mcsql_db_query_req_parameter q_params = {
+            params: sql_params,
+            param_size: 1
+    };
+
+    mcsql_db_query_req_option opt = {
+            type_handle_mode:DB_QUERY_MODE_CUSTOM_OBJECT
+    };
+
+    mcsql_db_query_req req = {
+            query_id:(char *)q_id,
+            conn_str:db_conn,
+            option:&opt,
+            parameter:&q_params,
+            page:NULL,
+    };
+
+    return mcsql_db_query(&req);
+}
+
+char* mcsql_zeropoint_get_all() {
+    const char *q_id = ELIBOT_ZEROPOINT_GET_ALL;
+
+    db_query_req_option opt = {
+            type_handle_mode:DB_QUERY_MODE_STANDARD
+    };
+
+    db_query_req req = {
+            query_id:(char *)q_id,
+            conn_str:db_conn,
+            option:&opt,
+            parameter:NULL,
+            page:NULL,
+    };
+
+    return mcsql_db_query(&req);
 }

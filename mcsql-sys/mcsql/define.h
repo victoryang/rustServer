@@ -2,6 +2,7 @@
 #define DEFINE_H
 
 #include "stdlib.h"
+#include "db/db_query.h"
 #include "db/sqlmapper/arc_sql_mapper.h"
 #include "db/sqlmapper/backup_sql_mapper.h"
 #include "db/sqlmapper/bookprogram_sql_mapper.h"

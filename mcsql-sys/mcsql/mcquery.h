@@ -2,14 +2,40 @@
 #define MCQUERY_H
 
 #include "define.h"
-#include "db/db_query.h"
+#include "mcsql.h"
 
-db_query_req_option* new_db_query_req_option(int32_t type_handle_mode);
+char* mcsql_arc_get_all();
 
-sql_parameter* get_sqlparam_index(db_query_req_parameter* req_params, int16_t i);
-db_query_req_parameter* new_db_query_req_parameter(int16_t size);
-void free_db_query_req_parameter(db_query_req_parameter* p);
+char* mcsql_arc_get_params(char* conn, int32_t file_no, char* group);
 
-db_query_req_page* new_db_query_req_page(int16_t page_start, int16_t page_size);
+char* mcsql_bookprogram_get_all();
+
+char* mcsql_enum_get_all();
+
+char* mcsql_extaxis_get_all();
+
+char* mcsql_interference_get_all();
+
+char* mcsql_ios_get_all(char* group, char* lang, int32_t auth, int32_t tech);
+
+char* mcsql_metadata_get_all(char* lang);
+
+char* mcsql_params_get_params();
+
+char* mcsql_params_get_valid_param_by_id(char* md_id);
+
+char* mcsql_params_get_valid_param_by_group(char* group);
+
+char* mcsql_ref_get_all();
+
+char* mcsql_toolframe_get_all();
+
+char* mcsql_toolframe_get_by_toolno(int32_t tool_no);
+
+char* mcsql_userframe_get_all();
+
+char* mcsql_userframe_get_by_userno(int32_t user_no);
+
+char* mcsql_zeropoint_get_all();
 
 #endif //MCQUERY_H
