@@ -31,7 +31,7 @@ use nix::sys::signal::{SIGUSR1, SIGHUP, SIGINT, SIGTERM};
 mod shm;
 mod ws;
 mod rlog;
-mod grpcs;
+mod rpc;
 mod sqlitedb;
 
 fn handle_signals() {
