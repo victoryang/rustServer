@@ -47,7 +47,6 @@ fn main() {
     Command::new("make").args(&["-C", "mcsql/"]).status().unwrap();
     fs::copy("mcsql/libmcsql.so", libdir.join("libmcsql.so")).unwrap();
 
-    println!("cargo:rustc-link-lib=z");
     println!("cargo:rustc-link-lib=sqlitedb");
     println!("cargo:rustc-link-search=native={}", libdir.display());
 }
