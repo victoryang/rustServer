@@ -293,7 +293,7 @@ char* mcsql_toolframe_get_by_toolno(int32_t tool_no) {
     const char *q_id = ELIBOT_COMMON_GET_TOOLFRAMES;
 
     sql_parameter sql_params[] = {
-            {name:"tool_no", value:{ string_value: tool_no}, type:DB_TYPE_INT32},
+            {name:"tool_no", value:{ int_value: tool_no}, type:DB_TYPE_INT32},
     };
 
     db_query_req_parameter q_params = {
@@ -338,7 +338,7 @@ char* mcsql_userframe_get_by_userno(int32_t user_no) {
     const char *q_id = ELIBOT_USER_FRAME_GET_BY_USER_NO;
 
     sql_parameter sql_params[] = {
-            {name:"user_no", value:{ string_value: user_no}, type:DB_TYPE_INT32},
+            {name:"user_no", value:{ int_value: user_no}, type:DB_TYPE_INT32},
     };
 
     db_query_req_parameter q_params = {

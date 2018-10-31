@@ -6,7 +6,7 @@
 
 char* mcsql_arc_get_all();
 
-char* mcsql_arc_get_params(char* conn, int32_t file_no, char* group);
+char* mcsql_arc_get_params(int32_t file_no, char* group);
 
 char* mcsql_bookprogram_get_all();
 
