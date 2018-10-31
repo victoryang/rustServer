@@ -1,6 +1,6 @@
 #!/bin/sh
 
-cp mrj-sys/build/lib/libsqlitedb.so /usr/lib/gcc-cross/arm-linux-gnueabihf/4.8/
+cp mrj-sys/build/lib/libsqlitedb.so /usr/arm-linux-gnueabihf/lib/
 cp mrj-sys/build/lib/libz.so.1.2.8 /usr/arm-linux-gnueabihf/lib/ 
 ln -s /usr/arm-linux-gnueabihf/lib/libz.so.1.2.8 /usr/arm-linux-gnueabihf/lib/libz.so.1
 cp mrj-sys/build/lib/libshare.a /usr/arm-linux-gnueabihf/lib/
