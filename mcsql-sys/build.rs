@@ -48,6 +48,6 @@ fn main() {
     fs::copy("mcsql/libmcsql.so", libdir.join("libmcsql.so")).unwrap();
 
     println!("cargo:rustc-link-lib=sqlitedb");
-    println!("cargo:rustc-link-lib=mcsql");
+    println!("cargo:rustc-link-lib=static=mcsql");
     println!("cargo:rustc-link-search=native={}", libdir.display());
 }
