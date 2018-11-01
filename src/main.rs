@@ -3,10 +3,8 @@
 
 extern crate websocket;
 
-extern crate protobuf;
-extern crate grpc;
-extern crate futures;
-extern crate futures_cpupool;
+extern crate jsonrpc_core;
+extern crate jsonrpc_tcp_server;
 
 extern crate timer;
 extern crate chrono;
@@ -75,6 +73,9 @@ fn main() {
 	let shmserver = shm::new_shm_server();
 	shmserver.init().run(websocket_tx.clone());
 
-    info!("starting grpc server...");
+    info!("starting rpc server...");
+    let rpcserver = rpc::new_rpc_server();
+    rpcserver.run();
+
     handle_signals();
 }
