@@ -1,7 +1,6 @@
 #ifndef MCMANAGER_H
 #define MCMANAGER_H
 
-#include "stdlib.h"
 #include "define.h"
 #include "db/db_manager.h"
 
