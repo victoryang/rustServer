@@ -2,7 +2,6 @@
 #define MCMANAGER_H
 
 #include "define.h"
-#include "db/db_manager.h"
 
 #define BUF_SIZE 255
 #define ERRNONE DB_OK

@@ -7,10 +7,10 @@ CPPFLAGS += -I/root/mcserver/include/ -fPIC -Wall
 
 .PHONY: all
 
-all: libmcsql.so
+all: libmcsql.a
 
-libmcsql.so: mcquery.o mcsql.o mcmanager.o mcsqlmapper.o
-	$(CC) $(SHARED) -o $@ $^
+libmcsql.a: mcquery.o mcsql.o mcmanager.o mcsqlmapper.o
+	$(AR) $(RCS) $@ $^
 
 test: test_main.c mcsql.o mcquery.o mcmanager.o
 	$(CC) $(CPPFLAGS) -o $@ $^ -lsqlitedb

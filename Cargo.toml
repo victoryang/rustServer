@@ -10,7 +10,6 @@ nix = "0.6.0"
 timer = "0.2"
 mrj-sys = {path = "mrj-sys", version = "0.1.0"}
 mcsql-sys = {path = "mcsql-sys", version = "0.1.0"}
-serde_json = "1.0"
 jsonrpc-tcp-server = { git = "https://github.com/paritytech/jsonrpc" }
 
 [dependencies.websocket]

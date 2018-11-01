@@ -3,7 +3,6 @@
 
 extern crate websocket;
 
-extern crate serde_json;
 extern crate jsonrpc_tcp_server;
 
 extern crate timer;

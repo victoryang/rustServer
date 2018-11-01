@@ -1,5 +1,4 @@
 use std::thread;
-use serde_json;
 use jsonrpc_tcp_server::*;
 use jsonrpc_tcp_server::jsonrpc_core::*;
 
