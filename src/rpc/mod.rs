@@ -30,7 +30,6 @@ pub fn new_rpc_server() -> RpcServer {
 
 fn register_method(io: &mut IoHandler) {
 	io.add_method("arc_get_all", |_params: Params| {
-		let res = mcsql_sys::arc_get_all();
-		Ok(serde_json::from_str(res.as_str()))
+		serde_json::from_str(mcsql_sys::arc_get_all().as_str())
 	});
 }

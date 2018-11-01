@@ -17,9 +17,12 @@ extern {fn mcsql_arc_get_all() -> *mut c_char;}
 
 pub fn arc_get_all() -> String {
 	let c_string = unsafe { CString::from_raw(mcsql_arc_get_all()) };
+
 	match c_string.into_string() {
 		Ok(s) => {return s;},
-		Err(_) => {},
+		Err(_) => {
+			return String::from("");
+		},
 	}
 }
 
