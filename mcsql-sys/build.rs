@@ -45,7 +45,7 @@ fn main() {
     fs::copy("build/lib/libsqlitedb.so", libdir.join("libsqlitedb.so")).unwrap();
 
     Command::new("make").args(&["-C", "mcsql/"]).status().unwrap();
-    fs::copy("mcsql/libmcsql.so", libdir.join("libmcsql.so")).unwrap();
+    fs::copy("mcsql/libmcsql.a", libdir.join("libmcsql.a")).unwrap();
 
     println!("cargo:rustc-link-lib=sqlitedb");
     println!("cargo:rustc-link-lib=static=mcsql");
