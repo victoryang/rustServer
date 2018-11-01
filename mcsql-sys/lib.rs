@@ -15,9 +15,12 @@ extern {fn mcsql_set_db_file(dbname: *const c_char);}
 */
 extern {fn mcsql_arc_get_all() -> *mut c_char;}
 
-pub fn arc_get_all() -> Vec<u8> {
+pub fn arc_get_all() -> String {
 	let c_string = unsafe { CString::from_raw(mcsql_arc_get_all()) };
-	c_string.to_bytes().iter().cloned().collect()
+	match c_string.into_string() {
+		Ok(s) => {return s;},
+		Err(_) => {},
+	}
 }
 
 pub fn init() {

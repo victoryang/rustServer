@@ -1,6 +1,5 @@
 use std::thread;
 use serde_json;
-use jsonrpc_core::*;
 use jsonrpc_tcp_server::*;
 use jsonrpc_tcp_server::jsonrpc_core::*;
 
@@ -10,7 +9,7 @@ pub struct RpcServer {
 }
 
 impl RpcServer {
-	pub fn run() {
+	pub fn run(&self) {
 		thread::spawn(|| {
 			let mut io = IoHandler::default();
 			register_method(&mut io);
@@ -19,18 +18,19 @@ impl RpcServer {
 						.start(&"0.0.0.0:9030".parse().unwrap())
 						.expect("Server must start with no issues");
 
-			server.wait().unwrap();
-		})
+			server.wait();
+		});
 	}
 }
 
-fn new_rpc_server() -> RpcServer {
+pub fn new_rpc_server() -> RpcServer {
 	RpcServer {
 	}
 }
 
 fn register_method(io: &mut IoHandler) {
 	io.add_method("arc_get_all", |_params: Params| {
-		Ok(serde_json::from_str(mcsql_sys::arc_get_all()))
+		let res = mcsql_sys::arc_get_all();
+		Ok(serde_json::from_str(res.as_str()))
 	});
 }
