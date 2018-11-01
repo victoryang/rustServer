@@ -1,7 +1,6 @@
 #ifndef MCQUERY_H
 #define MCQUERY_H
 
-#include "define.h"
 #include "mcsql.h"
 
 char* mcsql_arc_get_all();
