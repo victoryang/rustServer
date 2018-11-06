@@ -3,7 +3,10 @@
 static char* mcsql_db_query(db_query_req* req) {
     cJSON* root = db_query(req);
 
-    return cJSON_PrintUnformatted(root);
+    char *ret = cJSON_PrintUnformatted(root);
+    cJSON_Delete(root);
+
+    return ret;
 }
 
 char* mcsql_arc_get_all() {

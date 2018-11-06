@@ -23,6 +23,8 @@ impl RpcServer {
 }
 
 pub fn new_rpc_server() -> RpcServer {
+	mcsql_sys::init();
+
 	RpcServer {
 	}
 }
