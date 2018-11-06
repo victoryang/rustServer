@@ -28,4 +28,4 @@ mcsqlmapper.o: mcsqlmapper.c
 	$(CC) $(CPPFLAGS) -o $@ -c $^ -lsqlitedb
 
 clean:
-	rm -f *.o libmcsql.so
+	rm -f *.o libmcsql.a

@@ -34,4 +34,4 @@ cJSON.o: cJSON.c
 	$(CC) -fPIC -Wall -o $@ -c $^
 
 clean:
-	rm -f *.o libmrj.so
+	rm -f *.o libmrj.a
