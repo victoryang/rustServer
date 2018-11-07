@@ -2,7 +2,7 @@ use std::thread;
 use jsonrpc_tcp_server::*;
 use jsonrpc_tcp_server::jsonrpc_core::*;
 
-use mcsql;
+mod mcsql;
 
 pub struct RpcServer {
 }
