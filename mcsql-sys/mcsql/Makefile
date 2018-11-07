@@ -9,7 +9,7 @@ CPPFLAGS += -I/root/mcserver/include/ -fPIC -Wall
 
 all: libmcsql.a
 
-libmcsql.a: mcquery.o mcsql.o mcmanager.o mcsqlmapper.o
+libmcsql.a: mcquery.o mcmanager.o mcsql.o mcsqlmapper.o
 	$(AR) $(RCS) $@ $^
 
 test: test_main.c mcsql.o mcquery.o mcmanager.o

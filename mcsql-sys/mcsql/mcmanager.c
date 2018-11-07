@@ -6,32 +6,32 @@ int execute(struct db_manager* mgr) {
 	return mgr->execute(mgr, output);
 }
 
-int mcmanager_backup_db(char* conn, char* db_dir) {
+int mcsql_manager_backup_db(char* db_dir) {
 	db_manager* mgr = (db_manager*)malloc(sizeof(db_manager));
     if(mgr == NULL) {
         return ERREMPTYMANAGER;
     }
     
-    new_backup_db_manager(conn, db_dir, mgr);
+    new_backup_db_manager(db_conn, db_dir, mgr);
     return execute(mgr);
 }
 
-int mcmanager_restore_db(char* conn, char* db_dir, char* db_bak_name, char force) {
+int mcsql_manager_restore_db(char* db_dir, char* db_bak_name, char force) {
 	db_manager* mgr = (db_manager*)malloc(sizeof(db_manager));
     if(mgr == NULL) {
         return ERREMPTYMANAGER;
     }
 
-    new_restore_db_manager(conn, db_dir, db_bak_name, mgr, force);
+    new_restore_db_manager(db_conn, db_dir, db_bak_name, mgr, force);
     return execute(mgr);
 }
 
-int mcmanager_upgrade_db(char* conn, char* db_dir, char* upgrade_pkg) {
+int mcsql_manager_upgrade_db(char* db_dir, char* upgrade_pkg) {
 	db_manager* mgr = (db_manager*)malloc(sizeof(db_manager));
     if(mgr == NULL) {
         return ERREMPTYMANAGER;
     }
 
-    new_upgrade_db_manager(conn, db_dir, upgrade_pkg, mgr);
+    new_upgrade_db_manager(db_conn, db_dir, upgrade_pkg, mgr);
     return execute(mgr);
 }

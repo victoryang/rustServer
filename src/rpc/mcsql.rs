@@ -169,4 +169,54 @@ pub fn register_mcsql_funcs(io: &mut IoHandler) {
 		let res = mcsql_sys::zeropoint_get_all();
 		Ok(Value::String(res))
 	});
+
+	io.add_method("manager_backup_db", |params: Params| {
+		#[derive(Deserialize)]
+		struct BackupParams {
+			db_dir:   String,
+		}
+		let value: BackupParams = match params.parse() {
+			Ok(v) => v,
+			Err(_) => {
+				return Ok(Value::String("fail to query".to_string()));
+			},
+		};
+		let res = mcsql_sys::manager_backup_db(value.db_dir);
+		Ok(Value::Number(res))
+	});
+
+	io.add_method("manager_restore_db", |params: Params| {
+		#[derive(Deserialize)]
+		struct RestoreParams {
+			db_dir:   		String,
+			db_bak_name: 	String, 
+			force:			u8,
+		}
+		let value: RestoreParams = match params.parse() {
+			Ok(v) => v,
+			Err(_) => {
+				return Ok(Value::String("fail to query".to_string()));
+			},
+		};
+
+		let res = mcsql_sys::manager_restore_db(value.db_dir, value.db_bak_name, value.force);
+		Ok(Value::Number(res))
+	});
+
+	io.add_method("manager_upgrade_db", |params: Params| {
+		#[derive(Deserialize)]
+		struct UpgradeParams {
+			db_dir:   String,
+			upgrade_pkg:   String,
+		}
+		let value: UserNoParams = match params.parse() {
+			Ok(v) => v,
+			Err(_) => {
+				return Ok(Value::String("fail to query".to_string()));
+			},
+		};
+
+		let res = mcsql_sys::manager_upgrade_db(value.db_dir, value.upgrade_pkg);
+		Ok(Value::Number(res))
+	});
 }

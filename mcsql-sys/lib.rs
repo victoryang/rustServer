@@ -1,17 +1,17 @@
 #![feature(libc)]
 extern crate libc;
 
-use libc::{c_char, int32_t};
+use libc::{c_char, int32_t, c_int};
 use std::ffi::CString;
 
 /*
-* For initialization
+* For Initialization
 */
 extern {fn register_all_sql_mappers();}
 extern {fn mcsql_set_db_file(dbname: *const c_char);}
 
 /*
-* Database handle
+* Database Handle
 */
 extern {fn mcsql_arc_get_all() -> *mut c_char;}
 extern {fn mcsql_arc_get_params(file_no: int32_t, group: *const c_char) -> *mut c_char;}
@@ -30,6 +30,13 @@ extern {fn mcsql_toolframe_get_by_toolno(tool_no: int32_t) -> *mut c_char;}
 extern {fn mcsql_userframe_get_all() -> *mut c_char;}
 extern {fn mcsql_userframe_get_by_userno(user_no: int32_t) -> *mut c_char;}
 extern {fn mcsql_zeropoint_get_all() -> *mut c_char;}
+
+/*
+* Database Backup
+*/
+extern {fn mcsql_manager_backup_db(db_dir: *mut c_char) -> c_int;}
+extern {fn mcsql_manager_restore_db(db_dir: *mut c_char, db_bak_name: *mut c_char, db_dir: c_char) -> c_int;}
+extern {fn mcsql_manager_upgrade_db(db_dir: *mut c_char, upgrade_pkg: *mut c_char) -> c_int;}
 
 // Turn C result into String, responded to caller
 fn result_into_string_response(c_result: *mut c_char) -> String {
@@ -188,6 +195,49 @@ pub fn zeropoint_get_all() -> String {
 	let c_result = unsafe { mcsql_zeropoint_get_all() };
 
 	result_into_string_response(c_result)
+}
+
+pub fn manager_backup_db(db_dir: String) -> i32 {
+	let db_dir = match CString::new(db_dir) {
+		Ok(db_dir) => db_dir,
+		Err(_) => {
+			return String::from(""); 
+		}
+	};
+	unsafe { mcsql_manager_backup_db(db_dir) }
+}
+
+pub fn manager_restore_db(db_dir: String, db_bak_name: String, force: u8) -> i32 {
+	let db_dir = match CString::new(db_dir) {
+		Ok(db_dir) => db_dir,
+		Err(_) => {
+			return String::from(""); 
+		}
+	};
+	let db_bak_name = match CString::new(db_bak_name) {
+		Ok(db_bak_name) => db_bak_name,
+		Err(_) => {
+			return String::from(""); 
+		}
+	};
+
+	unsafe { mcsql_manager_restore_db(db_dir, db_bak_name, force) }
+}
+
+pub fn manager_upgrade_db(db_dir: String, upgrade_pkg: String) -> i32 {
+	let db_dir = match CString::new(db_dir) {
+		Ok(db_dir) => db_dir,
+		Err(_) => {
+			return String::from(""); 
+		}
+	};
+	let upgrade_pkg = match CString::new(upgrade_pkg) {
+		Ok(upgrade_pkg) => upgrade_pkg,
+		Err(_) => {
+			return String::from(""); 
+		}
+	};
+	unsafe { mcsql_manager_upgrade_db(db_dir, upgrade_pkg) }
 }
 
 pub fn init() {
