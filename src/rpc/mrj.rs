@@ -17,7 +17,7 @@ pub fn register_mcsql_funcs(io: &mut IoHandler) {
 			},
 		};
 
-		let res = mrj_sys::get_system_variables(datatype, start, end);
+		let res = mrj_sys::get_system_variables(value.datatype, value.start, value.end);
 		Ok(Value::String(res))
 	});
 
@@ -36,7 +36,7 @@ pub fn register_mcsql_funcs(io: &mut IoHandler) {
 			},
 		};
 
-		let res = mrj_sys::get_local_variables(datatype, num, start, end);
+		let res = mrj_sys::get_local_variables(value.datatype, value.num, value.start, value.end);
 		Ok(Value::String(res))
 	});
 
