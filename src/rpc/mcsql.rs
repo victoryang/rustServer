@@ -182,7 +182,7 @@ pub fn register_mcsql_funcs(io: &mut IoHandler) {
 			},
 		};
 		let res = mcsql_sys::manager_backup_db(value.db_dir);
-		Ok(Value::Number(res))
+		Ok(Value::Number(serde_json::Number::from(res)))
 	});
 
 	io.add_method("manager_restore_db", |params: Params| {
@@ -200,7 +200,7 @@ pub fn register_mcsql_funcs(io: &mut IoHandler) {
 		};
 
 		let res = mcsql_sys::manager_restore_db(value.db_dir, value.db_bak_name, value.force);
-		Ok(Value::Number(res))
+		Ok(Value::Number(serde_json::Number::from(res)))
 	});
 
 	io.add_method("manager_upgrade_db", |params: Params| {
@@ -209,7 +209,7 @@ pub fn register_mcsql_funcs(io: &mut IoHandler) {
 			db_dir:   String,
 			upgrade_pkg:   String,
 		}
-		let value: UserNoParams = match params.parse() {
+		let value: UpgradeParams = match params.parse() {
 			Ok(v) => v,
 			Err(_) => {
 				return Ok(Value::String("fail to query".to_string()));
@@ -217,6 +217,6 @@ pub fn register_mcsql_funcs(io: &mut IoHandler) {
 		};
 
 		let res = mcsql_sys::manager_upgrade_db(value.db_dir, value.upgrade_pkg);
-		Ok(Value::Number(res))
+		Ok(Value::Number(serde_json::Number::from(res)))
 	});
 }
