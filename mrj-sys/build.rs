@@ -33,10 +33,11 @@ fn main() {
     	Ok(()) => {
     		fs::copy("build/include/config.h", root.join("config.h")).unwrap();
     		fs::copy("mrj/mrj.h", include.join("mrj.h")).unwrap();
-		    fs::copy("mrj/mcresource.h", include.join("mcresource.h")).unwrap();
-		    fs::copy("mrj/mcvars.h", include.join("mcvars.h")).unwrap();
-		    fs::copy("mrj/mcplc.h", include.join("mcplc.h")).unwrap();
-		    fs::copy("mrj/mcnv.h", include.join("mcnv.h")).unwrap();
+		    fs::copy("mrj/mrjresource.h", include.join("mrjresource.h")).unwrap();
+            fs::copy("mrj/mrjsysvar.h", include.join("mrjsysvar.h")).unwrap();
+		    fs::copy("mrj/mrjlocvar.h", include.join("mrjlocvar.h")).unwrap();
+		    fs::copy("mrj/mrjplc.h", include.join("mrjplc.h")).unwrap();
+		    fs::copy("mrj/mrjnv.h", include.join("mrjnv.h")).unwrap();
     	},
     	Err(_) => return,
     }
