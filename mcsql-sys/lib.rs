@@ -47,7 +47,7 @@ pub fn arc_get_params(file_no: i32, group: String) -> String {
 		Err(_) => {
 			return String::from(""); 
 		}
-	}
+	};
 
 	let c_string = unsafe { CString::from_raw(mcsql_arc_get_params(file_no, group.as_ptr())) };
 	match c_string.into_string() {
@@ -104,14 +104,14 @@ pub fn ios_get_all(group: String, lang: String, auth: i32, tech: i32) -> String 
 		Err(_) => {
 			return String::from(""); 
 		}
-	}
+	};
 
 	let lang = match CString::new(lang) {
 		Ok(lang) => lang,
 		Err(_) => {
 			return String::from(""); 
 		}
-	}
+	};
 
 	let c_string = unsafe { CString::from_raw(mcsql_ios_get_all(group, lang, auth, tech)) };
 	match c_string.into_string() {
@@ -128,7 +128,7 @@ pub fn metadata_get_all(lang: *const c_char) -> String {
 		Err(_) => {
 			return String::from(""); 
 		}
-	}
+	};
 
 	let c_string = unsafe { CString::from_raw(mcsql_metadata_get_all(lang)) };
 	match c_string.into_string() {
@@ -156,7 +156,7 @@ pub fn params_get_valid_param_by_id(md_id: String) -> String {
 		Err(_) => {
 			return String::from(""); 
 		}
-	}
+	};
 
 	let c_string = unsafe { CString::from_raw(mcsql_params_get_valid_param_by_id(md_id)) };
 	match c_string.into_string() {
@@ -173,7 +173,7 @@ pub fn params_get_valid_param_by_group(group: String) -> String {
 		Err(_) => {
 			return String::from(""); 
 		}
-	}
+	};
 
 	let c_string = unsafe { CString::from_raw(mcsql_params_get_valid_param_by_group(group)) };
 	match c_string.into_string() {
