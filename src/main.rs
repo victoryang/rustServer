@@ -4,6 +4,8 @@
 extern crate websocket;
 
 extern crate jsonrpc_tcp_server;
+#[macro_use] extern crate serde_derive;
+extern crate serde;
 
 extern crate timer;
 extern crate chrono;
