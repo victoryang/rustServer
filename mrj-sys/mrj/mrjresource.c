@@ -1,4 +1,4 @@
-#include "mcresource.h"
+#include "mrjresource.h"
 
 cJSON* get_resource() {
 	cJSON* item;
@@ -20,4 +20,13 @@ cJSON* get_resource() {
 	cJSON_AddItemToObject(item, "servo_dirve_mode", cJSON_CreateNumber(SHARE_RES(servo_dirve_mode)));
 	cJSON_AddItemToObject(item, "speed_modify_play", cJSON_CreateNumber(NVRAM_PARA(speed_modify_play)));
 	return item;
+}
+
+char* mrj_get_resource() {
+	cJSON* root = cJSON_CreateObject();
+	cJSON_AddItemToObject(root, "resource", get_resource());
+
+	char *ret = cJSON_PrintUnformatted(root);
+	cJSON_Delete(root);
+	return ret;
 }

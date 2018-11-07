@@ -3,6 +3,7 @@ use jsonrpc_tcp_server::*;
 use jsonrpc_tcp_server::jsonrpc_core::*;
 
 mod mcsql;
+mod mrj;
 
 pub struct RpcServer {
 }
@@ -31,4 +32,5 @@ pub fn new_rpc_server() -> RpcServer {
 
 fn register_method(io: &mut IoHandler) {
 	mcsql::register_mcsql_funcs(io);
+	mrj::register_mcsql_funcs(io);
 }

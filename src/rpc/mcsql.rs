@@ -17,7 +17,7 @@ pub fn register_mcsql_funcs(io: &mut IoHandler) {
 		let value: ArcParams = match params.parse() {
 			Ok(v) => v,
 			Err(_) => {
-				return Ok(Value::String("".to_string()));
+				return Ok(Value::String("fail to query".to_string()));
 			},
 		};
 
@@ -56,7 +56,7 @@ pub fn register_mcsql_funcs(io: &mut IoHandler) {
 		let value: IosParams = match params.parse() {
 			Ok(v) => v,
 			Err(_) => {
-				return Ok(Value::String("".to_string()));
+				return Ok(Value::String("fail to query".to_string()));
 			},
 		};
 
@@ -72,7 +72,7 @@ pub fn register_mcsql_funcs(io: &mut IoHandler) {
 		let value: MetadataParams = match params.parse() {
 			Ok(v) => v,
 			Err(_) => {
-				return Ok(Value::String("".to_string()));
+				return Ok(Value::String("fail to query".to_string()));
 			},
 		};
 
@@ -93,7 +93,7 @@ pub fn register_mcsql_funcs(io: &mut IoHandler) {
 		let value: IdParams = match params.parse() {
 			Ok(v) => v,
 			Err(_) => {
-				return Ok(Value::String("".to_string()));
+				return Ok(Value::String("fail to query".to_string()));
 			},
 		};
 
@@ -109,7 +109,7 @@ pub fn register_mcsql_funcs(io: &mut IoHandler) {
 		let value: GroupParams = match params.parse() {
 			Ok(v) => v,
 			Err(_) => {
-				return Ok(Value::String("".to_string()));
+				return Ok(Value::String("fail to query".to_string()));
 			},
 		};
 
@@ -135,7 +135,7 @@ pub fn register_mcsql_funcs(io: &mut IoHandler) {
 		let value: ToolNoParams = match params.parse() {
 			Ok(v) => v,
 			Err(_) => {
-				return Ok(Value::String("".to_string()));
+				return Ok(Value::String("fail to query".to_string()));
 			},
 		};
 
@@ -157,7 +157,7 @@ pub fn register_mcsql_funcs(io: &mut IoHandler) {
 		let value: UserNoParams = match params.parse() {
 			Ok(v) => v,
 			Err(_) => {
-				return Ok(Value::String("".to_string()));
+				return Ok(Value::String("fail to query".to_string()));
 			},
 		};
 

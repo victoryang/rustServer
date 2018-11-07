@@ -1,4 +1,4 @@
-# include "mcplc.h"
+# include "mrjplc.h"
 
 cJSON* setElementToArray(volatile uint8_t* base, int array_size) {
 	int i=0;
@@ -17,4 +17,13 @@ cJSON* get_plc() {
 	cJSON_AddItemToObject(item, "PLC_VOUT", setElementToArray(SHARE_RES(plc).PLC_VOUT, IO_VOUT_NUM));
 	cJSON_AddItemToObject(item, "PLC_M", setElementToArray(SHARE_RES(plc).PLC_M, IO_M_NUM));
 	return item;
+}
+
+char* mrj_get_plc() {
+	cJSON* root = cJSON_CreateObject();
+	cJSON_AddItemToObject(root, "plc", get_plc());
+
+	char *ret = cJSON_PrintUnformatted(root);
+	cJSON_Delete(root);
+	return ret;
 }

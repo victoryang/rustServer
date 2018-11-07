@@ -1,4 +1,4 @@
-#include "mcnv.h"
+#include "mrjnv.h"
 
 cJSON* get_zero_encode() {
 	int i = 0;
@@ -35,4 +35,13 @@ cJSON* get_nv() {
 	cJSON_AddItemToObject(item, "system_ctrl_mode", cJSON_CreateNumber(GetSysCtrlMode()));
 	cJSON_AddItemToObject(item, "origin", get_origin());
 	return item;
+}
+
+char* mrj_get_nv() {
+	cJSON* root = cJSON_CreateObject();
+	cJSON_AddItemToObject(root, "nv", get_nv());
+
+	char *ret = cJSON_PrintUnformatted(root);
+	cJSON_Delete(root);
+	return ret;
 }
