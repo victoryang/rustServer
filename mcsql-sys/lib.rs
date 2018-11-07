@@ -34,9 +34,9 @@ extern {fn mcsql_zeropoint_get_all() -> *mut c_char;}
 /*
 * Database Backup
 */
-extern {fn mcsql_manager_backup_db(db_dir: *mut c_char) -> c_int;}
-extern {fn mcsql_manager_restore_db(db_dir: *mut c_char, db_bak_name: *mut c_char, db_dir: c_char) -> c_int;}
-extern {fn mcsql_manager_upgrade_db(db_dir: *mut c_char, upgrade_pkg: *mut c_char) -> c_int;}
+extern {fn mcsql_manager_backup_db(db_dir: *const c_char) -> c_int;}
+extern {fn mcsql_manager_restore_db(db_dir: *const c_char, db_bak_name: *const c_char, db_dir: c_char) -> c_int;}
+extern {fn mcsql_manager_upgrade_db(db_dir: *const c_char, upgrade_pkg: *const c_char) -> c_int;}
 
 // Turn C result into String, responded to caller
 fn result_into_string_response(c_result: *mut c_char) -> String {
