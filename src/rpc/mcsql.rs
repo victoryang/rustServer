@@ -60,7 +60,7 @@ pub fn register_mcsql_funcs(io: &mut IoHandler) {
 			},
 		};
 
-		let res = mcsql_sys::arc_get_params(value.group, value.lang, value.auth, value.tech);
+		let res = mcsql_sys::ios_get_all(value.group, value.lang, value.auth, value.tech);
 		Ok(Value::String(res))
 	});
 
@@ -76,7 +76,7 @@ pub fn register_mcsql_funcs(io: &mut IoHandler) {
 			},
 		};
 
-		let res = mcsql_sys::arc_get_params(value.lang);
+		let res = mcsql_sys::metadata_get_all(value.lang);
 		Ok(Value::String(res))
 	});
 
@@ -97,7 +97,7 @@ pub fn register_mcsql_funcs(io: &mut IoHandler) {
 			},
 		};
 
-		let res = mcsql_sys::arc_get_params(value.md_id);
+		let res = mcsql_sys::params_get_valid_param_by_id(value.md_id);
 		Ok(Value::String(res))
 	});
 
@@ -113,7 +113,7 @@ pub fn register_mcsql_funcs(io: &mut IoHandler) {
 			},
 		};
 
-		let res = mcsql_sys::arc_get_params(value.group);
+		let res = mcsql_sys::params_get_valid_param_by_group(value.group);
 		Ok(Value::String(res))
 	});
 
@@ -139,7 +139,7 @@ pub fn register_mcsql_funcs(io: &mut IoHandler) {
 			},
 		};
 
-		let res = mcsql_sys::arc_get_params(value.tool_no);
+		let res = mcsql_sys::toolframe_get_by_toolno(value.tool_no);
 		Ok(Value::String(res))
 	});
 
@@ -161,7 +161,7 @@ pub fn register_mcsql_funcs(io: &mut IoHandler) {
 			},
 		};
 
-		let res = mcsql_sys::arc_get_params(value.user_no);
+		let res = mcsql_sys::userframe_get_by_userno(value.user_no);
 		Ok(Value::String(res))
 	});
 
