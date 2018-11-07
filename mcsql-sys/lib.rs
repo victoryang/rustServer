@@ -47,7 +47,7 @@ fn result_into_string_response(c_result: *mut c_char) -> String {
 }
 
 pub fn arc_get_all() -> String {
-	let c_result = unsafe { mcsql_arc_get_all(tool_no) };
+	let c_result = unsafe { mcsql_arc_get_all() };
 
 	result_into_string_response(c_result)
 }
