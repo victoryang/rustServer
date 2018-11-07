@@ -1,7 +1,7 @@
 #ifndef MRJ_H
 #define MRJ_H
 
-#include "default.h"
+#include "define.h"
 
 int init_nv_ram();
 int mrj_init();
