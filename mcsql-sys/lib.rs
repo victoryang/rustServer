@@ -201,43 +201,43 @@ pub fn manager_backup_db(db_dir: String) -> i32 {
 	let db_dir = match CString::new(db_dir) {
 		Ok(db_dir) => db_dir,
 		Err(_) => {
-			return String::from(""); 
+			return -1; 
 		}
 	};
-	unsafe { mcsql_manager_backup_db(db_dir) }
+	unsafe { mcsql_manager_backup_db(db_dir.as_ptr()) }
 }
 
 pub fn manager_restore_db(db_dir: String, db_bak_name: String, force: u8) -> i32 {
 	let db_dir = match CString::new(db_dir) {
 		Ok(db_dir) => db_dir,
 		Err(_) => {
-			return String::from(""); 
+			return -1; 
 		}
 	};
 	let db_bak_name = match CString::new(db_bak_name) {
 		Ok(db_bak_name) => db_bak_name,
 		Err(_) => {
-			return String::from(""); 
+			return -1; 
 		}
 	};
 
-	unsafe { mcsql_manager_restore_db(db_dir, db_bak_name, force) }
+	unsafe { mcsql_manager_restore_db(db_dir.as_ptr(), db_bak_name.as_ptr(), force) }
 }
 
 pub fn manager_upgrade_db(db_dir: String, upgrade_pkg: String) -> i32 {
 	let db_dir = match CString::new(db_dir) {
 		Ok(db_dir) => db_dir,
 		Err(_) => {
-			return String::from(""); 
+			return -1; 
 		}
 	};
 	let upgrade_pkg = match CString::new(upgrade_pkg) {
 		Ok(upgrade_pkg) => upgrade_pkg,
 		Err(_) => {
-			return String::from(""); 
+			return -1; 
 		}
 	};
-	unsafe { mcsql_manager_upgrade_db(db_dir, upgrade_pkg) }
+	unsafe { mcsql_manager_upgrade_db(db_dir.as_ptr(), upgrade_pkg.as_ptr()) }
 }
 
 pub fn init() {
