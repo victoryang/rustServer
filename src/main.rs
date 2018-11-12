@@ -76,7 +76,7 @@ fn main() {
 
     info!("starting rpc server...");
     let rpcserver = rpc::new_rpc_server();
-    rpcserver.run();
+    rpcserver.run(websocket_tx.clone());
 
     handle_signals();
 }
