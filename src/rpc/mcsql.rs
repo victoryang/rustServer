@@ -122,7 +122,7 @@ pub fn register_mcsql_funcs(io: &mut IoHandler) {
 		struct OperationParams {
 			created_time:	i32,
 			start:			i32,
-			pageSize:		i32,
+			page_size:		i32,
 		}
 		let value: OperationParams = match params.parse() {
 			Ok(v) => v,
@@ -131,7 +131,7 @@ pub fn register_mcsql_funcs(io: &mut IoHandler) {
 			},
 		};
 
-		let res = mcsql_sys::operation_record_get_all(value.created_time, value.start, value.pageSize);
+		let res = mcsql_sys::operation_record_get_all(value.created_time, value.start, value.page_size);
 		Ok(Value::String(res))
 	});
 

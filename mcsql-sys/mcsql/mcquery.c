@@ -184,13 +184,13 @@ char* mcsql_metadata_get_all(char* lang) {
     return mcsql_db_query(&req);
 }
 
-char* mcsql_operation_record_get_all(int32_t created_time, int32_t start, int32_t pageSize) {
+char* mcsql_operation_record_get_all(int32_t created_time, int32_t start, int32_t page_size) {
     const char *q_id = ELIBOT_RECORD_GET_ALL;
 
     sql_parameter sql_params[] = {
             {name:"created_time", value:{ int_value: created_time}, type:DB_TYPE_INT32},
             {name:"start", value:{int_value: start}, type:DB_TYPE_INT32},
-            {name:"pageSize", value:{int_value: pageSize}, type: DB_TYPE_INT32},
+            {name:"pageSize", value:{int_value: page_size}, type: DB_TYPE_INT32},
     };
 
     db_query_req_parameter q_params = {

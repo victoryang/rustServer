@@ -162,8 +162,8 @@ pub fn params_get_valid_param_by_group(group: String) -> String {
 	result_into_string_response(c_result)
 }
 
-pub fn operation_record_get_all(created_time: i32, start: i32, pageSize: i32) -> String {
-	let c_result = unsafe { mcsql_operation_record_get_all(created_time, start, pageSize) };
+pub fn operation_record_get_all(created_time: i32, start: i32, page_size: i32) -> String {
+	let c_result = unsafe { mcsql_operation_record_get_all(created_time, start, page_size) };
 
 	result_into_string_response(c_result)
 }
