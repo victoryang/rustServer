@@ -204,7 +204,7 @@ char* mcsql_operation_record_get_all(int32_t created_time, int32_t start, int32_
 
     db_query_req req = {
             query_id:(char *)q_id,
-            conn_str:(char *)CONN_STRINGS,
+            conn_str:db_conn,
             option:&opt,
             parameter:&q_params,
             page:NULL,
