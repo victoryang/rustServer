@@ -61,6 +61,11 @@ void register_params_sql_mappers() {
     register_sql_mapper(mapper);
 };
 
+void register_record_op_sql_mapper() {
+    sql_mapper *mapper = get_record_sql_mapper(ELIBOT_RECORD_GET_ALL);
+    register_sql_mapper(mapper);
+}
+
 void register_ref_sql_mapper() {
 	sql_mapper *mapper = get_ref_sql_mapper(ELIBOT_REF_GET_ALL);
     register_sql_mapper(mapper);

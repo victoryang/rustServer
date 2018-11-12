@@ -24,6 +24,7 @@ extern {fn mcsql_metadata_get_all(lang: *const c_char) -> *mut c_char;}
 extern {fn mcsql_params_get_params() -> *mut c_char;}
 extern {fn mcsql_params_get_valid_param_by_id(md_id: *const c_char) -> *mut c_char;}
 extern {fn mcsql_params_get_valid_param_by_group(group: *const c_char) -> *mut c_char;}
+extern {fn mcsql_operation_record_get_all(created_time: int32_t, start: int32_t, pageSize: int32_t) -> *mut c_char;}
 extern {fn mcsql_ref_get_all() -> *mut c_char;}
 extern {fn mcsql_toolframe_get_all() -> *mut c_char;}
 extern {fn mcsql_toolframe_get_by_toolno(tool_no: int32_t) -> *mut c_char;}
@@ -157,6 +158,12 @@ pub fn params_get_valid_param_by_group(group: String) -> String {
 	};
 
 	let c_result = unsafe { mcsql_params_get_valid_param_by_group(group.as_ptr()) };
+
+	result_into_string_response(c_result)
+}
+
+pub fn operation_record_get_all(created_time: i32, start: i32, pageSize: i32) -> String {
+	let c_result = unsafe { mcsql_operation_record_get_all(created_time, start, pageSize) };
 
 	result_into_string_response(c_result)
 }

@@ -184,6 +184,35 @@ char* mcsql_metadata_get_all(char* lang) {
     return mcsql_db_query(&req);
 }
 
+char* mcsql_operation_record_get_all(int32_t created_time, int32_t start, int32_t pageSize) {
+    const char *q_id = ELIBOT_RECORD_GET_ALL;
+
+    sql_parameter sql_params[] = {
+            {name:"created_time", value:{ int_value: created_time}, type:DB_TYPE_INT32},
+            {name:"start", value:{int_value: start}, type:DB_TYPE_INT32},
+            {name:"pageSize", value:{int_value: pageSize}, type: DB_TYPE_INT32},
+    };
+
+    db_query_req_parameter q_params = {
+            params: sql_params,
+            param_size: 3
+    };
+
+    db_query_req_option opt = {
+            type_handle_mode:DB_QUERY_MODE_STANDARD
+    };
+
+    db_query_req req = {
+            query_id:(char *)q_id,
+            conn_str:(char *)CONN_STRINGS,
+            option:&opt,
+            parameter:&q_params,
+            page:NULL,
+    };
+
+    return mcsql_db_query(&req);
+}
+
 char* mcsql_params_get_params() {
     const char *q_id = ELIBOT_PARAMS_GET_PARAMS;
 

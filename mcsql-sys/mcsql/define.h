@@ -18,5 +18,6 @@
 #include "db/sqlmapper/toolframe_sql_mapper.h"
 #include "db/sqlmapper/userframe_sql_mapper.h"
 #include "db/sqlmapper/zeropoint_sql_mapper.h"
+#include "db/sqlmapper/recordoperation_sql_mapper.h"
 
 #endif //DEFINE_H

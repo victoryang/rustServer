@@ -117,6 +117,24 @@ pub fn register_mcsql_funcs(io: &mut IoHandler) {
 		Ok(Value::String(res))
 	});
 
+	io.add_method("operation_record_get_all", |params: Params| {
+		#[derive(Deserialize)]
+		struct OperationParams {
+			created_time:	i32,
+			start:			i32,
+			pageSize:		i32,
+		}
+		let value: OperationParams = match params.parse() {
+			Ok(v) => v,
+			Err(_) => {
+				return Ok(Value::String("fail to query".to_string()));
+			},
+		};
+
+		let res = mcsql_sys::operation_record_get_all(value.created_time, value.start, value.pageSize);
+		Ok(Value::String(res))
+	});
+
 	io.add_method("ref_get_all", |_params: Params| {
 		let res = mcsql_sys::ref_get_all();
 		Ok(Value::String(res))
