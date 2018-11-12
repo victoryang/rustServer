@@ -1,7 +1,10 @@
 use std::sync::mpsc;
+use std::sync::Mutex;
 use jsonrpc_tcp_server::jsonrpc_core::*;
 
 pub fn register_websocket_funcs(io: &mut IoHandler, websocket: mpsc::Sender<Vec<u8>>) {
+	let websocket_sender = Mutex::new(websocket);
+
 	io.add_method("alarm_record_changes", move |params: Params| {
 		#[derive(Deserialize)]
 		struct AlarmParams {
@@ -14,9 +17,7 @@ pub fn register_websocket_funcs(io: &mut IoHandler, websocket: mpsc::Sender<Vec<
 			},
 		};
 
-		let websocket_sender = websocket.clone();
-
-		match websocket_sender.send(value.message){
+		match websocket_sender.lock.send(value.message){
 			Ok(()) => Ok(Value::Bool(true)),
 			Err(_) => Ok(Value::Bool(false)),
 		}
