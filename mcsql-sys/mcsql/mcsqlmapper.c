@@ -72,13 +72,16 @@ void register_toolframe_sql_mappers() {
     sql_mapper *mapper = get_common_toolframe_sql_mapper(ELIBOT_COMMON_GET_ALL_TOOLFRAMES);
     register_sql_mapper(mapper);
 
-    // ELIBOT_COMMMON_GET_ALL_TOOLPOS
-    mapper = get_common_toolframe_sql_mapper(ELIBOT_COMMON_GET_ALL_TOOLPOS);
+    // ELIBOT_COMMON_GET_TOOLFRAMES
+    mapper = get_common_toolframe_sql_mapper(ELIBOT_COMMON_GET_TOOLFRAMES);
     register_sql_mapper(mapper);
 };
 
 void register_userframe_sql_mappers() {
     sql_mapper *mapper = get_userframe_sql_mapper(ELIBOT_USER_FRAME_GET_ALL);
+    register_sql_mapper(mapper);
+
+    mapper = get_userframe_sql_mapper(ELIBOT_USER_FRAME_GET_BY_USER_NO);
     register_sql_mapper(mapper);
 };
 

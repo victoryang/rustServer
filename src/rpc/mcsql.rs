@@ -206,8 +206,8 @@ pub fn register_mcsql_funcs(io: &mut IoHandler) {
 	io.add_method("manager_upgrade_db", |params: Params| {
 		#[derive(Deserialize)]
 		struct UpgradeParams {
-			db_dir:   String,
-			upgrade_pkg:   String,
+			db_dir:   		String,
+			upgrade_pkg:	String,
 		}
 		let value: UpgradeParams = match params.parse() {
 			Ok(v) => v,
