@@ -24,7 +24,7 @@ extern {fn mcsql_metadata_get_all(lang: *const c_char) -> *mut c_char;}
 extern {fn mcsql_params_get_params() -> *mut c_char;}
 extern {fn mcsql_params_get_valid_param_by_id(md_id: *const c_char) -> *mut c_char;}
 extern {fn mcsql_params_get_valid_param_by_group(group: *const c_char) -> *mut c_char;}
-extern {fn mcsql_operation_record_get_all(created_time: int32_t, start: int32_t, pageSize: int32_t) -> *mut c_char;}
+extern {fn mcsql_operation_record_get_all(created_time: int32_t, start: int32_t, page_size: int32_t) -> *mut c_char;}
 extern {fn mcsql_ref_get_all() -> *mut c_char;}
 extern {fn mcsql_toolframe_get_all() -> *mut c_char;}
 extern {fn mcsql_toolframe_get_by_toolno(tool_no: int32_t) -> *mut c_char;}

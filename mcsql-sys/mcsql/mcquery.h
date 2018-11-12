@@ -19,7 +19,7 @@ char* mcsql_ios_get_all(char* group, char* lang, int32_t auth, int32_t tech);
 
 char* mcsql_metadata_get_all(char* lang);
 
-char* mcsql_operation_record_get_all(int32_t created_time, int32_t start, int32_t pageSize)
+char* mcsql_operation_record_get_all(int32_t created_time, int32_t start, int32_t page_size);
 
 char* mcsql_params_get_params();
 
