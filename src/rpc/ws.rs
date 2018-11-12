@@ -17,8 +17,13 @@ pub fn register_websocket_funcs(io: &mut IoHandler, websocket: mpsc::Sender<Vec<
 			},
 		};
 
-		match websocket_sender.lock.send(value.message){
-			Ok(()) => Ok(Value::Bool(true)),
+		match websocket_sender.lock(){
+			Ok(sender) => {
+				match sender.send(value.message){
+					Ok(()) => Ok(Value::Bool(true)),
+					Err(_) => Ok(Value::Bool(false)),
+				}
+			}, 
 			Err(_) => Ok(Value::Bool(false)),
 		}
 	});
