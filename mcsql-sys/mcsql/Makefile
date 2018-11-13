@@ -3,7 +3,9 @@ AR = arm-linux-gnueabihf-ar
 SHARED = -shared
 RCS = rcs
 
-CPPFLAGS += -I/root/mcserver/include/ -fPIC -Wall
+INCLUDE = /root/mcserver/include/
+
+CPPFLAGS += -I$(INCLUDE) -fPIC -Wall
 
 .PHONY: all
 
