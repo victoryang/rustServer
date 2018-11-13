@@ -1,7 +1,11 @@
 #!/bin/sh
 
 curl https://sh.rustup.rs -sSf | sh
+echo "\n"
 source $HOME/.cargo/env
+
+# Install nightly
+rustup install nightly
 
 # registry ustc
 echo -e "[source.crates-io]\nregistry = \"https://github.com/rust-lang/crates.io-index\"\nreplace-with = 'ustc'\n" > ~/.cargo/config
@@ -17,12 +21,9 @@ wget https://www.openssl.org/source/openssl-1.0.2l.tar.gz
 tar xzf openssl-1.0.2l.tar.gz
 
 cd openssl-1.0.2l
-./Configure --prefix=$HOME/raspberry/depsBuild/openssl os/compiler:arm-linux-gnueabihf
+./Configure os/compiler:arm-linux-gnueabihf
 make CC="arm-linux-gnueabihf-gcc" AR="arm-linux-gnueabihf-ar r" RANLIB="arm-linux-gnueabihf-ranlib"
 make install
 
 cd -
 rm -rf openssl-1.0.2l*
-
-# Install nightly
-rustup install nightly
