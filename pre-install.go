@@ -22,11 +22,12 @@ echo -e "[target.armv7-unknown-linux-gnueabihf]\nlinker = \"arm-linux-gnueabihf-
 # Dependency for openssl
 wget https://www.openssl.org/source/openssl-1.0.2l.tar.gz
 tar xzf openssl-1.0.2l.tar.gz
+export MACHINE=armv7
+export ARCH=arm
+export CC=arm-linux-gnueabihf-gcc
 
 cd openssl-1.0.2l
-./Configure os/compiler:arm-linux-gnueabihf
-make CC="arm-linux-gnueabihf-gcc" AR="arm-linux-gnueabihf-ar r" RANLIB="arm-linux-gnueabihf-ranlib"
-make install
+./config shared && make && make install
 
 cd -
 rm -rf openssl-1.0.2l*
