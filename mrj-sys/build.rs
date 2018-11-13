@@ -45,7 +45,8 @@ fn main() {
     fs::create_dir_all(&libdir).unwrap();
     fs::copy("build/lib/libshare.a", libdir.join("libshare.a")).unwrap();
 
-    Command::new("make").args(&["-C", "mrj/"]).status().unwrap();
+    let env = format!("INCLUDE={}", include.display()); 
+    Command::new("make").args(&[env.as_str(), "-C", "mrj/"]).status().unwrap();
     fs::copy("mrj/libmrj.a", libdir.join("libmrj.a")).unwrap();
 
     println!("cargo:rustc-link-lib=static=share");

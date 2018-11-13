@@ -24,4 +24,4 @@
 	cp include/config.h /root/mcserver
 
 ## Run build
-	CC=arm-linux-gnueabihf-gcc GOOS=linux GOARCH=arm GOARM=6 CGO_ENABLED=1 go build -v -o /root/elibot-server
+	OPENSSL_STATIC=1 OPENSSL_LIB_DIR=/usr/local/ssl/lib OPENSSL_INCLUDE_DIR=/usr/local/ssl/include cargo build --target=armv7-unknown-linux-gnueabihf
