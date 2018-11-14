@@ -1,6 +1,11 @@
 sudo: required
 dist: trusty
 
+language: go
+
+go:
+  - "1.10.x"
+
 install:
   - chmod +x ci-install.sh && sh -C ci-install.sh
 
@@ -10,7 +15,7 @@ script:
 deploy:
   provider: releases
   api_key: ${GH_TOKEN}
-  file: elibot-apiserver
+  file: rustServer
   skip_cleanup: true
   on:
     tags: true
