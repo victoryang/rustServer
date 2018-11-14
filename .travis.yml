@@ -1,0 +1,16 @@
+sudo: required
+dist: trusty
+
+install:
+  - chmod +x pre-install.sh && sh -C pre-install.sh
+
+script:
+  - chmod +x pre-install.sh && sh -C pre-install.sh
+
+deploy:
+  provider: releases
+  api_key: ${GH_TOKEN}
+  file: elibot-apiserver
+  skip_cleanup: true
+  on:
+    tags: true
