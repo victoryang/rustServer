@@ -1,9 +1,7 @@
 #!/bin/sh
 
-set -e
-
-curl https://sh.rustup.rs -sSf | sh
-echo -e "\n"
+curl https://sh.rustup.rs -sSf > rust_install.sh
+chmod +x rust_install.sh && ./rust_install.sh -y
 source $HOME/.cargo/env
 
 # Install nightly

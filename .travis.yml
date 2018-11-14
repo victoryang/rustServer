@@ -1,9 +1,6 @@
 sudo: required
 dist: trusty
 
-language: rust
-rust: nightly
-
 install:
   - chmod +x ci-install.sh && sh -C ci-install.sh
 
