@@ -5,10 +5,10 @@ language: rust
 rust: nightly
 
 install:
-  - chmod +x pre-install.sh && sh -C pre-install.sh
+  - chmod +x ci-install.sh && sh -C ci-install.sh
 
 script:
-  - chmod +x pre-install.sh && sh -C pre-install.sh
+  - make
 
 deploy:
   provider: releases

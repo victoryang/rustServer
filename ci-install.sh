@@ -2,16 +2,22 @@
 
 set -e
 
-curl https://sh.rustup.rs -sSf | sh
-echo -e "\n"
-source $HOME/.cargo/env
+# curl https://sh.rustup.rs -sSf | sh
+# echo -e "\n"
+# source $HOME/.cargo/env
 
-# Install nightly
-rustup install nightly
-rustup default nightly
+# # Install nightly
+# rustup install nightly
+# rustup default nightly
 
 # Instarll arm tool
-sudo apt-get install -qq gcc-arm-linux-gnueabihf
+sudo apt-get install -y libc6-armel-cross libc6-dev-armel-cross
+sudo apt-get install -y binutils-arm-linux-gnueabi binutils-arm-linux-gnueabihf
+sudo apt-get install -y libncurses5-dev
+
+sudo apt-get install -y gcc-arm-linux-gnueabihf
+sudo apt-get install -y g++-arm-linux-gnueabihf
+
 rustup target add armv7-unknown-linux-gnueabihf
 
 # registry ustc
