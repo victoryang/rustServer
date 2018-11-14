@@ -34,7 +34,7 @@ cd openssl-1.0.2l
 export MACHINE=armv7
 export ARCH=arm
 export CC=arm-linux-gnueabihf-gcc 
-./config shared && make && make install
+./config shared && make && sudo make install
 
 cd -
 rm -rf openssl-1.0.2l*
@@ -44,5 +44,5 @@ unset CC
 export CC_armv7_unknown_linux_gnueabihf=arm-linux-gnueabihf-gcc
 
 # Dependency for libsqlitedb.so
-cp mcsql-sys/build/lib/libz.so.1.2.8 /usr/arm-linux-gnueabihf/lib/
-ln -s /usr/arm-linux-gnueabihf/lib/libz.so.1.2.8 /usr/arm-linux-gnueabihf/lib/libz.so.1
+sudo cp mcsql-sys/build/lib/libz.so.1.2.8 /usr/arm-linux-gnueabihf/lib/
+sudo ln -s /usr/arm-linux-gnueabihf/lib/libz.so.1.2.8 /usr/arm-linux-gnueabihf/lib/libz.so.1
