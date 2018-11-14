@@ -1,22 +1,8 @@
 #!/bin/sh
 
-curl https://sh.rustup.rs -sSf > rust_install.sh
-chmod +x rust_install.sh && ./rust_install.sh -y
-source $HOME/.cargo/env
-
-# Install nightly
-rustup install nightly
-rustup default nightly
-
 # Instarll arm tool
 sudo apt-get update
-sudo apt-get install -y libc6-armel-cross libc6-dev-armel-cross
-sudo apt-get install -y binutils-arm-linux-gnueabi binutils-arm-linux-gnueabihf
-sudo apt-get install -y libncurses5-dev
-
-sudo apt-get install -y gcc-arm-linux-gnueabihf
-sudo apt-get install -y g++-arm-linux-gnueabihf
-
+sudo apt-get install -qq gcc-arm-linux-gnueabihf
 rustup target add armv7-unknown-linux-gnueabihf
 
 # registry ustc
@@ -34,7 +20,7 @@ cd openssl-1.0.2l
 export MACHINE=armv7
 export ARCH=arm
 export CC=arm-linux-gnueabihf-gcc 
-./config shared && make && make install
+./config shared && make && sudo make install
 
 cd -
 rm -rf openssl-1.0.2l*
@@ -44,5 +30,5 @@ unset CC
 export CC_armv7_unknown_linux_gnueabihf=arm-linux-gnueabihf-gcc
 
 # Dependency for libsqlitedb.so
-cp mcsql-sys/build/lib/libz.so.1.2.8 /usr/arm-linux-gnueabihf/lib/
-ln -s /usr/arm-linux-gnueabihf/lib/libz.so.1.2.8 /usr/arm-linux-gnueabihf/lib/libz.so.1
+sudo cp mcsql-sys/build/lib/libz.so.1.2.8 /usr/arm-linux-gnueabihf/lib/
+sudo ln -s /usr/arm-linux-gnueabihf/lib/libz.so.1.2.8 /usr/arm-linux-gnueabihf/lib/libz.so.1

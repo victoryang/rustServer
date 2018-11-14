@@ -1,10 +1,9 @@
 sudo: required
 dist: trusty
 
-language: go
+language: rust
 
-go:
-  - "1.10.x"
+rust: nightly
 
 install:
   - chmod +x ci-install.sh && . ./ci-install.sh
