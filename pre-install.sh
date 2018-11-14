@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# set -e
+set -e
 
 # curl https://sh.rustup.rs -sSf | sh
 # echo -e "\n"
@@ -11,6 +11,8 @@
 # rustup default nightly
 
 # Instarll arm tool
+sudo apt get gcc-4.6-arm-linux-gnueabihf
+sudo apt get gcc-arm-linux-gnueabihf
 sudo apt-get install -qq gcc-arm-linux-gnueabihf
 rustup target add armv7-unknown-linux-gnueabihf
 
