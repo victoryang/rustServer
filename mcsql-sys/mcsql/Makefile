@@ -7,7 +7,7 @@ INCLUDE = /root/mcserver/include/
 LIB = /usr/arm-linux-gnueabihf/lib/
 
 CPPFLAGS += -I$(INCLUDE) -fPIC -Wall
-LDFLAGS += -L$(LIB)
+LDFLAGS += -L$(LIB) -rpath-link $(LIB)
 
 .PHONY: all
 
