@@ -11,7 +11,7 @@
 # rustup default nightly
 
 # Instarll arm tool
-sudo apt-get install -qq gcc-arm-linux-gnueabihf
+apt-get install -qq gcc-arm-linux-gnueabihf
 rustup target add armv7-unknown-linux-gnueabihf
 
 # registry ustc
