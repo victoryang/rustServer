@@ -1,14 +1,14 @@
 #!/bin/sh
 
-set -e
+# set -e
 
-curl https://sh.rustup.rs -sSf | sh
-echo -e "\n"
-source $HOME/.cargo/env
+# curl https://sh.rustup.rs -sSf | sh
+# echo -e "\n"
+# source $HOME/.cargo/env
 
-# Install nightly
-rustup install nightly
-rustup default nightly
+# # Install nightly
+# rustup install nightly
+# rustup default nightly
 
 # Instarll arm tool
 sudo apt-get install -qq gcc-arm-linux-gnueabihf

@@ -1,6 +1,9 @@
 sudo: required
 dist: trusty
 
+language: rust
+rust: nightly
+
 install:
   - chmod +x pre-install.sh && sh -C pre-install.sh
 
