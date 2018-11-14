@@ -6,9 +6,15 @@ sudo apt-get install -qq gcc-arm-linux-gnueabihf
 rustup target add armv7-unknown-linux-gnueabihf
 
 # registry ustc
-echo -e "[source.crates-io]\nregistry = \"https://github.com/rust-lang/crates.io-index\"\nreplace-with = 'ustc'\n" > $HOME/.cargo/config
-echo -e "[source.ustc]\nregistry = \"git://mirrors.ustc.edu.cn/crates.io-index\"\n" >> $HOME/.cargo/config
-echo -e "[target.armv7-unknown-linux-gnueabihf]\nlinker = \"arm-linux-gnueabihf-gcc\"\n" >> $HOME/.cargo/config
+echo "[source.crates-io]
+registry = \"https://github.com/rust-lang/crates.io-index\"
+replace-with = 'ustc'
+		 
+[source.ustc]
+registry = \"git://mirrors.ustc.edu.cn/crates.io-index\"
+
+[target.armv7-unknown-linux-gnueabihf]
+linker = \"arm-linux-gnueabihf-gcc\"" > $HOME/.cargo/config
 
 # Dependency for openssl
 wget https://www.openssl.org/source/openssl-1.0.2l.tar.gz
