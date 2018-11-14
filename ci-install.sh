@@ -9,6 +9,7 @@ rustup install nightly
 rustup default nightly
 
 # Instarll arm tool
+sudo apt-get update
 sudo apt-get install -y libc6-armel-cross libc6-dev-armel-cross
 sudo apt-get install -y binutils-arm-linux-gnueabi binutils-arm-linux-gnueabihf
 sudo apt-get install -y libncurses5-dev

@@ -7,7 +7,7 @@ go:
   - "1.10.x"
 
 install:
-  - chmod +x ci-install.sh && sh -C ci-install.sh
+  - chmod +x ci-install.sh && . ./ci-install.sh
 
 script:
   - make
