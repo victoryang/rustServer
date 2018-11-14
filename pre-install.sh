@@ -3,7 +3,7 @@
 set -e
 
 curl https://sh.rustup.rs -sSf | sh
-echo "\n"
+echo -e "\n"
 source $HOME/.cargo/env
 
 # Install nightly
@@ -24,9 +24,16 @@ wget https://www.openssl.org/source/openssl-1.0.2l.tar.gz
 tar xzf openssl-1.0.2l.tar.gz
 
 cd openssl-1.0.2l
-./Configure os/compiler:arm-linux-gnueabihf
-make CC="arm-linux-gnueabihf-gcc" AR="arm-linux-gnueabihf-ar r" RANLIB="arm-linux-gnueabihf-ranlib"
-make install
+
+# dynamic library
+export MACHINE=armv7
+export ARCH=arm
+export CC=arm-linux-gnueabihf-gcc 
+./config shared && make && make install
 
 cd -
 rm -rf openssl-1.0.2l*
+
+# reset CC
+unset CC
+export CC_armv7_unknown_linux_gnueabihf=arm-linux-gnueabihf-gcc

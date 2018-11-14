@@ -44,8 +44,9 @@ fn main() {
     fs::copy("build/lib/libz.so.1.2.8", libdir.join("libz.so.1.2.8")).unwrap();
     fs::copy("build/lib/libsqlitedb.so", libdir.join("libsqlitedb.so")).unwrap();
 
-    let env = format!("INCLUDE={}", include.display()); 
-    Command::new("make").args(&[env.as_str(), "-C", "mcsql/"]).status().unwrap();
+    let arg_inc = format!("INCLUDE={}", include.display());
+    let arg_lib = format!("LIB={}", libdir.display());
+    Command::new("make").args(&[arg_inc.as_str(), arg_lib.as_str(), "-C", "mcsql/"]).status().unwrap();
     fs::copy("mcsql/libmcsql.a", libdir.join("libmcsql.a")).unwrap();
 
     println!("cargo:rustc-link-lib=sqlitedb");
