@@ -15,8 +15,10 @@
 # Build
     source $HOME/.cargo/env && make
 
-# Get Binary
+# Runtime Requires
 	/usr/local/ssl/lib/libssl.so.1.0.0
+
+# Get Binary	
     rust_server
 
 # Debug
