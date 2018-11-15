@@ -43,13 +43,13 @@ fn main() {
     }
 
     fs::create_dir_all(&libdir).unwrap();
-    fs::copy("build/lib/libshare.a", libdir.join("libshare.a")).unwrap();
+    fs::copy("build/lib/librobresource.so", libdir.join("librobresource.so")).unwrap();
 
     let env = format!("INCLUDE={}", include.display()); 
     Command::new("make").args(&[env.as_str(), "-C", "mrj/"]).status().unwrap();
     fs::copy("mrj/libmrj.a", libdir.join("libmrj.a")).unwrap();
 
-    println!("cargo:rustc-link-lib=static=share");
+    println!("cargo:rustc-link-lib=robresource");
     println!("cargo:rustc-link-lib=static=mrj");
     println!("cargo:rustc-link-search=native={}", libdir.display());
 }
