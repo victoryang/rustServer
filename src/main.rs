@@ -51,17 +51,17 @@ fn handle_signals() {
     }
 }
 
-fn setup_log() {
-	/*if rlog::check_file_size_exceeded_max(&filename) {
-		let backupfilename = filename.push_str(".bak");
-		fs::rename(&filename, backupfilename);
-	}*/
+fn setup_log(src: String) {
+	if rlog::check_file_size_exceeded_max(&src) {
+		let des = src.clone().push_str(".bak");
+		fs::rename(&src, des);
+	};
 
-	rlog::setup_logging(0, "/rbctrl/apiserver/log/rust.log".to_string()).expect("Failed to initialize logging.");
+	rlog::setup_logging(0, src).expect("Failed to initialize logging.");
 }
 
 fn main() {
-	setup_log();
+	setup_log("/rbctrl/apiserver/log/rust.log".to_string());
 
 	info!("starting websocket server...");
 	let (websocket_tx, websocket_rx) = mpsc::channel::<Vec<u8>>();
