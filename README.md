@@ -5,6 +5,9 @@
 # Get Source
     git clone https://github.com/victoryang/rustServer.git
 
+# Build Requires
+	see require.md
+
 # Install
     chmod +x pre-install.sh
     . ./pre-install.sh
@@ -13,6 +16,7 @@
     source $HOME/.cargo/env && make
 
 # Get Binary
+	/usr/local/ssl/lib/libssl.so.1.0.0
     rust_server
 
 # Debug
