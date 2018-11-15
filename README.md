@@ -2,24 +2,24 @@
 
 # rust_server
 
-# Get Source
+## Get Source
     git clone https://github.com/victoryang/rustServer.git
 
-# Build Requires
+## Build Requires
 	see require.md
 
-# Install
+## Install
     chmod +x pre-install.sh
     . ./pre-install.sh
 
-# Build
+## Build
     source $HOME/.cargo/env && make
 
-# Runtime Requires
+## Runtime Requires
 	/usr/local/ssl/lib/libssl.so.1.0.0
 
-# Get Binary	
+## Get Binary	
     rust_server
 
-# Debug
+## Debug
 	RUST_BACKTRACE=1
