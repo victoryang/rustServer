@@ -4,10 +4,8 @@ SHARED = -shared
 RCS = rcs
 
 INCLUDE = /root/mcserver/include/
-LIB = /usr/arm-linux-gnueabihf/lib/
 
 CPPFLAGS += -I$(INCLUDE) -fPIC -Wall
-LDFLAGS += -L$(LIB) -Wl,-rpath-link=$(LIB)
 
 .PHONY: all
 
@@ -17,19 +15,19 @@ libmcsql.a: mcquery.o mcmanager.o mcsql.o mcsqlmapper.o
 	$(AR) $(RCS) $@ $^
 
 test: test_main.c mcsql.o mcquery.o mcmanager.o
-	$(CC) $(CPPFLAGS) $(LDFLAGS) -o $@ $^ -lsqlitedb
+	$(CC) $(CPPFLAGS) -o $@ $^ -lsqlitedb
 
 mcsql.o: mcsql.c
-	$(CC) $(CPPFLAGS) $(LDFLAGS) -o $@ -c $^ -lsqlitedb
+	$(CC) $(CPPFLAGS) -o $@ -c $^ -lsqlitedb
 
 mcquery.o: mcquery.c
-	$(CC) $(CPPFLAGS) $(LDFLAGS) -o $@ -c $^ -lsqlitedb
+	$(CC) $(CPPFLAGS) -o $@ -c $^ -lsqlitedb
 
 mcmanager.o: mcmanager.c
-	$(CC) $(CPPFLAGS) $(LDFLAGS) -o $@ -c $^ -lsqlitedb
+	$(CC) $(CPPFLAGS) -o $@ -c $^ -lsqlitedb
 
 mcsqlmapper.o: mcsqlmapper.c
-	$(CC) $(CPPFLAGS) $(LDFLAGS) -o $@ -c $^ -lsqlitedb
+	$(CC) $(CPPFLAGS) -o $@ -c $^ -lsqlitedb
 
 clean:
 	rm -f *.o libmcsql.a
