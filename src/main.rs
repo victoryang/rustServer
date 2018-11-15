@@ -23,6 +23,7 @@ extern crate mcsql_sys;
 
 use std::sync::mpsc;
 use std::thread;
+use std::fs;
 
 use signal::trap::Trap;
 use nix::sys::signal::{SIGUSR1, SIGHUP, SIGINT, SIGTERM};
@@ -53,8 +54,12 @@ fn handle_signals() {
 
 fn setup_log(src: String) {
 	if rlog::check_file_size_exceeded_max(&src) {
-		let des = src.clone().push_str(".bak");
-		fs::rename(&src, des);
+		let mut des = src.clone();
+        des.push_str(".bak")
+		match fs::rename(src.as_str(), des.as_str()) {
+            Ok(()) => info!("log backuped"),
+            Err(_) => info!("log fails to be backuped"),
+        };
 	};
 
 	rlog::setup_logging(0, src).expect("Failed to initialize logging.");
