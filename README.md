@@ -1,13 +1,19 @@
 [![Build Status](https://travis-ci.org/victoryang/rustServer.svg?branch=master)](https://travis-ci.org/victoryang/rustServer)
 
-RUST_BACKTRACE=1
+# rust_server
 
-git clone https://github.com/victoryang/rustServer.git
+# Get Source
+    git clone https://github.com/victoryang/rustServer.git
 
-chmod +x pre-install.sh
+# Install
+    chmod +x pre-install.sh
+    . ./pre-install.sh
 
-. ./pre-install.sh
+# Build
+    source $HOME/.cargo/env && make
 
-make
+# Get Binary
+    rust_server
 
-target/armv7-unknown-linux-gnueabihf/debug/param-server
+# Debug
+	RUST_BACKTRACE=1

@@ -1,12 +1,9 @@
 #!/bin/sh
 
+# Install cargo and rustup tool
 curl https://sh.rustup.rs -sSf > rust_install.sh
-chmod +x rust_install.sh && ./rust_install.sh -y
+chmod +x rust_install.sh && ./rust_install.sh --default-toolchain nightly -y
 source $HOME/.cargo/env
-
-# Install nightly
-rustup install nightly
-rustup default nightly
 
 # Instarll arm tool
 sudo apt-get update
