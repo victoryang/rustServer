@@ -4,6 +4,7 @@
 curl https://sh.rustup.rs -sSf > rust_install.sh
 chmod +x rust_install.sh && ./rust_install.sh --default-toolchain nightly -y
 source $HOME/.cargo/env
+rm -rf rust_install.sh
 
 # Instarll arm tool
 sudo apt-get update
