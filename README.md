@@ -23,3 +23,4 @@
 
 ## Debug
 	RUST_BACKTRACE=1
+	https://stackoverflow.com/questions/38803760/how-to-get-a-release-build-with-debugging-information-when-using-cargo
