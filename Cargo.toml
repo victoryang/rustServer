@@ -23,6 +23,7 @@ git = "https://github.com/daboross/fern.git"
 [target.'cfg(unix)'.dependencies]
 signal = "0.2"
 
+# https://doc.rust-lang.org/cargo/reference/manifest.html#the-profile-sections
 [profile.dev]
 opt-level = 0      # controls the `--opt-level` the compiler builds with.
                    # 0-1 is good for debugging. 2 is well-optimized. Max is 3.
@@ -45,6 +46,7 @@ panic = 'unwind'   # panic strategy (`-C panic=...`), can also be 'abort'
 incremental = true # whether or not incremental compilation is enabled
 overflow-checks = true # use overflow checks for integer arithmetic.
                    # Passes the `-C overflow-checks=...` flag to the compiler.
+				   # Finished dev [unoptimized + debuginfo] target(s) in 11m 23s
 
 # The release profile, used for `cargo build --release`.
 [profile.release]
@@ -57,3 +59,5 @@ codegen-units = 16
 panic = 'unwind'
 incremental = false
 overflow-checks = false
+				   # Finished release [optimized] target(s) in 16m 57s
+				   # RUSTFLAGS="-C link-arg=-s" cargo build --release make everything dynamicly linked

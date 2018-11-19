@@ -24,3 +24,7 @@
 ## Debug
 	RUST_BACKTRACE=1
 	https://stackoverflow.com/questions/38803760/how-to-get-a-release-build-with-debugging-information-when-using-cargo
+	https://lifthrasiir.github.io/rustlog/why-is-a-rust-executable-large.html
+
+	if build with --release then
+	out: target/armv7-unknown-linux-gnueabihf/release/rustServer
