@@ -23,7 +23,7 @@ registry = \"git://mirrors.ustc.edu.cn/crates.io-index\"
 linker = \"arm-linux-gnueabihf-gcc\"" > $HOME/.cargo/config
 
 # Dependency for openssl
-wget https://www.openssl.org/source/openssl-1.0.2l.tar.gz
+wget https://www.openssl.org/source/openssl-1.0.2p.tar.gz
 tar xzf openssl-1.0.2l.tar.gz
 
 cd openssl-1.0.2l
