@@ -13,7 +13,7 @@ pub fn register_websocket_funcs(io: &mut IoHandler, websocket: mpsc::Sender<Vec<
 		let value: AlarmParams = match params.parse() {
 			Ok(v) => v,
 			Err(_) => {
-				return Ok(Value::String("fail to query".to_string()));
+				return Ok(Value::Bool(false));
 			},
 		};
 
