@@ -24,9 +24,9 @@ linker = \"arm-linux-gnueabihf-gcc\"" > $HOME/.cargo/config
 
 # Dependency for openssl
 wget https://www.openssl.org/source/openssl-1.0.2p.tar.gz
-tar xzf openssl-1.0.2l.tar.gz
+tar xzf openssl-1.0.2p.tar.gz
 
-cd openssl-1.0.2l
+cd openssl-1.0.2p
 
 # dynamic library
 export MACHINE=armv7
@@ -35,7 +35,7 @@ export CC=arm-linux-gnueabihf-gcc
 ./config shared && make && sudo make install
 
 cd -
-rm -rf openssl-1.0.2l*
+rm -rf openssl-1.0.2p*
 
 # reset CC
 unset CC
