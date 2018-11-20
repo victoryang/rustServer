@@ -35,12 +35,12 @@ impl WsServer {
 				let conn = request.use_protocol("websocket").accept().unwrap();
 
 				let ip = conn.peer_addr().unwrap();
-				println!("Connection from {}", ip);
+				debug!("Connection from {}", ip);
 
 				let c = client::WsClient {conn: conn};
 				c.run(client_rx);
 
-				println!("Connection {} disconnected", ip)
+				debug!("Connection {} disconnected", ip)
 			});
 		}
 	}

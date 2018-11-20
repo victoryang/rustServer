@@ -12,21 +12,21 @@ impl WsClient {
 	pub fn run(self, receiver: mpsc::Receiver<Vec<u8>>) {
 		let (mut rstream, mut sstream) = self.conn.split().unwrap();
 		let(tx, rx) = mpsc::channel::<OwnedMessage>();
-		let tx1 = tx.clone();
+		let tx1 = mpsc::Sender::clone(&tx);
 
-		let _ = thread::spawn(move || {
+		let send_loop = thread::spawn(move || {
 			loop {
 				let message = match rx.recv() {
 					Ok(m) => m,
 					Err(e) => {
-						println!("Send Loop: {:?}", e);
+						warn!("Send Loop: {:?}", e);
 						return;
 					}
 				};
 
 				match message {
 					OwnedMessage::Close(_) => {
-						println!("Client disconnected");
+						debug!("Client disconnected");
 						return;
 					},
 
@@ -35,7 +35,7 @@ impl WsClient {
 						match sstream.send_message(&message) {
 							Ok(()) => (),
 							Err(e) => {
-								warn!("sending Pong messages to channel error: {:?}", e);
+								warn!("Sending Pong messages to network error: {:?}", e);
 								let _ = sstream.send_message(&Message::close());
 								return;
 							}
@@ -46,7 +46,7 @@ impl WsClient {
 						match sstream.send_message(&message) {
 							Ok(()) => (),
 							Err(e) => {
-								warn!("sending messages to channel error: {:?}", e);
+								warn!("Sending messages to network error: {:?}", e);
 								let _ = sstream.send_message(&Message::close());
 								return;
 							}
@@ -56,12 +56,13 @@ impl WsClient {
 			}
 		});
 
-		let _ = thread::spawn(move || {
+		let receive_loop = thread::spawn(move || {
 			for message in rstream.incoming_messages() {
 				let message = match message {
 					Ok(m) => m,
 					Err(e) => {
-						warn!("read error from channel: {:?}", e);
+						warn!("Read error from network: {:?}", e);
+						let _ = tx1.send(OwnedMessage::Close(None));
 						return;
 					}
 				};
@@ -71,11 +72,11 @@ impl WsClient {
 						match tx1.send(message) {
 							Ok(()) => (),
 							Err(e) => {
-								warn!("Sending to sstream error: {:?}", e);
+								warn!("Sending Close to sstream error: {:?}", e);
 								return;
 							}
 						}
-						println!("Client disconnected");
+						debug!("Client disconnected");
 						return;
 					}
 
@@ -84,32 +85,40 @@ impl WsClient {
 						match tx1.send(message) {
 							Ok(()) => (),
 							Err(e) => {
-								warn!("Sending to sstream error: {:?}", e);
+								warn!("Sending Ping to sstream error: {:?}", e);
 								return;
 							}
 						}
 					}
 
-					_ => println!("Receive new message from client, drop it."),
+					_ => debug!("Received new message from client, drop it."),
 				}
 			}
 		});
 
-		let mut iter = receiver.iter();
-		loop {
-			match iter.next() {
-				Some(message) => {
-					let message = OwnedMessage::Binary(message);
-					match tx.send(message) {
-						Ok(()) => (),
-						Err(e) => {
-							warn!("Sending to sstream error: {:?}", e);
-							return;
+		let _ = thread::spawn(move || {
+			let mut iter = receiver.iter();
+			loop {
+				match iter.next() {
+					Some(message) => {
+						let message = OwnedMessage::Binary(message);
+						match tx.send(message) {
+							Ok(()) => (),
+							Err(e) => {
+								warn!("Sending messages to sstream error: {:?}", e);
+								return;
+							}
 						}
-					}
-				},
-				None => break,
+					},
+					None => break,
+				}
 			}
-		}
+		});
+		
+
+		let _ = send_loop.join();
+		let _ = receive_loop.join();
+
+		debug!("Client exited");
 	}
 }
