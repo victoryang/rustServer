@@ -105,6 +105,7 @@ void register_all_sql_mappers() {
 	register_io_sql_mappers();
 	register_metadata_sql_mappers();
 	register_params_sql_mappers();
+    register_record_op_sql_mapper();
 	register_ref_sql_mapper();
 	register_toolframe_sql_mappers();
 	register_userframe_sql_mappers();
