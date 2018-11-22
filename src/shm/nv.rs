@@ -11,3 +11,8 @@ pub fn get_nv(tx: mpsc::Sender<Vec<u8>>) {
 		None => {},
 	};
 }
+
+pub fn get_nv_without_check(tx: mpsc::Sender<Vec<u8>>) {
+	let message = mrj_sys::get_nv_once().into_bytes();
+	tx.send(message).unwrap();
+}

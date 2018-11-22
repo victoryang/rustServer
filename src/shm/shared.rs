@@ -22,3 +22,8 @@ pub fn get_shared(tx: mpsc::Sender<Vec<u8>>) {
 		None => {},
 	};
 }
+
+pub fn get_shared_without_check(tx: mpsc::Sender<Vec<u8>>) {
+	let message = mrj_sys::get_shared_once().into_bytes();
+	tx.send(message).unwrap();
+}
