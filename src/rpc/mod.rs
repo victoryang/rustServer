@@ -35,5 +35,5 @@ pub fn new_rpc_server() -> RpcServer {
 
 fn register_method(io: &mut IoHandler) {
 	mcsql::register_mcsql_funcs(io);
-	mrj::register_mcsql_funcs(io);
+	mrj::register_mrj_funcs(io);
 }

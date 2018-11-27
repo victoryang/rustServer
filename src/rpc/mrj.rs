@@ -2,7 +2,7 @@ use jsonrpc_tcp_server::jsonrpc_core::*;
 
 use mrj_sys;
 
-pub fn register_mcsql_funcs(io: &mut IoHandler) {
+pub fn register_mrj_funcs(io: &mut IoHandler) {
 	io.add_method("get_system_variables", |params: Params| {
 		#[derive(Deserialize)]
 		struct SysVarParams {
