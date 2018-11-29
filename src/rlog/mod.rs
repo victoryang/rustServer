@@ -48,7 +48,7 @@ pub fn setup_logging(verbosity: u64, filename: String) -> Result<(), fern::InitE
 pub fn check_file_size_exceeded_max(filename: &String) -> bool {
 	match fs::metadata(filename) {
 		Ok(metadata) => {
-			if metadata.len() > 32<<20 {
+			if metadata.len() > 2<<20 {
 				true
 			} else {
 				false

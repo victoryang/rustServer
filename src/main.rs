@@ -54,11 +54,9 @@ fn handle_signals() {
 
 fn setup_log(src: String) {
 	if rlog::check_file_size_exceeded_max(&src) {
-		let mut des = src.clone();
-        des.push_str(".bak");
-		match fs::rename(src.as_str(), des.as_str()) {
-            Ok(()) => info!("log backuped"),
-            Err(_) => info!("log fails to be backuped"),
+		match fs::remove_file(src.as_str()) {
+            Ok(()) => info!("log removed"),
+            Err(_) => info!("log fails to be removed"),
         };
 	};
 
