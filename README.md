@@ -29,3 +29,20 @@
 
 	if build with --release then
 	out: target/armv7-unknown-linux-gnueabihf/release/rustServer
+
+## with valgrind
+	https://www.cnblogs.com/xuanyuanchen/p/5761315.html
+
+	wget http://valgrind.org/downloads/valgrind-3.11.0.tar.bz2
+	modify configure: armv7*) to armv7*|arm*)
+	
+	./configure CC=arm-linux-gnueabihf-gcc CPP=arm-linux-gnueabihf-cpp CXX=arm-linux-gnueabihf-g++  --host=arm-linux --prefix=/opt/valgrind/lib
+
+	make && make install
+
+	cd /opt/valgrind/lib/
+	scp -a bin/ lib/
+
+	export VALGRIND_LIB=/opt/valgrind/lib/valgrind/
+
+	libc6-dbg arm-linux-gnueabihf\libc\lib\arm-linux-gnueabihf
