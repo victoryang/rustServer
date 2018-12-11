@@ -109,8 +109,8 @@ pub fn get_local_variables(datatype: i32, number: i32, start: i32, end: i32) -> 
 	result_into_string_response(c_result)
 }
 
-pub fn get_remote_mode_status() -> c_int {
-	mrj_get_remote_mode_status()
+pub fn get_remote_mode_status() -> i32 {
+	unsafe { mrj_get_remote_mode_status() }
 }
 
 pub fn init_worker_resource() {

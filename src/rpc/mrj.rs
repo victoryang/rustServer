@@ -57,6 +57,6 @@ pub fn register_mrj_funcs(io: &mut IoHandler) {
 
 	io.add_method("get_remote_mode_status", |_params: Params| {
 		let res = mrj_sys::get_remote_mode_status();
-		Ok(Value::Number(res))
+		Ok(Value::String(serde_json::value::Number::from(res)))
 	});
 }
