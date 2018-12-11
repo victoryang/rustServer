@@ -54,4 +54,9 @@ pub fn register_mrj_funcs(io: &mut IoHandler) {
 		let res = mrj_sys::get_nv_once();
 		Ok(Value::String(res))
 	});
+
+	io.add_method("get_remote_mode_status", |_params: Params| {
+		let res = mrj_sys::get_remote_mode_status();
+		Ok(Value::Number(res))
+	});
 }
