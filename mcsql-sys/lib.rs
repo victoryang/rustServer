@@ -1,4 +1,5 @@
 #![feature(libc)]
+#![feature(rustc_private)]
 extern crate libc;
 
 use libc::{c_char, int32_t, c_int};
