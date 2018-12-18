@@ -9,6 +9,10 @@ char* mcsql_arc_get_params(int32_t file_no, char* group);
 
 char* mcsql_bookprogram_get_all();
 
+char* mcsql_dynamics_get_all();
+
+char* mcsql_dynamics_get_by_id(char* id);
+
 char* mcsql_enum_get_all();
 
 char* mcsql_extaxis_get_all();

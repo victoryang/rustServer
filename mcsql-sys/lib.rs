@@ -16,6 +16,8 @@ extern {fn mcsql_set_db_file(dbname: *const c_char);}
 extern {fn mcsql_arc_get_all() -> *mut c_char;}
 extern {fn mcsql_arc_get_params(file_no: int32_t, group: *const c_char) -> *mut c_char;}
 extern {fn mcsql_bookprogram_get_all() -> *mut c_char;}
+extern {fn mcsql_dynamics_get_all() -> *mut c_char;}
+extern {fn mcsql_dynamics_get_by_id(id: *const c_char) -> *mut c_char;}
 extern {fn mcsql_enum_get_all() -> *mut c_char;}
 extern {fn mcsql_extaxis_get_all() -> *mut c_char;}
 extern {fn mcsql_interference_get_all() -> *mut c_char;}
@@ -75,6 +77,25 @@ pub fn arc_get_params(file_no: i32, group: String) -> String {
 
 pub fn bookprogram_get_all() -> String {
 	let c_result = unsafe { mcsql_bookprogram_get_all() };
+
+	result_into_string_response(c_result)
+}
+
+pub fn dynamics_get_all() -> String {
+	let c_result = unsafe { mcsql_dynamics_get_all() };
+
+	result_into_string_response(c_result)
+}
+
+pub fn dynamics_get_by_id(id: String) -> String {
+	let id = match CString::new(id) {
+		Ok(id) => id,
+		Err(_) => {
+			return String::from(""); 
+		}
+	};
+
+	let c_result = unsafe { mcsql_dynamics_get_by_id(id.as_ptr()) };
 
 	result_into_string_response(c_result)
 }

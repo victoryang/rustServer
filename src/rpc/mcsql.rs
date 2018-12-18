@@ -30,6 +30,26 @@ pub fn register_mcsql_funcs(io: &mut IoHandler) {
 		Ok(Value::String(res))
 	});
 
+	io.add_method("dynamics_get_all", |_params: Params| {
+		let res = mcsql_sys::dynamics_get_all();
+		Ok(Value::String(res))
+	});
+
+	io.add_method("dynamics_get_by_id", |params: Params| {
+		#[derive(Deserialize)]
+		struct DynamicsParams {
+			id:   String,
+		}
+		let value: DynamicsParams = match params.parse() {
+			Ok(v) => v,
+			Err(_) => {
+				return Ok(Value::String("fail to query".to_string()));
+			},
+		};
+		let res = mcsql_sys::dynamics_get_by_id(value.id);
+		Ok(Value::String(res))
+	});
+
 	io.add_method("enum_get_all", |_params: Params| {
 		let res = mcsql_sys::enum_get_all();
 		Ok(Value::String(res))

@@ -8,6 +8,7 @@
 #include "db/sqlmapper/arc_sql_mapper.h"
 #include "db/sqlmapper/backup_sql_mapper.h"
 #include "db/sqlmapper/bookprogram_sql_mapper.h"
+#include "db/sqlmapper/dynamic_sql_mapper.h"
 #include "db/sqlmapper/enum_sql_mapper.h"
 #include "db/sqlmapper/extaxis_sql_mapper.h"
 #include "db/sqlmapper/interference_sql_mapper.h"

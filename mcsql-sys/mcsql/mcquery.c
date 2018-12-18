@@ -73,6 +73,51 @@ char* mcsql_bookprogram_get_all() {
     return mcsql_db_query(&req);
 }
 
+char* mcsql_dynamics_get_all() {
+    const char *q_id = ELIBOT_DYNAMIC_GET_ALL;
+
+    db_query_req_option opt = {
+            type_handle_mode:DB_QUERY_MODE_STANDARD
+    };
+
+    db_query_req req = {
+            query_id:(char *)q_id,
+            conn_str:db_conn,
+            option:&opt,
+            parameter:NULL,
+            page:NULL,
+    };
+
+    return mcsql_db_query(&req);
+}
+
+char* mcsql_dynamics_get_by_id(char* id) {
+    const char *q_id = ELIBOT_DYNAMIC_GET_BY_ID;
+
+    sql_parameter sql_params[] = {
+        {name:"md_id", value:{ string_value: id}, type:DB_TYPE_TEXT}
+    };
+
+    db_query_req_parameter q_params = {
+            params: sql_params,
+            param_size: 1
+    };
+
+    db_query_req_option opt = {
+        type_handle_mode:DB_QUERY_MODE_STANDARD
+    };
+
+    db_query_req req = {
+            query_id:(char *)q_id,
+            conn_str:db_conn,
+            option:&opt,
+            parameter:&q_params,
+            page:NULL,
+    };
+
+    return mcsql_db_query(&req);
+}
+
 char* mcsql_enum_get_all() {
     const char *q_id = ELIBOT_ENUM_GET_ALL;
 

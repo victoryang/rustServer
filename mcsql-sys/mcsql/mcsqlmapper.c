@@ -22,6 +22,16 @@ void register_bookprogram_sql_mappers() {
     register_sql_mapper(mapper);
 };
 
+void register_dynamics_sql_mappers() {
+
+    // ELIBOT_BOOKPROGRAM_GET_ALL
+    sql_mapper *mapper = get_dynamic_sql_mapper(ELIBOT_DYNAMIC_GET_ALL);
+    register_sql_mapper(mapper);
+
+    mapper = get_dynamic_sql_mapper(ELIBOT_DYNAMIC_GET_BY_ID);
+    register_sql_mapper(mapper);
+};
+
 void register_enum_sql_mappers() {
     sql_mapper *mapper = get_enum_sql_mapper(ELIBOT_ENUM_GET_ALL);
     register_sql_mapper(mapper);
@@ -99,6 +109,7 @@ void register_all_sql_mappers() {
 	register_arc_sql_mappers();
 	register_backup_sql_mappers();
 	register_bookprogram_sql_mappers();
+    register_dynamics_sql_mappers();
 	register_enum_sql_mappers();
 	register_extaxis_sql_mappers();
 	register_interference_sql_mappers();
