@@ -5,15 +5,15 @@ use jsonrpc_tcp_server::jsonrpc_core::*;
 pub fn register_websocket_funcs(io: &mut IoHandler, websocket: mpsc::Sender<Vec<u8>>) {
 	let websocket_sender = Mutex::new(websocket);
 
-	io.add_method("alarm_record_changes", move |params: Params| {
+	io.add_method("push_message_to_network", move |params: Params| {
 		#[derive(Deserialize)]
-		struct AlarmParams {
+		struct Message {
 			message: 	String,
 		}
-		let value: AlarmParams = match params.parse() {
+		let value: Message = match params.parse() {
 			Ok(v) => v,
 			Err(_) => {
-					warn!("Alarm parse error");
+					warn!("Message parse error");
 					return Ok(Value::Bool(false));
 			},
 		};

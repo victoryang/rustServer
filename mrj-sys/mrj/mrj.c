@@ -11,3 +11,15 @@ int mrj_init() {
 int mrj_get_remote_mode_status() {
 	return (int)GetRemoteAccessState();
 }
+
+int mrj_get_encryption_status() {
+	return GetEncryptState();
+}
+
+int mrj_get_encryption_remain_time() {
+	return GetEncryptRemainTime();
+}
+
+char* mrj_get_machine_code() {
+	return GetEncryptMachCode();
+}

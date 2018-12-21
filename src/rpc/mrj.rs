@@ -59,4 +59,19 @@ pub fn register_mrj_funcs(io: &mut IoHandler) {
 		let res = mrj_sys::get_remote_mode_status();
 		Ok(Value::Number(serde_json::value::Number::from(res)))
 	});
+
+	io.add_method("get_encryption_status", |_params: Params| {
+		let res = mrj_sys::get_encryption_status();
+		Ok(Value::Number(serde_json::value::Number::from(res)))
+	});
+
+	io.add_method("get_encryption_remain_time", |_params: Params| {
+		let res = mrj_sys::get_encryption_remain_time();
+		Ok(Value::Number(serde_json::value::Number::from(res)))
+	});
+
+	io.add_method("get_machine_code", |_params: Params| {
+		let res = mrj_sys::get_machine_code();
+		Ok(Value::String(res))
+	});
 }

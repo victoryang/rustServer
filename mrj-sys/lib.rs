@@ -17,6 +17,9 @@ extern {fn mrj_get_locvar(datatype: c_int, number: c_int, start: c_int, end: c_i
 
 // api for specific variables
 extern {fn mrj_get_remote_mode_status() -> c_int;}
+extern {fn mrj_get_encryption_status() -> c_int;}
+extern {fn mrj_get_encryption_remain_time() -> c_int;}
+extern {fn mrj_get_machine_code() -> *mut c_char;}
 
 static mut CRC_PLC: u32 = 0;
 static mut CRC_SHARED: u32 = 0;
@@ -111,6 +114,20 @@ pub fn get_local_variables(datatype: i32, number: i32, start: i32, end: i32) -> 
 
 pub fn get_remote_mode_status() -> i32 {
 	unsafe { mrj_get_remote_mode_status() }
+}
+
+pub fn get_encryption_status() -> i32 {
+	unsafe {mrj_get_encryption_status() }
+}
+
+pub fn get_encryption_remain_time() -> i32 {
+	unsafe {mrj_get_encryption_remain_time() }
+}
+
+pub fn get_machine_code() -> String {
+	let c_result = unsafe { mrj_get_machine_code() };
+
+	result_into_string_response(c_result)
 }
 
 pub fn init_worker_resource() {
