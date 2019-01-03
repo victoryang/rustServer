@@ -105,7 +105,7 @@ impl WsClient {
 						match tx.send(message) {
 							Ok(()) => (),
 							Err(e) => {
-								warn!("Sending messages to sstream error: {:?}", e);
+								debug!("Sending messages to sstream error: {:?}", e);
 								return;
 							}
 						}
